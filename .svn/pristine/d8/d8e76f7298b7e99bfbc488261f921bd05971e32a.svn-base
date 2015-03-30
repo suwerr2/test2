@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>계좌번호등록</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/common_admin.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<div class="layerPopupWrap">
+		<div class="outer">
+			<p class="mb30"><strong>Ma2rix</strong>님은 현재<br>
+				수익금을 돌려받을 계좌를 등록하지 않았습니다.<br>
+				계좌를 등록하지 않으면 수익금을 지급받을수 없습니다.<br>
+				지금 계좌를 등록하시겠습니까?
+			</p>
+			<div class="textC mb20">
+				<a class="btn" href="#none"><span>예</span></a>
+				<a class="btn" href="#none"><span>다음에</span></a>
+			</div>
+			<p><input type="checkbox"> 하루동안 안보이기</p>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.MemberFieldMapper">
+
+	<select id="getMemberFieldsByUser" parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.domain.MemberField">
+		SELECT 	MEMBER_NO AS memberNo,
+				MUSIC_FIELD AS musicField,
+				REG_DATETIME as regDateTime
+		FROM TBL_MEMBER_FIELD 
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="getMemberFieldsByMemberNo" parameterType="int" resultType="com.ma2rix.music.model.domain.MemberField">
+		SELECT 	MEMBER_NO AS memberNo,
+				MUSIC_FIELD AS musicField,
+				REG_DATETIME as regDateTime
+		FROM TBL_MEMBER_FIELD 
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	
+	<insert id="insertMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		INSERT INTO TBL_MEMBER_FIELD
+			(MEMBER_NO,MUSIC_FIELD,REG_DATETIME)
+		VALUES 
+			(#{memberNo}, #{musicField},NOW()) 
+			
+	    <selectKey keyProperty="memberNo" resultType="java.lang.Integer" order ="AFTER">
+		    SELECT LAST_INSERT_ID()
+	    </selectKey>	
+	</insert>
+	
+	<delete id="deleteMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		DELETE FROM TBL_MEMBER_FIELD  where member_no = #{memberNo}
+	</delete>
+	
+	<delete id="deleteAllMemberFieldsByMemberNo" parameterType="int">
+		DELETE FROM TBL_MEMBER_FIELD  where member_no = #{memberNo}
+	</delete>
+	
+	<update id="updateMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		UPDATE TBL_MEMBER_FIELD SET
+			MEMBER_NO = #{memberNo},
+			MUSIC_FIELD = #{musicField},
+			REG_DATETIME = #{regDateTime}
+		WHERE MEMBER_NO = #{memberNo} 
+	</update>
+	
+	<select id="getMusicianSelectList"  parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.command.MemberCommand">
+		SELECT 
+				T1.MEMBER_NO AS memberNo,
+				T1.MEMBER_USERID AS memberUserId,
+				T1.MEMBER_NAME AS memberName,
+				T1.MEMBER_PWD AS memberPwd,
+				T1.MEMBER_ROUTE AS memberRoute,
+				T1.MEMBER_NICK_NAME AS memberNickName,
+				T1.MEMBER_IMAGE AS memberImage,
+				T1.COUNTRY_NO AS countryNo,
+				T1.MEMBER_CITY AS memberCity,
+				T1.MEMBER_INTRODUCE AS memberIntroduce,
+				T1.MEMBER_HOMEPAGE AS memberHomePage,
+				T1.HOMEPAGE_COMMENT AS homePageComment,
+				T1.MEMBER_STATUS AS memberStatus,
+				T1.EMAIL_RECEIVE AS emailReceive,
+				T1.COMMUNITY_MEMBER_NO AS communityMemberNo,
+				T1.SPONSOR_AMOUNT AS sponsorAmout,
+				T1.LAST_DATETIME AS lastDateTime,
+				T1.REG_DATETIME AS regDateTime,
+				T1.MOD_ADMIN_NO AS modAdminNo,
+				T1.MOD_DATETIME AS modDateTime,
+        		T2.MUSIC_FIELD AS musicField
+				FROM TBL_MEMBER	AS   T1
+		          INNER JOIN (SELECT T3.MEMBER_NO, GROUP_CONCAT(CODE_NAME SEPARATOR '|') AS MUSIC_FIELD
+					                      FROM TBL_MEMBER	AS   T3 
+					                      LEFT JOIN (
+		                                        SELECT MEMBER_NO, CODE_NAME  
+		                                        FROM TBL_MEMBER_FIELD AS A 
+		                                        INNER JOIN TBL_CODE AS B 
+		                                        ON A.MUSIC_FIELD = B.CODE_NO
+		                                        AND B.CLASS_CODE_NO='MA005'	
+		                                    ) AS T4
+		                             ON T3.MEMBER_NO	= T4.MEMBER_NO
+		                            GROUP BY T3.MEMBER_NO ) AS T2
+		          ON T1.MEMBER_NO	= T2.MEMBER_NO
+				WHERE
+			<if test="selectOpt == '01'">
+	           /* 처리상태코드 */
+	      		T1.MEMBER_USERID LIKE CONCAT('%',#{memberUserId},'%')
+	    	</if>
+	    	<if test="selectOpt == '02'">
+				T1.MEMBER_NICK_NAME LIKE CONCAT('%',#{memberUserId},'%')
+			</if>
+			ORDER BY
+				T1.MEMBER_USERID
+	</select>
+	
+	<select id="getMusicianArrangementSelectList"  parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.command.MemberCommand">
+	   SELECT 
+               T5.MEMBER_NO AS memberNo,
+               T5.MEMBER_USERID AS memberUserId,
+               T5.MEMBER_NAME AS memberName,
+               T5.MEMBER_PWD AS memberPwd,
+               T5.MEMBER_ROUTE AS memberRoute,
+               T5.MEMBER_NICK_NAME AS memberNickName,
+               T5.MEMBER_IMAGE AS memberImage,
+               T5.COUNTRY_NO AS countryNo,
+               T5.MEMBER_CITY AS memberCity,
+               T5.MEMBER_INTRODUCE AS memberIntroduce,
+               T5.MEMBER_HOMEPAGE AS memberHomePage,
+               T5.HOMEPAGE_COMMENT AS homePageComment,
+               T5.MEMBER_STATUS AS memberStatus,
+               T5.EMAIL_RECEIVE AS emailReceive,
+               T5.COMMUNITY_MEMBER_NO AS communityMemberNo,
+               T5.SPONSOR_AMOUNT AS sponsorAmout,
+               T5.LAST_DATETIME AS lastDateTime,
+               T5.REG_DATETIME AS regDateTime,
+               T5.MOD_ADMIN_NO AS modAdminNo,
+               T5.MOD_DATETIME AS modDateTime,
+               T5.MUSIC_FIELD AS musicField
+       FROM (SELECT 
+                      T1.MEMBER_NO,
+                      T1.MEMBER_USERID,
+                      T1.MEMBER_NAME,
+                      T1.MEMBER_PWD,
+                      T1.MEMBER_ROUTE,
+                      T1.MEMBER_NICK_NAME,
+                      T1.MEMBER_IMAGE,
+                      T1.COUNTRY_NO,
+                      T1.MEMBER_CITY,
+                      T1.MEMBER_INTRODUCE,
+                      T1.MEMBER_HOMEPAGE,
+                      T1.HOMEPAGE_COMMENT,
+                      T1.MEMBER_STATUS,
+                      T1.EMAIL_RECEIVE,
+                      T1.COMMUNITY_MEMBER_NO,
+                      T1.SPONSOR_AMOUNT,
+                      T1.LAST_DATETIME,
+                      T1.REG_DATETIME,
+                      T1.MOD_ADMIN_NO,
+                      T1.MOD_DATETIME,
+                      T2.MUSIC_FIELD
+                      FROM TBL_MEMBER	AS   T1
+                        INNER JOIN (SELECT T3.MEMBER_NO, GROUP_CONCAT(CODE_NAME SEPARATOR '|') AS MUSIC_FIELD
+                                                FROM TBL_MEMBER	AS   T3 
+                                                LEFT JOIN (
+                                                      SELECT MEMBER_NO, CODE_NAME  
+                                                      FROM TBL_MEMBER_FIELD AS A 
+                                                      INNER JOIN TBL_CODE AS B 
+                                                      ON A.MUSIC_FIELD = B.CODE_NO
+                                                      AND B.CLASS_CODE_NO='MA005'	
+                                                  ) AS T4
+                                           ON T3.MEMBER_NO	= T4.MEMBER_NO
+                                          GROUP BY T3.MEMBER_NO ) AS T2
+                        ON T1.MEMBER_NO	= T2.MEMBER_NO
+                ) AS T5 INNER JOIN (SELECT A.MEMBER_NO
+                                    FROM TBL_MEMBER	AS A
+                                    INNER JOIN  TBL_MEMBER_FIELD B
+                                    ON A.MEMBER_NO = B.MEMBER_NO
+                                    WHERE B.MUSIC_FIELD = '03' ) AS T6
+            ON T5.MEMBER_NO = T6.MEMBER_NO
+		WHERE
+			<if test="selectOpt == '01'">
+	           /* 처리상태코드 */
+	      		T5.MEMBER_USERID LIKE CONCAT('%',#{memberUserId},'%')
+	    	</if>
+	    	<if test="selectOpt == '02'">
+				T5.MEMBER_NICK_NAME LIKE CONCAT('%',#{memberUserId},'%')
+			</if>
+	</select>
+	
+	
+	<select id="getMusicianArrangementParticipationSelectList"  parameterType="int" resultType="com.ma2rix.music.model.command.MemberCommand">
+            SELECT 
+               T8.MEMBER_NO AS memberNo,
+               T8.MEMBER_USERID AS memberUserId,
+               T8.MEMBER_NAME AS memberName,
+               T8.MEMBER_PWD AS memberPwd,
+               T8.MEMBER_ROUTE AS memberRoute,
+               T8.MEMBER_NICK_NAME AS memberNickName,
+               T8.MEMBER_IMAGE AS memberImage,
+               T8.COUNTRY_NO AS countryNo,
+               T8.MEMBER_CITY AS memberCity,
+               T8.MEMBER_INTRODUCE AS memberIntroduce,
+               T8.MEMBER_HOMEPAGE AS memberHomePage,
+               T8.HOMEPAGE_COMMENT AS homePageComment,
+               T8.MEMBER_STATUS AS memberStatus,
+               T8.EMAIL_RECEIVE AS emailReceive,
+               T8.COMMUNITY_MEMBER_NO AS communityMemberNo,
+               T8.SPONSOR_AMOUNT AS sponsorAmout,
+               T8.LAST_DATETIME AS lastDateTime,
+               T8.REG_DATETIME AS regDateTime,
+               T8.MOD_ADMIN_NO AS modAdminNo,
+               T8.MOD_DATETIME AS modDateTime,
+               T7.MUSIC_FIELD AS musicField
+            FROM (SELECT 
+                     T5.MEMBER_NO,
+                     T5.MUSIC_FIELD
+                  FROM (SELECT 
+                           T1.MEMBER_NO,
+                           T2.MUSIC_FIELD
+                        FROM TBL_MEMBER AS T1
+                                 INNER JOIN (SELECT T3.MEMBER_NO, GROUP_CONCAT(CODE_NAME SEPARATOR '|') AS MUSIC_FIELD
+                                                     FROM TBL_MEMBER	AS   T3 
+                                                     LEFT JOIN (
+                                                           SELECT MEMBER_NO, CODE_NAME  
+                                                           FROM TBL_MEMBER_FIELD AS A 
+                                                           INNER JOIN TBL_CODE AS B 
+                                                           ON A.MUSIC_FIELD = B.CODE_NO
+                                                           AND B.CLASS_CODE_NO='MA005'	
+                                                       ) AS T4
+                                             ON T3.MEMBER_NO = T4.MEMBER_NO
+                                             GROUP BY T3.MEMBER_NO ) AS T2
+                        ON T1.MEMBER_NO	= T2.MEMBER_NO) AS T5 
+                                                INNER JOIN (SELECT A.MEMBER_NO
+                                                            FROM TBL_MEMBER	AS A
+                                                            INNER JOIN  TBL_MEMBER_FIELD B
+                                                            ON A.MEMBER_NO = B.MEMBER_NO
+                                                            WHERE B.MUSIC_FIELD = '03' ) AS T6
+                  ON T5.MEMBER_NO = T6.MEMBER_NO) AS T7 
+                         INNER JOIN ( SELECT 
+                                             T4.MEMBER_NO,
+                                             T4.MEMBER_USERID,
+                                             T4.MEMBER_NAME,
+                                             T4.MEMBER_PWD,
+                                             T4.MEMBER_ROUTE,
+                                             T4.MEMBER_NICK_NAME,
+                                             T4.MEMBER_IMAGE,
+                                             T4.COUNTRY_NO,
+                                             T4.MEMBER_CITY,
+                                             T4.MEMBER_INTRODUCE,
+                                             T4.MEMBER_HOMEPAGE,
+                                             T4.HOMEPAGE_COMMENT,
+                                             T4.MEMBER_STATUS,
+                                             T4.EMAIL_RECEIVE,
+                                             T4.COMMUNITY_MEMBER_NO,
+                                             T4.SPONSOR_AMOUNT,
+                                             T4.LAST_DATETIME,
+                                             T4.REG_DATETIME,
+                                             T4.MOD_ADMIN_NO,
+                                             T4.MOD_DATETIME
+                                      FROM   TBL_ARRANGEMENT AS T1,
+                                             TBL_PERFORMANCE T2,
+                                             TBL_PERFORM_PLAYER T3,
+                                             TBL_MEMBER T4
+                                      WHERE  T1.ARRANGE_NO = T2.ARRANGE_NO 
+                                      AND    T1.ARRANGE_NO = ${arrangeNo}
+                                      AND    T2.PERFORM_NO = T3.PERFORM_NO
+                                      AND    T3.PLAYER_MEMBER_NO = T4.MEMBER_NO 
+                                      AND    T3.PERFORM_PLAYER_STATUS = '02' ) AS T8
+            ON T7.MEMBER_NO = T8.MEMBER_NO
+	</select>
+	
+	<select id="getMusicianArrangementVocalSelectList"  parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.command.MemberCommand">
+	   SELECT 
+               T5.MEMBER_NO AS memberNo,
+               T5.MEMBER_USERID AS memberUserId,
+               T5.MEMBER_NAME AS memberName,
+               T5.MEMBER_PWD AS memberPwd,
+               T5.MEMBER_ROUTE AS memberRoute,
+               T5.MEMBER_NICK_NAME AS memberNickName,
+               T5.MEMBER_IMAGE AS memberImage,
+               T5.COUNTRY_NO AS countryNo,
+               T5.MEMBER_CITY AS memberCity,
+               T5.MEMBER_INTRODUCE AS memberIntroduce,
+               T5.MEMBER_HOMEPAGE AS memberHomePage,
+               T5.HOMEPAGE_COMMENT AS homePageComment,
+               T5.MEMBER_STATUS AS memberStatus,
+               T5.EMAIL_RECEIVE AS emailReceive,
+               T5.COMMUNITY_MEMBER_NO AS communityMemberNo,
+               T5.SPONSOR_AMOUNT AS sponsorAmout,
+               T5.LAST_DATETIME AS lastDateTime,
+               T5.REG_DATETIME AS regDateTime,
+               T5.MOD_ADMIN_NO AS modAdminNo,
+               T5.MOD_DATETIME AS modDateTime,
+               T5.MUSIC_FIELD AS musicField
+       FROM (SELECT 
+                      T1.MEMBER_NO,
+                      T1.MEMBER_USERID,
+                      T1.MEMBER_NAME,
+                      T1.MEMBER_PWD,
+                      T1.MEMBER_ROUTE,
+                      T1.MEMBER_NICK_NAME,
+                      T1.MEMBER_IMAGE,
+                      T1.COUNTRY_NO,
+                      T1.MEMBER_CITY,
+                      T1.MEMBER_INTRODUCE,
+                      T1.MEMBER_HOMEPAGE,
+                      T1.HOMEPAGE_COMMENT,
+                      T1.MEMBER_STATUS,
+                      T1.EMAIL_RECEIVE,
+                      T1.COMMUNITY_MEMBER_NO,
+                      T1.SPONSOR_AMOUNT,
+                      T1.LAST_DATETIME,
+                      T1.REG_DATETIME,
+                      T1.MOD_ADMIN_NO,
+                      T1.MOD_DATETIME,
+                      T2.MUSIC_FIELD
+                      FROM TBL_MEMBER	AS   T1
+                        INNER JOIN (SELECT T3.MEMBER_NO, GROUP_CONCAT(CODE_NAME SEPARATOR '|') AS MUSIC_FIELD
+                                                FROM TBL_MEMBER	AS   T3 
+                                                LEFT JOIN (
+                                                      SELECT MEMBER_NO, CODE_NAME  
+                                                      FROM TBL_MEMBER_FIELD AS A 
+                                                      INNER JOIN TBL_CODE AS B 
+                                                      ON A.MUSIC_FIELD = B.CODE_NO
+                                                      AND B.CLASS_CODE_NO='MA005'	
+                                                  ) AS T4
+                                           ON T3.MEMBER_NO	= T4.MEMBER_NO
+                                          GROUP BY T3.MEMBER_NO ) AS T2
+                        ON T1.MEMBER_NO	= T2.MEMBER_NO
+                ) AS T5 INNER JOIN (SELECT A.MEMBER_NO
+                                    FROM TBL_MEMBER	AS A
+                                    INNER JOIN  TBL_MEMBER_FIELD B
+                                    ON A.MEMBER_NO = B.MEMBER_NO
+                                    WHERE B.MUSIC_FIELD = '05' ) AS T6
+            ON T5.MEMBER_NO = T6.MEMBER_NO
+		WHERE
+			<if test="selectOpt == '01'">
+	           /* 처리상태코드 */
+	      		T5.MEMBER_USERID LIKE CONCAT('%',#{memberUserId},'%')
+	    	</if>
+	    	<if test="selectOpt == '02'">
+				T5.MEMBER_NICK_NAME LIKE CONCAT('%',#{memberUserId},'%')
+			</if>
+	</select>
+	
+	
+	</mapper>

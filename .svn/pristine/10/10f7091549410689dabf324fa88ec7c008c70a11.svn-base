@@ -1,0 +1,16 @@
+package com.ma2rix.music.dao.mapper;
+
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.ma2rix.music.model.command.RankCommand;
+
+public interface RankMapper {
+
+	public ArrayList<RankCommand> getRankCommandList (
+			@Param("rankNo") int rankNo, 
+			@Param("rType") String rType 			
+			);
+
+}

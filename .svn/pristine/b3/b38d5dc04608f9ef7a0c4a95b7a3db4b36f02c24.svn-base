@@ -1,0 +1,28 @@
+package com.ma2rix.music.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.RankDao;
+import com.ma2rix.music.model.command.RankCommand;
+import com.ma2rix.music.dao.mapper.RankMapper;
+
+@Repository
+public class RankDaoImpl implements RankDao {
+
+	@Autowired private RankMapper rankMapper;
+
+	
+	@Override
+	public ArrayList<RankCommand> getRankCommandList(
+			int rankNo,
+			String rType) {
+		return rankMapper.getRankCommandList(rankNo, rType);
+	}
+	
+
+	
+
+}

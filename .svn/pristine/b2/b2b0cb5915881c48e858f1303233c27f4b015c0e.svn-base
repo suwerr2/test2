@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.VocalMapper">
+
+	<select id="getVocalCount" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_VOCAL
+		]]>
+	</select>
+
+	<!-- 보컬 리스트 -->
+	<select id="getVocalCommandList" resultType="com.ma2rix.music.model.command.VocalCommand" >
+
+			SELECT 
+			  T1.VOCAL_NO               			AS vocalNo			, 					/* 보컬번호 */
+			  T1.ARRANGE_NO             			AS arrangeNo		,   				/* 편곡번호 */   
+			  T1.WRITE_NO               			AS writeNo			, 					/* 작사번호 */
+			  T1.VOCAL_MEMBER_NO        			AS vocalMemberNo	,					/* 보컬회원번호 */
+			  T2.MEMBER_NAME            			AS memberName		,					/* 보컬명 */
+			  T2.MEMBER_NICK_NAME       			AS memberNickName	,					/* 보컬닉네임 */
+			  T1.VOCAL_RATE             			AS vocalRate		,					/* 보컬배분율 */ 
+			  T1.VOCAL_MEMO             			AS vocalMemo		, 					/* 메모 */
+			  T1.FAN_COUNT              			AS fanCount			,					/* 팬수 */ 
+			  (SELECT COUNT(1) FROM TBL_FAN F WHERE F.MUSIC_CLASS = '03' AND F.MUSIC_NO = T1.VOCAL_NO AND F.FAN_MEMBER_NO = #{loginMemberNo}) as fanHeartCount,	/* 로그인자가 팬인지 검사*/					  		  
+			  T1.ARRANGE_HITS           			AS arrangeHits		,					/* 조회수 */ 
+			  T1.VOCAL_IMAGE            			AS vocalImage		,					/* 보컬이미지 */ 
+			  CONCAT(T3.WEB_PATH,  T3.FILE_NAME2)	AS vocalImageWeb		,				/* 편곡이미지파일 Web Path */
+			  CONCAT(T3.FILE_PATH, T3.FILE_NAME2)	AS vocalImageFile		,				/* 편곡이미지파일 Local Path */  			  
+			  T1.VOCAL_SOUND            			AS vocalSound			,   			/* 보컬사운드 */ 
+			  CONCAT(T4.WEB_PATH,  T4.FILE_NAME2)	AS vocalSoundWeb		,				/* 음원파일 Web Path */  
+			  CONCAT(T4.FILE_PATH, T4.FILE_NAME2)	AS vocalSoundFile		,				/* 음원파일 Local Path */ 
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'mp3')	AS vocalSoundMp3	,	/* 음원파일 mp3 Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'ogg')	AS vocalSoundOgg	,	/* 음원파일 ogg Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'png')	AS vocalSoundPng	,	/* 음원파일 pbg Path */  			   			  
+			  T1.SALE_PRICE             			AS salePrice		, 					/* 판매가격 */
+			  T1.CHOICE_STATUS          			AS choiceStatus		,					/* 선택여부 */ 
+			  T1.CONFIRM_STATUS         			AS confirmStatus	,					/* 확정여부 */ 					
+			  T1.VOCAL_STATUS           			AS vocalStatus		,					/* 보컬상태 */ 
+			  T1.REG_DATETIME           			AS regDatetime		,					/* 등록일시 */ 
+			  T1.MOD_ADMIN_NO           			AS modAdminNo		,					/* 수정관리자 번호 */ 
+			  T1.MOD_DATETIME           			AS modDatetime		,					/* 수정일시 */
+        	 (SELECT IFNULL(SUM(SPONSOR_AMOUNT), 0) FROM TBL_SPONSOR WHERE MEMBER_NO = T1.VOCAL_MEMBER_NO) AS sponsorAmount,					/* 스폰서 카운트수 */
+        	  T6.GENRE_NAME                         AS genreName		,                     /* 장르명 */
+        	  T5.ARRANGE_TITLE                		AS arrangeTitle							/* 노래제목 */        	  
+			FROM 
+			  TBL_VOCAL           AS T1
+			INNER JOIN TBL_MEMBER AS T2
+			  ON (
+			T2.MEMBER_NO = T1.VOCAL_MEMBER_NO  
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T3
+			  ON(
+			    T3.ATTACH_NO = T1.VOCAL_IMAGE
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T4
+			  ON(
+			    T4.ATTACH_NO = T1.VOCAL_SOUND
+			  )
+			INNER JOIN TBL_ARRANGEMENT AS T5        
+			  ON(
+			    T5.ARRANGE_NO = T1.ARRANGE_NO
+			  )      
+			LEFT JOIN TBL_GENRE AS T6
+			  ON(
+			    T6.GENRE_NO = T5.GENRE_NO
+			  )        
+			WHERE 1=1
+			
+			<if test="isSearch != ''">
+				AND 
+				T2.MEMBER_NICK_NAME LIKE CONCAT('%',#{searchWord},'%') || T5.ARRANGE_TITLE LIKE CONCAT('%',#{searchWord},'%') 
+	    	</if>			
+			
+			<if test="genreNo != 0">
+				AND
+				T5.GENRE_NO = #{genreNo}
+			</if>
+						
+			ORDER BY VOCAL_NO DESC
+			
+			<if test="pageCount != 0">
+			
+				<choose>
+					<when test="isSearch != ''">
+					</when>	
+					<otherwise>
+						LIMIT #{pageCount}, #{pageOffset}
+					</otherwise>
+				</choose>
+			
+			</if>
+			
+	</select>
+	
+		<!-- 보컬 리스트 -->
+	<select id="getAllVocalCommandList"  resultType="com.ma2rix.music.model.command.VocalCommand">
+		<![CDATA[
+
+		]]>
+	</select>
+
+
+	<!-- 보컬 조회 -->
+	<select id="getVocalByvocalNo" resultType="com.ma2rix.music.model.command.VocalCommand">
+		
+			SELECT 
+			  T1.VOCAL_NO               			AS vocalNo			, 					/* 보컬번호 */
+			  T1.ARRANGE_NO             			AS arrangeNo		,   				/* 편곡번호 */   
+			  T1.WRITE_NO               			AS writeNo			, 					/* 작사번호 */
+			  T1.VOCAL_MEMBER_NO        			AS vocalMemberNo	,					/* 보컬회원번호 */
+			  T2.MEMBER_NAME            			AS memberName		,					/* 보컬명 */
+			  T2.MEMBER_NICK_NAME       			AS memberNickName	,					/* 보컬닉네임 */
+			  T1.VOCAL_RATE             			AS vocalRate		,					/* 보컬배분율 */ 
+			  T1.VOCAL_MEMO             			AS vocalMemo		, 					/* 메모 */
+			  T1.FAN_COUNT              			AS fanCount			,					/* 팬수 */
+			  (SELECT COUNT(1) FROM TBL_FAN F WHERE F.MUSIC_CLASS = '03' AND F.MUSIC_NO = T1.VOCAL_NO AND F.FAN_MEMBER_NO = #{loginMemberNo}) as fanHeartCount,	/* 로그인자가 팬인지 검사*/					   
+			  T1.ARRANGE_HITS           			AS arrangeHits		,					/* 조회수 */ 
+			  T1.VOCAL_IMAGE            			AS vocalImage		,					/* 보컬이미지 */ 
+			  CONCAT(T3.WEB_PATH,  T3.FILE_NAME2)	AS vocalImageWeb		,				/* 편곡이미지파일 Web Path */
+			  CONCAT(T3.FILE_PATH, T3.FILE_NAME2)	AS vocalImageFile		,				/* 편곡이미지파일 Local Path */  			  
+			  T1.VOCAL_SOUND            			AS vocalSound			,   			/* 보컬사운드 */ 
+			  CONCAT(T4.WEB_PATH,  T4.FILE_NAME2)	AS vocalSoundWeb		,				/* 음원파일 Web Path */  
+			  CONCAT(T4.FILE_PATH, T4.FILE_NAME2)	AS vocalSoundFile		,				/* 음원파일 Local Path */ 
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'mp3')	AS vocalSoundMp3	,	/* 음원파일 mp3 Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'ogg')	AS vocalSoundOgg	,	/* 음원파일 ogg Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'png')	AS vocalSoundPng	,	/* 음원파일 pbg Path */  			   			  
+			  T1.SALE_PRICE             			AS salePrice		, 					/* 판매가격 */
+			  T1.CHOICE_STATUS          			AS choiceStatus		,					/* 선택여부 */ 
+			  T1.CONFIRM_STATUS         			AS confirmStatus	,					/* 확정여부 */ 					
+			  T1.VOCAL_STATUS           			AS vocalStatus		,					/* 보컬상태 */ 
+			  T1.REG_DATETIME           			AS regDatetime		,					/* 등록일시 */ 
+			  T1.MOD_ADMIN_NO           			AS modAdminNo		,					/* 수정관리자 번호 */ 
+			  T1.MOD_DATETIME           			AS modDatetime		,					/* 수정일시 */
+        	 (SELECT IFNULL(SUM(SPONSOR_AMOUNT), 0) FROM TBL_SPONSOR WHERE MEMBER_NO = T1.VOCAL_MEMBER_NO) AS sponsorAmount,					/* 스폰서 카운트수 */
+        	  T6.GENRE_NAME                         AS genreName		,                     /* 장르명 */
+        	  T5.ARRANGE_TITLE                		AS arrangeTitle							/* 노래제목 */        	  
+			FROM 
+			  TBL_VOCAL           AS T1
+			INNER JOIN TBL_MEMBER AS T2
+			  ON (
+			T2.MEMBER_NO = T1.VOCAL_MEMBER_NO  
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T3
+			  ON(
+			    T3.ATTACH_NO = T1.VOCAL_IMAGE
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T4
+			  ON(
+			    T4.ATTACH_NO = T1.VOCAL_SOUND
+			  )
+			INNER JOIN TBL_ARRANGEMENT AS T5        
+			  ON(
+			    T5.ARRANGE_NO = T1.ARRANGE_NO
+			  )      
+			LEFT JOIN TBL_GENRE AS T6
+			  ON(
+			    T6.GENRE_NO = T5.GENRE_NO
+			  )        
+			WHERE 1=1
+			AND
+				T1.VOCAL_NO	= #{vocalNo}
+		
+	</select>
+	
+	
+</mapper>

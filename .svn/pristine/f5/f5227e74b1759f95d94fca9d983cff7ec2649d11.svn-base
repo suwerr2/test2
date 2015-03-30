@@ -1,0 +1,164 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ma2rix.music.common.Pagination;
+import com.ma2rix.music.model.domain.Event;
+import com.ma2rix.music.model.dto.ajaxresponse.AjaxResultBase;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.EventService;
+import com.ma2rix.music.service.interfaces.SettlementService;
+
+@Controller
+@RequestMapping("/event")
+public class EventController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class AdminForward {
+
+		public static final String EVENT_LIST	= "admin/eventList";
+		
+	}
+	
+	@Autowired private EventService eventService;
+	@Autowired private SettlementService settleService;
+
+	/**
+	 * 로그조회 리스트페이지
+	 */
+	@RequestMapping(value = "/eventList", method = RequestMethod.GET)
+	public String eventList(
+			@RequestParam(value = "page" 	,   required = false   ,defaultValue = "1") int page,
+			@RequestParam(value = "composeCnt" 	,   required = false   ,defaultValue = "0") int composeCnt,
+			@RequestParam(value = "arrangeCnt" 	,   required = false   ,defaultValue = "0") int arrangeCnt,
+			@RequestParam(value = "delEventNo" 	,   required = false   ,defaultValue = "0") int delEventNo,
+			ModelMap model) {
+		model.addAttribute("page", page);
+		model.addAttribute("composeCnt", composeCnt);
+		model.addAttribute("arrangeCnt", arrangeCnt);
+		model.addAttribute("delEventNo", delEventNo);
+		return AdminForward.EVENT_LIST;
+	} 
+	
+	/**
+	 * 로그조회 ajax 요청 처리  
+	 * 관리자 로그목록 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/getEventList", method = RequestMethod.GET)
+	public GenericResponse<Event> getEventList(
+			@RequestParam(value = "page" 	,   required = false   ,defaultValue = "1") int page,
+			@RequestParam("arrangeCnt") int arrangeCnt,
+			@RequestParam("composeCnt") int composeCnt,
+			@RequestParam("evFrom") String evFrom,
+			@RequestParam("evTo") String evTo,
+			@RequestParam("delEventNo") int delEventNo,
+			ModelMap model)
+	{	
+		Event event = new Event();
+		
+		event.setEvFromDate(evFrom);
+		event.setEvToDate(evTo);
+		
+		System.out.println(">>delEventNo::"+delEventNo);
+		
+		if (delEventNo == 0){
+			
+			if (arrangeCnt > 0){
+				event.setEventCnt(arrangeCnt);
+				event.setMusicClass("02");
+				eventService.insertEvent(event);
+	
+			}		
+			
+			if (composeCnt > 0){
+				event.setEventCnt(composeCnt);
+				event.setMusicClass("01");
+				eventService.insertEvent(event);
+	
+			}
+			
+		}else{
+			System.out.println(">>delEventNo::"+delEventNo);
+			eventService.deleteEvent(delEventNo);
+		}
+			
+		GenericResponse<Event> gr = new GenericResponse<Event>();
+		int eventTotalRow = eventService.getEventCount();
+		Pagination pagination = new Pagination(eventTotalRow,page,EventService.PAGE_OFFSET);
+		
+		ArrayList<Event> getEventList = eventService.getAllEventList(pagination.getStartRow(),EventService.PAGE_OFFSET);
+		gr.setResultCode(1);
+		gr.setMessage("success");
+		gr.setCurrentRowCount(getEventList.size());
+		gr.setTotalPage(getEventList.size());
+		gr.setCurrentPage(page);
+		gr.setTotalRow(eventTotalRow);
+		gr.setObjects(getEventList);
+		return gr;
+	}
+
+	
+	/**
+	 * ajax event 등록 요청 처리 
+	 * @param arrangeCnt
+	 * @param composeCnt
+	 * @param evFrom
+	 * @param evTo 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/insert", method = RequestMethod.GET)
+	public AjaxResultBase insert(
+			@RequestParam("arrangeCnt") int arrangeCnt,
+			@RequestParam("composeCnt") int composeCnt,
+			@RequestParam("evFrom") String evFrom,
+			@RequestParam("evTo") String evTo
+			){
+		AjaxResultBase res = new AjaxResultBase();
+		Event event = new Event();
+		
+		event.setEvFromDate(evFrom);
+		event.setEvToDate(evTo);
+		
+		System.out.println(">>>>>>>>>event.insert["+arrangeCnt);
+
+		try {
+			
+			if (arrangeCnt > 0){
+				event.setEventCnt(arrangeCnt);
+				event.setMusicClass("02");
+				eventService.insertEvent(event);
+				res.setResultCode(1);
+				res.setMessage("success");
+	
+			}		
+			
+			if (composeCnt > 0){
+				event.setEventCnt(composeCnt);
+				event.setMusicClass("01");
+				eventService.insertEvent(event);
+				res.setResultCode(1);
+				res.setMessage("success");
+	
+			}
+			
+		} catch (Exception e) {
+			res.setResultCode(0);
+			res.setMessage("event fail");
+		}
+		return res;
+	}
+}

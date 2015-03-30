@@ -1,0 +1,49 @@
+/**
+ * 개발일자:2014.11.03
+ * 개발자:김기수
+ * 컨트롤러 설명 : 차트 관련 서비스
+ * 
+ * @author v
+ *
+ */
+
+package com.ma2rix.music.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ma2rix.music.dao.interfaces.FanDao;
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.domain.Fan;
+import com.ma2rix.music.service.interfaces.FanService;
+
+@Service
+public class FanServiceImpl implements FanService {
+
+	@Autowired FanDao fanDao;
+		
+	@Override
+	public FanCommand getFancountByMusicNo(Fan fan){
+		return fanDao.getFancountByMusicNo(fan);
+	};
+
+	@Override
+	public void insertFan(Fan fan){
+		fanDao.insertFan(fan);
+	};
+
+	@Override
+	public void deleteFan(Fan fan){
+		fanDao.deleteFan(fan);
+	};
+	
+	@Override
+	public void updateCompositionFan(Fan fan){
+		fanDao.updateCompositionFan(fan);
+	};
+	
+	@Override
+	public int getMyFanCount(){
+			return fanDao.getMyFanCount();
+	}
+}

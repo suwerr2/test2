@@ -1,0 +1,14 @@
+package com.ma2rix.music.dao.interfaces;
+
+import java.util.ArrayList;
+
+import com.ma2rix.music.model.command.VocalCommand;
+
+public interface VocalDao {
+	
+	public int getVocalCount();
+	public ArrayList<VocalCommand> getVocalCommandList(int pageCount, int pageOffset);
+	public ArrayList<VocalCommand> getAllVocalCommandList();
+	public VocalCommand getVocalByvocalNo(int vocalNo);		
+	
+}

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.SponsorMapper">
+	
+	<select id="getSponBySponsorNo" parameterType="int" resultType="com.ma2rix.music.model.domain.Sponsor">
+		<![CDATA[
+			SELECT
+				SPONSOR_NO					 AS sponsorNo			,
+				MEMBER_NO					 AS memberNo 			,
+				SPONSOR_MEMBER_NO			 AS sponsorMemberNo		,
+				SPONSOR_AMOUNT				 AS sponsorAmount		,
+				REG_DATETIME			     AS regDateTime			,
+			FROM
+				TBL_SPONSOR
+			
+			WHERE
+				SPONSOR_NO  = #{sponsorNo}
+		]]>
+	</select>
+	
+	<select id="getSponByMemberNo" parameterType ="int" resultType="int">
+		<![CDATA[
+			SELECT
+        		SUM(SPONSOR_AMOUNT)		AS sponsorAmount
+			FROM
+				TBL_SPONSOR			
+			WHERE
+				MEMBER_NO  = #{memberNo}
+		]]>
+	</select>
+	
+	<insert id="insertSponsor" parameterType ="com.ma2rix.music.model.domain.Sponsor" >
+		<![CDATA[
+			INSERT INTO
+				TBL_SPONSOR
+			(
+				MEMBER_NO				,
+				SPONSOR_MEMBER_NO		,
+				SPONSOR_AMOUNT			,
+				REG_DATETIME			
+			)
+			VALUES
+			(
+				#{memberNo}				,
+				#{sponsorMemberNo}    ,
+				#{sponsorAmount}		,
+				NOW()					
+			)
+		]]>
+
+		<selectKey keyProperty="sponsorNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<delete id="deleteSponsor" parameterType ="int" >
+	<![CDATA[
+			DELETE FROM
+				TBL_SPONSOR
+			WHERE
+				SPONSOR_NO	= #{sponsorNo}
+		]]>
+	</delete>
+	
+
+	<update id="updateSponsor" parameterType ="com.ma2rix.music.model.domain.Sponsor" >
+		<![CDATA[
+			UPDATE
+				TBL_SPONSOR
+			SET
+				MEMBER_NO     		   = #{memberNo}  		        ,
+				SPONSOR_MEMBER_NO	   = #{sponsorMemberNo} 	    ,
+				SPONSOR_AMOUNT		   = #{sponsorAmount}			,
+				
+			WHERE
+				SPONSOR_NO	= #{sponsorNo}
+		]]>
+	</update>
+
+
+
+
+	<select id="getSponListCount" resultType="int">
+			SELECT 
+				COUNT(*)
+			FROM TBL_SPONSOR T1 
+			INNER JOIN TBL_MEMBER T2
+				ON T1.SPONSOR_MEMBER_NO = T2.MEMBER_NO
+			WHERE 1=1			
+			<if test="memberNo != 0">
+				AND T1.MEMBER_NO = #{memberNo}
+			</if>
+	</select>	
+
+	
+	
+	<select id="getSponList" resultType="com.ma2rix.music.model.command.SponsorCommand">
+			SELECT 
+				  T1.SPONSOR_NO 			AS 		sponsorNo		, 
+				  T1.MEMBER_NO  			AS 		memberNo		, 
+				  T1.SPONSOR_MEMBER_NO  	AS 		sponsorMemberNo	, 
+				  T1.SPONSOR_AMOUNT 		AS  	sponsorAmount	, 
+				  T1.REG_DATETIME 			AS 		regDatetime		,
+				  T2.MEMBER_NO  			AS 		memberNo		, 
+				  T2.MEMBER_USERID 			AS 		memberUserid	, 
+				  T2.MEMBER_NAME 			AS 		memberName		, 
+				  T2.MEMBER_NICK_NAME 		AS 		memberNickName	, 
+				  T2.MEMBER_ROUTE 			AS 		memberRoute		, 
+				  T2.MEMBER_IMAGE 			AS 		memberImage		, 
+				  T2.COUNTRY_NO 			AS 		countyNo		, 
+				  T2.MEMBER_CITY 			AS 		memberCity		, 
+				  T2.MEMBER_INTRODUCE 		AS 		memberIntroduce	, 
+				  T2.EMAIL_RECEIVE 			AS 		emailReceive	, 
+				  T2.COMMUNITY_MEMBER_NO 	AS 		communityMemberNo, 
+				  T2.SPONSOR_AMOUNT 		AS  	sponsorAmount  
+			FROM TBL_SPONSOR T1 
+				LEFT JOIN TBL_MEMBER T2
+					ON T1.SPONSOR_MEMBER_NO = T2.MEMBER_NO
+			WHERE 1=1
+			<if test="memberNo != 0">
+				AND T1.MEMBER_NO = #{memberNo}
+			</if>
+			<if test="pageCount != -1">
+				LIMIT #{pageCount}, #{pageOffset}
+			</if>
+	</select>
+
+		
+	<select id="getSponSumByMemberNo" resultType="int">
+
+			SELECT 
+				IFNULL(SUM(SPONSOR_AMOUNT), 0) AS sponsorAmount
+			FROM TBL_SPONSOR 
+			WHERE 1=1
+			<if test="memberNo != 0">
+				AND MEMBER_NO = #{memberNo}
+			</if>
+						
+	</select>		
+
+
+	<select id="getSponLastDay" resultType="String">
+		
+		SELECT 
+			REG_DATETIME 
+		FROM 
+			TBL_SPONSOR 
+		WHERE MEMBER_NO = #{memberNo} 
+			ORDER BY SPONSOR_NO ASC LIMIT 1;	
+					
+	</select>
+	
+
+</mapper>

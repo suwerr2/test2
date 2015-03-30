@@ -1,0 +1,300 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+
+<%@ include file="../include/top.jsp" %>	
+
+            <div class="contents">
+                <div class="myFanPro">
+                	<div class="visual"><img src="/music/resources/images/myprofile.jpg" style="width: 100px; height: 100px;" alt=""></div>
+                	<p class="idView"><a href="#none">topayc</a></p>
+                </div>
+                <!--tab-->
+                <div class="tabWrapType1">
+                    <ul class="tabBtnSet1 tabCommon">
+                        <li><a href="#none"><span><strong>10</strong> Fans</span></a></li>
+                        <li><a href="#none"><span><strong>10</strong> PlayList</span></a></li>
+                        <li><a href="#none"><span><strong>10</strong> Star</span></a></li>
+                        <li><a href="#none"><span><strong>10</strong> Sponsor</span></a></li>
+                    </ul>
+                    <!-- tabBox1 -->
+                    <div class="tabCont">
+	                	<div class="myFanList">
+	                		<ul class="tenFans">
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                				<div class="heartStat"><i class="fa fa-heart pointColorRed"></i></div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                		</ul>
+	                	</div>
+	                </div>
+	                <!-- //tabBox1 -->
+                    <!-- tabBox2 -->
+                    <div class="tabCont">
+                    	<div class="listWrap">
+							<ul class="arrList">
+								<li class="secType1 oh">
+									<div class="coverArt">
+										<a href="#none"><img src="/music/resources/images/holderType3.gif" alt="" style="width: 110px; height: 110px;"></a>
+									</div>
+									<div class="soundArea">
+										<div class="soundHeader">
+											<a class="bulPlay data-sound-url" href="#none" data-sound-url=""><i class="fa fa-play-circle fa-2x"></i></a>
+											<span class="songTitle"><a href="#none">You raise up me</a></span>
+											<span class="songSinger"><a href="#none">ma2rix</a></span>
+											<a class="btn small btnPoint ctgView" href="#none"><span>rock</span></a>
+										</div>
+										<!-- 개발에서 확인요망 -->
+										<div class="soundBody">
+		                                    <div class="pajaImg"><img src="/music/resources/images/holderType2.gif" alt="" style="width: 100%;"></div>
+		                                    <div class="soundBar"></div>
+										</div>
+										<!-- //개발에서 확인요망 -->
+		                                <div class="soundFooter">
+                                            <a class="btn large btnType1" href="#none"><span>Fan</span></a>
+                                            <a class="btn large btnType2" href="#none" data-showing="0"><span>Comment</span></a>
+                                            <a class="btn large btnType3" href="#none"><span>연주자 현황</span></a>
+                                            <a class="btn large btnPoint btnType4" href="#none"><span>참여하기</span></a>
+                                            <a class="btn large btnType5" href="#none"><span>Play list</span></a>
+                                            <a class="btn large btnType6" href="#none"><span>맵보기</span></a>
+                                            <a class="btn large btnPoint btnType7" href="#none"><span>구매</span></a>
+                                            <a class="btn large btnType8" href="#none"><span>악보</span></a>
+                                            <a class="btn large btnType9" href="#none"><span>SponsorsShip</span></a>
+                                            <a class="btn large btnType10" href="#none"><span>편곡 보컬 참여</span></a>
+                                            <a class="btn large btnType11" href="#none"><span><i class="fa fa-share-square-o"></i> Share</span></a>
+                                            <ul class="soundFooterRight">
+                                                <li>
+                                                    <i class="fa fa-heart"></i>
+                                                    <strong>15</strong>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-download"></i>
+                                                    <strong>100</strong>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-dollar"></i>
+                                                    <strong>100,000</strong>
+                                                </li>
+                                                <li>
+                                                    <a href="#none"><span class="deletIcon"><i class="fa fa-trash"></i></span></a>
+                                                </li>
+                                            </ul>
+		                                </div>
+										<div class="commentWrap">
+			                                <span class="commetText">comment</span>
+											<input type="text" style="width: 700px;" placeholder="글을 입력 하세요">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+		            </div>
+                    <!-- tabBox2 -->
+                    <!-- tabBox3 -->
+                    <div class="tabCont">
+	                    <div class="myFanList">
+	                		<ul>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                			<li>
+	                				<a href="#none"><img src="/music/resources/images/img_nonprofile.gif" alt=""></a>
+	                				<div class="viewIcon">
+	                					<p><a href="#none">Ma2rix</a></p>
+	                					<div class="fanIcon">
+	                						<i class="fa fa-heart"></i>
+	                						<strong>100</strong>
+	                					</div>
+	                				</div>
+	                			</li>
+	                		</ul>
+	                	</div>
+	                </div>
+	                <!-- //tabBox3 -->
+                    <!-- tabBox4 -->
+                    <div class="tabCont">
+                    	<div class="contBox01 mb20">
+	                    	<ul class="floatL">
+		                		<li>스폰 시작 일시 : 2014-12-12</li>
+		                		<li>현재 금액 : 120,000$</li>
+		                		<li>스폰수 : 500명</li>
+		                	</ul>
+		                	<div class="btnComposition">
+		                		<a class="pt10 pb10" href="#none"><span>스폰하기</span></a>
+		                	</div>
+	                    </div>
+	                    <div class="hType1 pt0">
+		                    <h3>스폰서 리스트</h3>
+		                </div>
+		                <div class="sponList">
+		                	<ul class="tenSponsor">
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                		<li>
+		                			<div class="sponImg"><a href="#none"><img src="/music/resources/images/img_nonprofile.gif" style="width: 100px; height: 100px;" alt=""></a></div>
+		                			<p><a href="#none">nickName</a></p>
+		                		</li>
+		                	</ul>
+		                </div>
+                    </div>
+                    <!-- tabBox4 -->
+                </div>
+                <!-- //tab -->                 
+            </div>
+            <!-- //contents -->
+            
+<script>
+	addTopTenType1("홍길동", 1000, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("김김김", 100, false, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("나나나", 3, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("홍길동", 1000, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("김김김", 100, false, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("나나나", 3, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("홍길동", 1000, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("김김김", 100, false, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("나나나", 3, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("홍길동", 1000, true, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("김김김", 100, false, "/music/resources/images/img_nonprofile.gif");
+	addTopTenType1("나나나", 3, true, "/music/resources/images/img_nonprofile.gif");	
+</script>            
+            
+
+<%@ include file="../include/bottom.jsp" %>	            

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>진행중인 편곡</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/default.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+
+</head>
+<body>
+	<!-- 오디오 컨트롤러 셋 -->
+	<div id="audioSet"></div>
+	<!-- //오디오 컨트롤러 셋 -->
+	<div class="mrWrap">
+		<!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.png" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a href="#none">워크스페이스</a></li>
+		                <li><a href="#none">작•편곡자 입장</a></li>
+		                <li><a href="#none">세션 입장</a></li>
+		                <li><a href="#none">작사•보컬 입장</a></li>
+		                <li><a href="#none">발표곡</a></li>
+		                <li><a href="#none">Ma2rix 차트</a></li>
+		            </ul>
+		        </div>
+		        <!-- 로그인 전 lnbWrap -->
+		        <div class="lnbWrap beforeLogin">
+	                <!--<span class="mChart"><a class="btn ylw" href="#none"><span>Ma2rix Chart</span></a></span>-->
+					<ul class="dropType1 dropStyle3">
+						<li>
+							<a class="bulMail" title="다국어" href="#none"><i class="fa fa-globe"></i></a>
+							<ul>
+								<li><a href="#none">한국어</a></li>
+								<li><a href="#none">영어</a></li>
+							</ul>
+						</li>
+					</ul>
+					<a class="goLogin" href="#none">Login</a>
+					<a class="joinUs" href="#none">Member</a>
+		    	</div>
+		    	<!-- //로그인 전 lnbWrap -->
+		        <!-- 로그인 후 lnbWrap -->
+		        <div class="lnbWrap" style="display: none;">
+	                <span class="mChart"><a class="btn ylw" href="#none"><span>Ma2rix Chart</span></a></span>
+					<ul class="dropType1 dropStyle4">
+						<li>
+							<a class="bulInfo" title="알림" href="#none"><i class="fa fa-bell"></i></a>
+							<ul>
+								<li>
+									<div class="tit">공지</div>
+							   	    <a class="btn btnNotice" href="#none"><span>more</span></a>
+								    <p class="noticeText">Nothing to report (yet), but keep an eye on this
+										space. We will list notifications here, as other
+										s begin to upload tracks or comment on your
+										collaborations, or as artists you follow do the
+										same.
+									</p>
+								</li>
+							</ul>
+						</li>
+					</ul>
+	                <a class="bulMail" title="메시지" href="#none"><i class="fa fa-envelope"></i></a>
+					<ul class="dropType1 dropStyle3">
+						<li>
+							<a class="bulMail" title="다국어" href="#none"><i class="fa fa-globe"></i></a>
+							<ul>
+								<li><a href="#none">한국어</a></li>
+								<li><a href="#none">영어</a></li>
+							</ul>
+						</li>
+					</ul>
+
+               		<ul class="dropType1 dropStyle1">
+	                    <li>
+	                        <a class="btn gnbTopayc" href="#none"><span>Topayc</span><img src="../images/arrow01.png" alt=""></a>
+	                        <ul>
+	                            <li><a href="#none">My Profile</a></li>
+	                            <li><a href="#none">My Playlist</a></li>
+	                            <li class="div"><a href="#none">My Fans</a></li>
+	                            <li><a href="#none">Workspace</a></li>
+	                            <li><a href="#none">My Message</a></li>
+	                            <li class="div"><a href="#none">My Income</a></li>
+	                            <li><a href="#none">Logout</a></li>
+	                        </ul>
+	                    </li>
+               		</ul>
+		    	</div>
+		    	<!-- //로그인 후 lnbWrap -->
+	    	</div>
+		</div>
+		<!-- //header -->
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">진행중인 편곡</h2>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text"><i class="fa fa-search searchIcon"></i></div>
+						<div class="checkSelect">
+                            <select class="dropdown">
+                                <option value="">장르 카테고리</option>
+                                <option value="">팝</option>
+                                <option value="">발라드</option>
+                                <option value="">락, 발라드</option>
+                                <option value="">재즈</option>
+                                <option value="">etc</option>
+                            </select>
+						</div> 
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="#none">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="#none">최신순</a><span class="bar"></span></dd>
+							<dd><a href="#none">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList">
+						<li class="secType1 oh">
+							<div class="coverArt">
+								<a href="#none"><img src="../../images/holderType3.gif" alt="" style="width: 110px; height: 110px;"></a>
+							</div>
+							<div class="soundArea">
+								<div class="soundHeader">
+									<a class="bulPlay" href="#none" data-get-sound=""><i class="fa fa-play-circle fa-2x"></i></a>
+									<span class="songTitle"><a href="#none">You raise up me</a></span>
+									<span class="songSinger"><a href="#none">ma2rix</a></span>
+									<a class="btn small btnPoint ctgView" href="#none"><span>rock</span></a>
+								</div>
+								<!-- 개발에서 확인요망 -->
+								<div class="soundBody">
+                                    <div class="pajaImg"><img src="../../images/holderType2.gif" alt="" style="width: 100%;"></div>
+                                    <div class="soundBar"></div>
+								</div>
+								<!-- //개발에서 확인요망 -->
+								<!-- 메뉴별 버튼 선택 -->
+                                <div class="soundFooter">
+                                    <a class="btn large btnType1" href="#none"><span>Fan</span></a>
+                                    <a class="btn large btnType2" href="#none" data-showing="0"><span>Comment</span></a>
+                                    <a class="btn large btnType3" href="#none"><span>연주자 현황</span></a>
+                                    <a class="btn large btnPoint btnType4" href="detail.html"><span>참여하기</span></a>
+                                    <a class="btn large btnType5" href="#none"><span>Play list</span></a>
+                                    <a class="btn large btnType6" href="#none"><span>맵보기</span></a>
+                                    <a class="btn large btnPoint3 btnType7" href="#none"><span>구매</span></a>
+                                    <a class="btn large btnType8" href="#none"><span>악보</span></a>
+                                    <a class="btn large btnType9" href="#none"><span>SponsorsShip</span></a>
+                                    <a class="btn large btnType10" href="#none"><span>편곡 보컬 참여</span></a>
+                                    <a class="btn large btnType11" href="#none"><span><i class="fa fa-share-square-o"></i> Share</span></a>
+                                    <ul class="soundFooterRight">
+                                        <li>
+                                            <i class="fa fa-heart"></i>
+                                            <strong>15</strong>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-download"></i>
+                                            <strong>100</strong>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-dollar"></i>
+                                            <strong>100,000</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+								<!-- //메뉴별 버튼 선택 -->
+								<div class="commentWrap">
+	                                <span class="commetText">comment</span>
+									<input type="text" style="width: 700px;" placeholder="글을 입력 하세요">
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<!-- layer popup : 연주자 현황 -->
+            <div class="layer">
+                <div class="bg"></div>
+                <div id="playerAppoint" class="pop-layer">
+                	<div class="layerPopupWrap">
+                		<h3>연주자 현황</h3>
+                		<div class="popCont">
+	                		<div class="tabWrapType1">
+		                    	<table class="tblType03 addTrType2">
+		                            <colgroup>
+		                                <col style="width: 10%">
+		                                <col style="width: 25%">
+		                                <col style="width: auto">
+		                                <col style="width: 20%">
+		                            </colgroup>
+		                            <tr>
+		                            	<th>번호</th>
+		                                <th>이름</th>
+		                                <th>활동분야</th>
+		                                <th>선택</th>
+		                            </tr>
+		                            <tr>
+		                            	<td>1</td>
+		                            	<td>메투릭스</td>
+		                            	<td>작곡 / 편곡 / 연주</td>
+		                            	<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a></td>
+		                            </tr>
+		                            <tr>
+		                            	<td>2</td>
+		                            	<td>메투릭스</td>
+		                            	<td>작곡 / 편곡 / 연주</td>
+		                            	<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a></td>
+		                            </tr>
+		                            <tr>
+		                            	<td>3</td>
+		                            	<td>메투릭스</td>
+		                            	<td>작곡 / 편곡 / 연주</td>
+		                            	<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a></td>
+		                            </tr>
+		                        </table>
+		                        <div class="textC mt20">
+		                        	<a class="btn large btnPoint btnClose" href="#none"><span>닫기</span></a>
+		                        </div>
+	                        </div>
+	                	</div> 
+	                </div>  
+                </div>
+            </div>
+			<!-- //layer popup : 연주자 현황 -->
+			
+			<!-- layer popup : 편곡방 개설 -->
+            <div class="layer">
+            	<div class="bg"></div>
+               	<div id="vocalSearch" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>편곡방 개설</h3>
+               			<div class="popCont">
+               				<h4 class="tit01">구매정보</h4>
+               				<table class="tblType01 mb30">
+		                        <colgroup>
+		                            <col style="width:25%">
+		                            <col style="width:auto">
+		                        </colgroup>
+		                        <caption></caption>
+		                        <tbody>
+			                        <tr>
+			                            <th>작곡자</th>
+			                            <td>홍길동</td>
+			                        </tr>
+			                        <tr>
+			                            <th>곡제목</th>
+			                            <td>young blood</td>
+			                        </tr>
+			                        <tr>
+			                            <th>곡 공개 여부</th>
+			                            <td>공개</td>
+			                        </tr>
+			                        <tr>
+			                            <th>작곡가 수익률</th>
+			                            <td>50%</td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+               				<h4 class="tit01">결제정보</h4>
+                       		<div class="contBox01 mb20">
+		                    	<ul>
+			                		<li>결제대상 : 작곡방 구매</li>
+			                		<li>결제금액 : <strong class="pointColor">1$</strong></li>
+			                	</ul>
+		                    </div>
+		                    <div class="contBox02">
+		                    	<ul>
+			                		<li>
+			                			<span class="cardTitle">카드구분</span>
+				                		<select class="dropdown" name="">
+				                            <option>카드1</option>
+				                            <option>카드2</option>
+		                                    <option>카드2</option>
+				                        </select>
+			                		</li>
+			                		<li>
+			                			<span class="cardTitle">카드번호</span>
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                		<li>
+			                			<span class="cardTitle">CVS</span>
+			                			<input type="text">
+			                		</li>
+			                	</ul>
+		                    </div>
+	                        <div class="textC mt20">
+	                        	<a class="btn large btnPoint" href="#none"><span>결제하기</span></a>
+	                        	<a class="btn large btnClose" href="#none"><span>취소</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 편곡방 개설 -->
+            
+			<!-- footer -->
+			<div class="mrFooter">
+				<div class="footerArea">
+					온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+				</div>
+			</div>
+			<!-- //footer -->
+		</div>
+		<!-- //contents -->
+	</div>
+</body>
+</html>

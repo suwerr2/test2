@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.SettlementMapper">
+	<cache />
+	<select id = "getSettlementCount" resultType = "int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_SETTLEMENT
+		]]>
+	</select>
+
+	<select id="getAllSettlementList" resultType="com.ma2rix.music.model.domain.Settlement">
+		<![CDATA[
+			SELECT
+				SETTLE_NO   as settleNo,
+				SETTLE_DATE   as settleDate,
+				SETTLE_TIME   as settleTime,
+				SETTLE_MEMBER_NO   as settleMemberNo,
+				PAY_NO   as payNo,
+				SETTLE_AMOUNT   as settleAmount,
+				PAY_FEE   as payFee,
+				REG_ADMIN_NO   as regAdminNo,
+				REG_DATETIME   as regDatetime
+			FROM 
+				TBL_SETTLEMENT
+
+		]]>
+	</select>
+		
+
+	
+	<insert id ="insertSettlement" parameterType ="com.ma2rix.music.model.domain.Settlement">
+		<![CDATA[
+			INSERT INTO 
+				TBL_SETTLEMENT
+			(	
+				SETTLE_NO,
+				SETTLE_DATE,
+				SETTLE_TIME,
+				SETTLE_MEMBER_NO,
+				PAY_NO,
+				SETTLE_AMOUNT,
+				PAY_FEE,
+				REG_ADMIN_NO,
+				REG_DATETIME
+			)
+			VALUES 
+			(
+				#{settleNo} ,
+				#{settleDate} ,
+				#{settleTime} ,
+				#{settleMemberNo} ,
+				#{payNo} ,
+				#{settleAmount} ,
+				#{payFee} ,
+				#{regAdminNo} ,
+				NOW() 
+			)
+		]]>
+		
+		<selectKey keyProperty="settleNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		
+	</insert>
+
+	<update id = "updateSettlement" parameterType= "com.ma2rix.music.model.domain.Settlement">
+		<![CDATA[
+			UPDATE 
+				TBL_SETTLEMENT
+			SET 
+				SETTLE_DATE = #{settleDate} ,
+				SETTLE_TIME = #{settleTime} ,
+				SETTLE_MEMBER_NO = #{settleMemberNo} ,
+				PAY_NO = #{payNo} ,
+				SETTLE_AMOUNT = #{settleAmount} ,
+				PAY_FEE = #{payFee} 
+			WHERE 
+				SETTLE_NO = #{settleNo}
+		]]>
+	</update>	
+	
+	<delete id = "deleteSettlement" parameterType = "int" >
+		<![CDATA[
+			DELETE FROM 
+				TBL_SETTLEMENT
+			WHERE 
+				SETTLE_NO = #{settleNo} 
+		]]>
+	</delete>	
+	
+</mapper>

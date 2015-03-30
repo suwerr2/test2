@@ -1,0 +1,82 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.ma2rix.music.model.command.CompositionCommand;
+import com.ma2rix.music.model.dto.MemberMessageType;
+import com.ma2rix.music.service.interfaces.ArrangeVocalService;
+import com.ma2rix.music.service.interfaces.ArrangementService;
+import com.ma2rix.music.service.interfaces.CodeService;
+import com.ma2rix.music.service.interfaces.CommentService;
+import com.ma2rix.music.service.interfaces.CompositionService;
+import com.ma2rix.music.service.interfaces.GenreService;
+import com.ma2rix.music.service.interfaces.PerformPlayerService;
+import com.ma2rix.music.service.interfaces.PlayFieldService;
+import com.ma2rix.music.service.interfaces.UserService;
+import com.ma2rix.music.web.controller.CompositionController.CompositionForward;
+import com.ma2rix.music.web.validator.ArrangementUpdateValidator;
+
+@Controller
+@RequestMapping("/vocal")
+public class VocalController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class VocalForward {
+		public static final String VOCAL_LIST 							= "vocal/vocalList";
+		public static final String VOCAL_DETAIL 						= "vocal/vocalDetail";		
+	}
+	
+	/**
+	 * 재지정(304) redirect하기 위한 내부 클래스 
+	 *
+	 */
+	public static class VocalRedirect{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";
+		public static final String REGISTER_RESULT 						= "redirect:/arrange/registerResult";
+		public static final String UPDATE_RESULT 						= "redirect:/arrange/updateResult";
+		public static final String ACTION_RESULT   						= "redirect:/user/actionResult";
+		public static final String REGISTER_UPDATE_FORM 				= "redirect:/arrange/update"; 
+	}
+	
+	public static class pageType{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";		
+	}
+	
+	
+	@Autowired private GenreService genreService;
+	@Autowired private PlayFieldService playFieldService;
+	@Autowired private CodeService codeService;
+	@Autowired private ArrangementService arrangementService;
+	@Autowired private ArrangementUpdateValidator arrangementValidaor;
+	@Autowired private CommentService commentService;
+	@Autowired private CompositionService compositionService;
+	@Autowired private ArrangeVocalService arrangeVocalService;
+	@Autowired private UserService userService;
+	@Autowired private PerformPlayerService performPlayerService;
+
+	
+	/**
+	 * 편곡 리스트페이지
+	 */
+	@RequestMapping(value = "/vocalList", method = RequestMethod.GET)
+	public String list(ModelMap model) {
+		model.addAttribute("title", "작곡 리스트");
+
+//		CompositionCommand compositionCommand = new CompositionCommand();
+//		model.addAttribute("compositionCommand", compositionCommand);
+	
+		return VocalForward.VOCAL_LIST;
+	}	
+	
+
+}
+

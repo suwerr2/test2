@@ -1,0 +1,15 @@
+package com.ma2rix.music.service.interfaces;
+
+import java.util.ArrayList;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ma2rix.music.model.domain.Settlement;
+
+@Transactional
+public interface SettlementService {
+	public int getSettlementCount();
+	public ArrayList<Settlement> getAllSettlementList();
+	public ArrayList<Settlement> getSettlementByMemberNo(int searchMemberNo, String dateFrom, String dateTo);
+	public void insertSettlement(Settlement log);
+}

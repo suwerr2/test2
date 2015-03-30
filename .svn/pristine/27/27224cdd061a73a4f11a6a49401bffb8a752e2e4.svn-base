@@ -1,0 +1,212 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">음원 리스트</h2>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text" id="searchWord" onkeypress="javascript:search()"><i class="fa fa-search searchIcon"></i></div>
+						<div class="checkSelect">
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:sortGenre()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre" items="${genreList}">
+	                                <option value="${genre.genreNo}" <c:if test="${genre.genreNo == genreNo}">selected="selected"</c:if>>${genre.genreName}</option>
+								</c:forEach>
+                            </select>
+						</div> 
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+	            
+			</div>
+			
+			
+
+
+
+<%@ include file="../include/listCommonLayer.jsp" %>			
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript">
+
+
+
+$(document).ready(function(target) {
+    //폼 등록 버튼 클릭시 호출
+    $('#sponsor-submit').click(function(event){
+    	event.preventDefault();
+
+		$.ajax({
+			url:'/music/vocal/initSponsor',
+			data:$('#sponsor-form').serialize(),
+			dataType:'json',
+			success:function(data){
+				var className = ".fa-dollar" + data['sponsorNo'];
+				$(className).text(data['sponsorAmount']);
+				
+			},
+			error:function(data){
+//				alert('관리자에게 문의하세요');
+			}
+		})
+
+    });
+    
+});
+
+
+
+
+
+//순별로 가져오기.
+function sortGo(orderBy){
+	
+	AutoAddLine.page = 1;
+	AutoAddLine.orderby = orderBy;
+	AutoAddLine.genreNo = $("#genre_sel").val();
+			
+	AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.	
+	AutoAddLine.callScroll();
+	
+}
+
+function sortGenre(){
+	
+	AutoAddLine.page = 1;
+	AutoAddLine.genreNo = $("#genre_sel").val();			
+			
+	AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.	
+	AutoAddLine.callScroll();
+	
+}
+</script>
+
+
+
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+<script type="text/javascript">
+
+	AutoAddLine.callScroll = function(){};
+	AutoAddLine.prototype.callScroll = function(){
+		
+		
+		//보내줄 URL
+		var param = "?page=" + AutoAddLine.page + "&listType=" + AutoAddLine.listType + 
+					"&genreNo=" + AutoAddLine.genreNo + "&orderBy=" + AutoAddLine.orderby + 
+					"&searchWord=" + AutoAddLine.searchWord + "&isSearch=" + AutoAddLine.isSearch;			
+		AutoAddLine.url = "/music/vocal/vocalRemoteList" + param;
+
+		new $$loop_progress_init();
+		new $$open_loop_progress();	
+		e.beginScroll();
+		AutoAddLine.page++;
+	}
+
+
+	//음원리스트 라인 추가 함수
+	AutoAddLine.addRow = function(){};	
+	AutoAddLine.prototype.addRow = function(data){
+			
+		if(AutoAddLine.memberNo==0){	
+				var sponsorBtn = "<a class='btn large btnType9' data-member-login='${memberNo}' data-vocal-num='" + data['vocalNo'] + "' data-member='" + data['vocalMemberNo'] + "' href='javascript:alert(\"로그인이 필요한 메뉴입니다.\")' id='sponsorBtn'><span>SponsorsShip</span></a>";
+		}else if(AutoAddLine.memberNo == data['vocalMemberNo']){
+				var sponsorBtn = "<a class='btn large btnType9' data-member-login='${memberNo}' data-vocal-num='" + data['vocalNo'] + "' data-member='" + data['vocalMemberNo'] + "' href='javascript:alert(\"자신에게는 스폰 할수 없습니다.\")' id='sponsorBtn'><span>SponsorsShip</span></a>";		
+		}else{
+				var sponsorBtn = "<a class='btn large btnType9' data-member-login='${memberNo}' data-vocal-num='" + data['vocalNo'] + "' data-member='" + data['vocalMemberNo'] + "' href='javascript:layer_open_common(\"sponsorPop\")' id='sponsorBtn'><span>SponsorsShip</span></a>";				
+		}
+		
+
+         $(".arrList").append(
+        		 "						<li class='secType1 oh'> " + 
+        		 "							<div class='coverArt'> " +             		 
+        		 "								<a href='/music/vocal/vocalDetail?vocalNo=" + data['vocalNo'] + "&listType=" + AutoAddLine.listType + "'><img src='/music/resources/images/vocal_sample.jpg' alt='' style='width: 110px; height: 110px;'></a> " + 
+        		 "							</div> " + 
+        		 "							<div class='soundArea'> " + 
+        		 "								<div class='soundHeader'> " + 
+        		 "									<a class='bulPlay data-sound-url' href='#none' data-sound-url=''><i class='fa fa-play-circle fa-2x'></i></a> " + 
+        		 "									<span class='songTitle'><a href='#none'>" + data['arrangeTitle'] + "</a></span> " + 
+        		 "									<span class='songSinger'><a href='#none'>" + data['memberNickName'] + "</a></span> " + 
+        		 "									<a class='btn small btnPoint ctgView'><span>" + data['genreName'] + "</span></a> " + 
+        		 "								</div> " + 
+        		 "								<div class='soundBody'> " + 
+        		 "                                    <div class='pajaImg'><img src='/music/resources/images/holderType2.gif' alt='' style='width: 100%;'></div> " + 
+        		 "                                    <div class='soundBar'></div> " + 
+        		 "								</div> " + 
+        		 "                               <div class='soundFooter'> " + 
+        		 "                                  <a class='btn large btnType1' href='#none'><span>Fan</span></a> " + 
+        		 "                                    <a class='btn large btnType2' href='#none' data-showing='0'><span>Comment</span></a> " + 
+        		 "                                    <a class='btn large btnType3' href='#none'><span>연주자 현황</span></a> " + 
+        		 "                                    <a class='btn large btnPoint btnType4' href='#none'><span>참여하기</span></a> " + 
+        		 "                                    <a class='btn large btnType5' href='javascript:layer_open_common(\"playList\")'><span>Play list</span></a> " +
+													  sponsorBtn + 
+        		 "                                    <a class='btn large btnPoint btnType7' href='javascript:layer_open_common(\"buyPop\")'><span>구매</span></a> " +            		 
+                 "									  <a class='btn large btnType6' href='javascript:layer_open_common(\"mapView\")'><span>맵보기</span></a> " +        		 
+        		 "                                    <a class='btn large btnType8' href='#none'><span>악보</span></a> " + 
+        		 "                                    <a class='btn large btnType10' href='#none'><span>편곡 보컬 참여</span></a> " + 
+        		 "                                    <a class='btn large btnType11' href='javascript:layer_open_common(\"sharePop\")'><span><i class='fa fa-share-square-o'></i> Share</span></a> " + 
+        		 "                                    <ul class='soundFooterRight'> " + 
+        		 "                                        <li> " + 
+        		 "                                            <i class='fa fa-heart'></i> " + 
+        		 "                                            <strong>" + data['fanCount'] + "</strong> " + 
+        		 "                                        </li> " + 
+        		 "                                        <li> " + 
+        		 "                                            <i class='fa fa-list-ul'></i> " + 
+        		 "                                            <strong>100</strong>  " + 
+        		 "                                        </li> " + 
+        		 "                                        <li> " + 
+        		 "                                            <i class='fa fa-dollar'></i> " + 
+        		 "                                            <strong class='fa-dollar" + data['vocalNo'] + "'>" + data['sponsorAmount'] + "</strong> " + 
+        		 "                                        </li> " + 
+        		 "                                    </ul> " + 
+        		 "                                </div> " + 
+        		 "								<div class='commentWrap' style='display: none;'> " + 
+        		 "	                                <span class='commetText'>comment</span> " + 
+                 "		 							<input type='text' class='cmtMemo' style='width: 700px;' placeholder='글을 입력 하세요' onkeypress='javascript:cmt_write_common(" + data['vocalNo'] + ",this.value)'>" + 
+        		 "								</div> " + 
+        		 "							</div> " + 
+        		 "						</li> " 
+         );        	 
+
+         $(".arrList li:last-child .btnType3, .arrList li:last-child .btnType4, .arrList li:last-child .btnType8, .arrList li:last-child .btnType10, .arrList li:last-child .btnType12").remove();
+	    
+	};	
+	
+	
+
+	
+
+
+
+
+
+
+	/*이벤트 객체 생성*/
+	var e = new AutoAddLine_event.Event.InfiniteScroll();
+	
+	var AutoAddLine = new AutoAddLine();
+		
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};	
+	
+	//변수초기화    
+	AutoAddLine.load_cnt = 1;
+	AutoAddLine.scroll_able = true;
+	AutoAddLine.scrollOK = true;
+	AutoAddLine.scrollLock = false;    
+	AutoAddLine.callScroll();
+	
+</script>
+
+

@@ -1,0 +1,9 @@
+package com.ma2rix.music.dao.interfaces;
+
+public interface FanDao {
+	
+	public int getMyFanCount();
+
+}
+
+

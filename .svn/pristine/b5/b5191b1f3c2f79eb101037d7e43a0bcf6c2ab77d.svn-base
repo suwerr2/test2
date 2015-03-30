@@ -1,0 +1,11 @@
+package com.ma2rix.music.dao.interfaces;
+
+import java.util.ArrayList;
+
+import com.ma2rix.music.model.command.RankCommand;
+
+public interface RankDao {
+
+	public ArrayList<RankCommand> getRankCommandList (int rankNo, String rType, int genreNo, int limitNum);
+
+}

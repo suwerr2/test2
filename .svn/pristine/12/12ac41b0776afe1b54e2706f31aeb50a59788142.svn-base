@@ -1,0 +1,137 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">${listTypeString}</h2>
+					<div class="btnComposition"><a class="large layerPopType3"><span>작곡등록</span></a></div>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text" id="searchWord" onkeypress="javascript:search()"><i class="fa fa-search searchIcon"></i></div>
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="javascript:sortGo(1)">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(2)">최신순</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(3)">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+			</div>
+
+			
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+			
+
+
+<script type="text/javascript">
+
+	//리스트 변수 초기화
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "${pageon}";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};
+
+	//순별로 가져오기.
+	function sortGo(orderBy){
+
+		AutoAddLine.orderby = orderBy;		
+		AutoAddLine.page = 1;
+		
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+
+	new $$loop_progress_init();
+	new $$open_loop_progress();	
+	e.beginScroll();
+
+//	AutoAddLine.page++;
+
+	$(document).ready(function(target) {
+	    //폼 등록 버튼 클릭시 호출
+	    $('#arrange-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#arrange-payment-form').attr('action','/music/arrange/initArrange?composeNo='+62).submit()
+	    });	    
+	    
+	    //폼 등록 버튼 클릭시 호출
+	    $('#compose-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#compose-payment-form').attr('action','/music/compose/initCompose').submit();
+	    });	   
+	});
+	
+    function getComposeNo(composeNoTemp, arrangeMemberNo) {
+    	
+    	if(AutoAddLine.memberNo != arrangeMemberNo){
+    		alert('해당 작곡에 대하여 편곡자로 지정되신분만 구매가능합니다.');
+    		return;
+    	}else if(AutoAddLine.memberNo == arrangeMemberNo){
+    		composeNo = composeNoTemp;    		
+    	}
+    	
+    }
+    
+
+
+	function fanFllow(musicNo, musicMemberNo){
+		
+		if(AutoAddLine.memberNo==0 || AutoAddLine.memberNo=="" ){
+			alert('로그인 이후 이용가능합니다.');
+			return;
+		}
+
+		var musicClass = "01";  //작곡테이블
+		fanMemberNo = ${memberNo};
+		
+		targetUrl = "/music/common/addFan?fanMemberNo=" + fanMemberNo + "&musicMemberNo=" + musicMemberNo + "&musicClass=" + musicClass + "&musicNo=" + musicNo;
+		
+		$.ajax({     
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+			type : "GET",
+			url : targetUrl,
+			success : function(data){
+				
+				var fanCount=0;				
+				$.each(data, function(key, state){
+					if(key=="fanCommand"){
+						
+						$.each(state, function(key2, state2){
+							if(key2=="fanCount"){
+								fanCount = state2;
+							}
+						});												
+						
+ 						className = "#fanCnt" + musicNo;						
+ 						$(className).html(fanCount); 						
+ 						alert('팬으로 등록 되었습니다.');						
+					}					
+				});
+			},
+			error : function(xhr, status, error){
+	      		alert('등록오류가 발생하였습니다.');
+			}
+		});			
+	}    
+    
+</script>
+
+
+<%@ include file="../include/layer.jsp" %>
+<%@ include file="../include/bottom.jsp" %>
+
+

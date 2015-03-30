@@ -1,0 +1,505 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.ma2rix.music.common.Pagination;
+import com.ma2rix.music.manager.AppConstants;
+import com.ma2rix.music.manager.ForwardingMessageType;
+import com.ma2rix.music.model.command.ArrangeUpdateCommand;
+import com.ma2rix.music.model.command.ArrangeVocalCommand;
+import com.ma2rix.music.model.command.ArrangementCommand;
+import com.ma2rix.music.model.command.CommentCommand;
+import com.ma2rix.music.model.command.CompositionCommand;
+import com.ma2rix.music.model.command.PerformPlayerCommand;
+import com.ma2rix.music.model.command.PerformanceCommand;
+import com.ma2rix.music.model.domain.Arrangement;
+import com.ma2rix.music.model.domain.Genre;
+import com.ma2rix.music.model.domain.PlayField;
+import com.ma2rix.music.model.dto.ForwardingMessage;
+import com.ma2rix.music.model.dto.MemberMessageType;
+import com.ma2rix.music.model.dto.ajaxresponse.AjaxResultBase;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.ArrangeVocalService;
+import com.ma2rix.music.service.interfaces.ArrangementService;
+import com.ma2rix.music.service.interfaces.CodeService;
+import com.ma2rix.music.service.interfaces.CommentService;
+import com.ma2rix.music.service.interfaces.CompositionService;
+import com.ma2rix.music.service.interfaces.GenreService;
+import com.ma2rix.music.service.interfaces.PerformPlayerService;
+import com.ma2rix.music.service.interfaces.PlayFieldService;
+import com.ma2rix.music.service.interfaces.UserService;
+import com.ma2rix.music.web.security.LoginInfo;
+import com.ma2rix.music.web.validator.ArrangementUpdateValidator;
+
+@Controller
+@SessionAttributes({"arrangeUpdateCommand"})
+@RequestMapping("/arrange")
+public class ArrangementController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class ArrangeForward {
+		public static final String REGISTER_UPDATE_FORM 				= "arrange/arrangeUpdateForm"; 
+		public static final String REGISTER_UPDATE_FORM1 				= "arrange/arrangeUpdateForm1"; 
+		public static final String ARRANGE_LIST 						= "arrange/arrangeList";
+		public static final String COMPOSE_LIST 						= "compose/composeList";
+		public static final String ARRANGE_DETAIL 						= "arrange/arrangeDetail";
+		
+	}
+	
+	/**
+	 * 재지정(304) redirect하기 위한 내부 클래스 
+	 *
+	 */
+	public static class ArrangeRedirect{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";
+		public static final String REGISTER_RESULT 						= "redirect:/arrange/registerResult";
+		public static final String UPDATE_RESULT 						= "redirect:/arrange/updateResult";
+		public static final String ACTION_RESULT   						= "redirect:/user/actionResult";
+		public static final String REGISTER_UPDATE_FORM 				= "redirect:/arrange/update"; 
+	}
+	
+	public static class pageType{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";		
+	}
+	
+	
+	public static ArrayList<MemberMessageType> memberMessageTypes;
+	
+	static {
+		memberMessageTypes= new ArrayList<MemberMessageType>();
+		memberMessageTypes.add(new MemberMessageType("01", "편곡 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("02", "연주 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("03", "보컬 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("04", "일반 메세지"));
+	}
+	
+	@Autowired private GenreService genreService;
+	@Autowired private PlayFieldService playFieldService;
+	@Autowired private CodeService codeService;
+	@Autowired private ArrangementService arrangementService;
+	@Autowired private ArrangementUpdateValidator arrangementValidaor;
+	@Autowired private CommentService commentService;
+	@Autowired private CompositionService compositionService;
+	@Autowired private ArrangeVocalService arrangeVocalService;
+	@Autowired private UserService userService;
+	@Autowired private PerformPlayerService performPlayerService;
+	
+	/**
+	 * 장트테이블의 장르 리스트 반환
+	 */
+	public ArrayList<Genre> genre(){
+		return genreService.getAllGenres();
+	}
+	
+	/**
+	 * 연주 분야 항목 리스트 반환 
+	 */
+	public ArrayList<PlayField> playFields(){
+		return playFieldService.getAllPlayFields();
+	}
+	
+	/**
+	 * 편곡 리스트에 대한 ajax 요청 처리  
+	 * 전달된 page 파라미터에 따른 (등록된) 편곡 리스트를 반환.
+	 * page 파라미터가 전달되지 않는 다면, 1로 세팅
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/arrangeRemoteList", method = RequestMethod.GET)
+	public GenericResponse<ArrangementCommand> arrangeRemoteList(
+			@RequestParam("listType") int listType,
+			@RequestParam(value = "page"	, required = false, defaultValue = "1" ) int page,
+			@RequestParam(value = "genreNo"	, required = false, defaultValue = "0" ) int genreNo,
+			@RequestParam(value = "orderBy"	, required = false, defaultValue = "1" ) int orderBy,
+			ModelMap model)
+	{
+
+		Logger logger = Logger.getLogger(ArrangementController.class);
+		
+		String arrangeStatus = "00"; //작곡리스트
+		int arrangeTotalRow = arrangementService.getArrangementCount();
+		GenericResponse<ArrangementCommand> gr = new GenericResponse<ArrangementCommand>();
+		Pagination pagination = new Pagination(arrangeTotalRow,page,ArrangementService.PAGE_OFFSET);
+
+		ArrayList<ArrangementCommand> arrangementCommandList = arrangementService.
+				getArrangementCommandList(genreNo,pagination.getStartRow(),ArrangementService.PAGE_OFFSET,orderBy, arrangeStatus);
+		gr.setResultCode(1);
+		gr.setListType(listType);
+		gr.setMessage("success");
+		gr.setCurrentRowCount(arrangementCommandList.size());
+		gr.setTotalPage(arrangementCommandList.size());
+		gr.setCurrentPage(page);
+		gr.setTotalRow(arrangeTotalRow);
+		gr.setObjects(arrangementCommandList);
+		return gr;
+	}
+	
+	
+	
+	/**
+	 * 일반 편곡 리스트페이지 요청 처리 
+	 */
+	@RequestMapping(value = "/arrangeList", method = RequestMethod.GET)
+	public String arrangeList(	
+			
+			@RequestParam("listType") int listType,
+			@RequestParam(value = "page" 	,   required = false   ,defaultValue = "1") int page,
+			@RequestParam(value = "genreNo" ,   required = false   ,defaultValue = "0") int genreNo,
+			@RequestParam(value = "orderBy" ,   required = false   ,defaultValue = "1") int orderBy,
+			ModelMap model) {
+		
+		Logger logger = Logger.getLogger(ArrangementController.class);
+		
+		/*초기값*/
+		int arrangeTotalRow;
+		ArrayList<ArrangementCommand> arrangementCommandList = null;		
+		Pagination pagination;
+
+		if(listType == 2 ){  //편곡리스트
+
+			String arrangeStatus = "02"; //진행중편곡			
+			arrangeTotalRow = arrangementService.getArrangementCount();
+			pagination = new Pagination(arrangeTotalRow,page,ArrangementService.PAGE_OFFSET);
+
+			arrangementCommandList = arrangementService.
+					getArrangementCommandList(
+							genreNo,
+							pagination.getStartRow(),
+							ArrangementService.PAGE_OFFSET,
+							orderBy,
+							arrangeStatus);
+
+		}else if(listType == 3 ){	//완료된 편곡 리스트		
+
+			String arrangeStatus = "03"; //완료된 편곡						
+			arrangeTotalRow = arrangementService.getArrangementCount();
+			pagination = new Pagination(arrangeTotalRow,page,ArrangementService.PAGE_OFFSET);
+			
+			arrangementCommandList = arrangementService.
+					getArrangementCommandList(
+							genreNo,
+							pagination.getStartRow(),
+							ArrangementService.PAGE_OFFSET,
+							orderBy,
+							arrangeStatus);
+		}
+
+		model.addAttribute("listTypeString", typeString(listType));
+		model.addAttribute("listType", listType);
+		model.addAttribute("page", page);
+		model.addAttribute("genreNo", genreNo);
+		model.addAttribute("orderBy", orderBy);
+		model.addAttribute("genreList", genre());
+
+		String returnUrl="";
+
+		if(listType==2){  //편곡일때		
+			model.addAttribute("resultList", arrangementCommandList);
+			returnUrl =  ArrangeForward.ARRANGE_LIST;
+		}else if(listType==3){  //편곡일때		
+			model.addAttribute("resultList", arrangementCommandList);
+			returnUrl =  ArrangeForward.ARRANGE_LIST;
+		}
+		
+		return returnUrl;
+
+	}
+	
+	/**
+	 * ajax comment 등록 요청 처리 
+	 * @param musicClassNo
+	 * @param arrangeNo
+	 * @param commentContents
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
+	public AjaxResultBase comment(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam("musicNo") int arrangeNo,
+			@RequestParam("commentContents") String commentContents
+			){
+		AjaxResultBase res = new AjaxResultBase();
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int memberNo; 
+		
+		if (loginInfo == null){
+			memberNo = 1;
+		}else {
+			//memberNo = loginInfo.getCurrentUser().getMemberNo();
+			memberNo = 1;			
+		}
+		try {
+			commentService.insertComment(musicClassNo,arrangeNo, memberNo, commentContents);
+			res.setResultCode(1);
+			res.setMessage("success");
+			res.setValue(commentContents);
+		} catch (Exception e) {
+			res.setResultCode(0);
+			res.setMessage("comment fail");
+			res.setValue(commentContents);
+		
+		}
+		return res;
+	}
+	
+	private String typeString(int type){
+		String typeString = "";
+		switch(type){
+		case AppConstants.ListType.LISTED_COMPOSE:
+			typeString = "작곡 리스트";
+			break;
+		case AppConstants.ListType.LISTED_ARRANGING:
+			typeString = "진행중인 편곡 ";
+			break;
+		case AppConstants.ListType.LISTED_ARRANGE_COMPLETED:
+			typeString = "완료된 편곡";
+			break;
+		case AppConstants.ListType.LISTED_VOCAL:
+			typeString = "보컬 음원";
+			break;
+		}
+		return typeString;
+	}
+	
+	/**
+	 * 해당 편곡 세부 내용 요청을 처리
+	 * @param arrangeNo
+	 * @return
+	 */
+	@RequestMapping(value ="/arrangeDetail", method = RequestMethod.GET)
+	public String arrageDetail(
+			@RequestParam(value = "arrangeNo", required = true) int arrangeNo,
+			@RequestParam("listType") int listType,
+			ModelMap model){
+
+		String musicClassNo="02"; //음원분류번호, 01:작곡테이블, 02:편곡테이블, 03:보컬테이블
+		model.addAttribute("listTypeString", typeString_detail(listType));				
+		model.addAttribute("arrangeDetail", arrangementService.getArrangementCommandByArrangeNo(arrangeNo));
+		model.addAttribute("commentList", commentService.getAllComments2(musicClassNo));
+		model.addAttribute("commentCnt", commentService.getCommentsCount(musicClassNo));
+
+		return ArrangeForward.ARRANGE_DETAIL;
+	}
+	
+	private String typeString_detail(int type){
+		String typeString = "";
+		switch(type){
+		case AppConstants.ListType.LISTED_COMPOSE:
+			typeString = "작곡 상세";
+			break;
+		case AppConstants.ListType.LISTED_ARRANGING:
+			typeString = "편곡 상세";
+			break;
+		case AppConstants.ListType.LISTED_ARRANGE_COMPLETED:
+			typeString = "완료된 편곡 상세";
+			break;
+		case AppConstants.ListType.LISTED_VOCAL:
+			typeString = "보컬 음원 상세";
+			break;
+		}
+		return typeString;
+	}	
+	
+	/**
+	 * 작곡의 구매가 성공할 경우 해당 메서드(URL)가 호출되어  
+	 * 디폴트 편곡 정보가 등록된다.
+	 */
+	@RequestMapping( value ="/initArrange", method = RequestMethod.POST)
+	public String initArrange(
+			@ModelAttribute("arrangement") Arrangement arrangement,
+			@RequestParam("composeNo") int composeNo,
+			ModelMap model){
+			LoginInfo loginInfo = loginInfoProvider.get();
+		
+	    
+	    if( loginInfo.getCurrentUser() == null){
+	    	return "redirect:/user/login.do";	    	
+	    }else{
+
+	    	arrangement = createInitialArrange(composeNo, arrangement);
+		   	arrangementService.insertArrangement(arrangement);
+		   	
+		   int arrangeNo = arrangementService.getArrangementCountByArrangeNo();
+		   String returnUrl = ArrangeRedirect.REGISTER_UPDATE_FORM + "?arrangeNo="+ arrangeNo; 
+		
+		   //model.addAttribute("genres", genreService.getAllGenres());
+		
+		   return returnUrl; 
+	    }
+	}
+	
+	/** 
+	 * 작곡을 구매한 후, initArrange 가 수행된 후, 등록된 편곡에 대하여 작업 등록이나 
+	 * 수정작업시 호출되어 등록 및 수정 폼을 출력한다.
+	 */
+	@RequestMapping(value ="/update", method = RequestMethod.GET)
+	public String showRegisterForm( HttpServletRequest req, @RequestParam("arrangeNo") int arrangeNo,ModelMap model){
+		
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int loginMemberNo = loginInfo.getCurrentUser().getMemberNo();
+		
+		Logger logger = Logger.getLogger(CompositionController.class);		
+		
+		ArrangementCommand arrangementCommand = 
+				arrangementService.getArrangementCommandByArrangeNo(arrangeNo);
+		Arrangement arrangement = arrangementService.getArrangementByArrangeNo(arrangeNo);
+		CompositionCommand compositionCommand =
+				compositionService.getCompositionCommandByComposeNo(arrangementCommand.getComposeNo(), loginMemberNo);
+		ArrayList<PerformanceCommand> performancCommands = 
+				arrangementService.getPerformanceCommandsByArrangeNo(arrangeNo);
+		
+		ArrangeUpdateCommand arrangeUpdateCommand = new ArrangeUpdateCommand();
+		ArrayList<ArrangeVocalCommand> arrangeVocalCommands =
+				arrangeVocalService.getArrangeVocalCommandsByArrangeNo(arrangeNo);
+		
+		for (PerformanceCommand pCommand : performancCommands){
+			pCommand.setIsMessageSend(AppConstants.FormMessageSendingStatus.MESSAGE_SENDED);
+			pCommand.setUpdateType(AppConstants.FormUpdateType.ACTION_TYPE_INIT);
+		}
+		
+		for (ArrangeVocalCommand aCommand : arrangeVocalCommands){
+			aCommand.setIsMessageSend(AppConstants.FormMessageSendingStatus.MESSAGE_SENDED);
+			aCommand.setUpdateType(AppConstants.FormUpdateType.ACTION_TYPE_INIT);
+		}
+		
+		arrangeUpdateCommand.setArrangeCommand(arrangementCommand);
+		arrangeUpdateCommand.setCompositionCommand(compositionCommand);
+		arrangeUpdateCommand.setPerformanceCommands(performancCommands);
+		arrangeUpdateCommand.setArrangement(arrangement);
+		arrangeUpdateCommand.setArrangeVocalCommands(arrangeVocalCommands);
+		
+		//setLocal(model, req);
+		model.addAttribute("arrangeUpdateCommand", arrangeUpdateCommand);
+		model.addAttribute("genres", genreService.getAllGenres());
+		model.addAttribute("playFields", playFieldService.getAllPlayFields());	
+		model.addAttribute("memberMessageTypes", memberMessageTypes);
+		model.addAttribute("performPlayer", performPlayerService.getPerformPlayersList(1,"",""));	// 참여연주자 리스트
+		model.addAttribute("performAllPlayer", performPlayerService.getPerformPlayersAllList("",""));	// 참여연주자 전체 리스트		
+		
+		return ArrangeForward.REGISTER_UPDATE_FORM;
+	}
+
+	
+	/**
+	 * ajax 요청 처리   
+	 * 전달된 page 파라미터에 따른 연주자 리스트를 반환한다 (김기수).
+	 */	
+	@ResponseBody
+	@RequestMapping(value="/remotePerFormPlayerList", method = RequestMethod.GET)
+	public GenericResponse<PerformPlayerCommand> remotePerFormPlayerList(
+			@RequestParam(value = "search"	, required = false, defaultValue = "") String search,
+			@RequestParam(value = "searchWord"	, required = false, defaultValue = "") String searchWord,			
+			ModelMap model			
+	){
+		
+			Logger logger = Logger.getLogger(ArrangementController.class);
+		
+			GenericResponse<PerformPlayerCommand> gr = new GenericResponse<PerformPlayerCommand>();			
+			ArrayList<PerformPlayerCommand> getPerformPlayersList = performPlayerService.getPerformPlayersAllList(search, searchWord);
+			
+			gr.setResultCode(1);
+			gr.setMessage("success");
+			gr.setObjects(getPerformPlayersList);
+
+			return gr;
+	}
+	
+	
+	/**
+	 * 편곡 수정 작업 처리 
+	 */
+	@RequestMapping(value ="/update", method = RequestMethod.POST)
+	public String update(
+			@ModelAttribute("arrangeUpdateCommand") ArrangeUpdateCommand arrangeUpdateCommand,
+			BindingResult result,
+			SessionStatus status,
+			RedirectAttributes attr){
+		/*if (result.hasFieldErrors()) return ArrangeForward.REGISTER_UPDATE_FORM;
+		this.arrangementValidaor.validate(arrangeUpdateCommand,result);
+		if (result.hasErrors()) return ArrangeForward.REGISTER_UPDATE_FORM;*/
+		
+		arrangementService.updateArrangeUpdateCommand(arrangeUpdateCommand);
+		status.setComplete();
+		
+		ForwardingMessage message = prepareForwardingMessage(ForwardingMessageType.ARRANGE_UPDATE_SUCCESS, 
+				"/music/arrange/update?arrangeNo=" + arrangeUpdateCommand.getArrangeCommand().getArrangeNo());
+		attr.addFlashAttribute("message", message);
+		return ArrangeRedirect.ACTION_RESULT;
+	}
+	
+	/**
+	 * 초기 디폴트 값이 설정된 Arrangement 오브젝트 생성 및 반환
+	 * @param composeNo
+	 * @return
+	 */
+	private Arrangement createInitialArrange(
+			int composeNo,
+			Arrangement arrangement
+			){
+		LoginInfo loginInfo = loginInfoProvider.get();
+		arrangement.setArrangeMemberNo(loginInfo.getCurrentUser().getMemberNo());
+		arrangement.setComposeNo(composeNo);
+
+		return arrangement;
+		
+	}
+	
+	
+	/**
+	 * 댓글 리스트에 대한 ajax 요청 처리  
+	 * 전달된 page 파라미터에 따른 (등록된) 편곡 리스트를 반환.
+	 * page 파라미터가 전달되지 않는 다면, 1로 세팅
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/remoteCommentList", method = RequestMethod.GET)
+	public GenericResponse<CommentCommand> remoteCommentList(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam(value = "page"	, required = false, defaultValue = "1" ) int page,
+			@RequestParam(value = "orderBy"	, required = false, defaultValue = "1" ) int orderBy,
+			ModelMap model)
+	{
+
+		Logger logger = Logger.getLogger(ArrangementController.class);		
+
+		int commentTotalRow = commentService.getCommentCount(musicClassNo);
+		GenericResponse<CommentCommand> gr = new GenericResponse<CommentCommand>();
+		Pagination pagination = new Pagination(commentTotalRow,page,commentService.PAGE_OFFSET);
+
+		ArrayList<CommentCommand> getAllComments2 = commentService.getAllComments2(
+				musicClassNo
+		);
+
+		gr.setResultCode(1);
+		gr.setMessage("success");
+
+		gr.setCurrentRowCount(getAllComments2.size());
+		gr.setTotalPage(getAllComments2.size());
+		gr.setCurrentPage(page);
+		gr.setTotalRow(commentTotalRow);
+		gr.setObjects(getAllComments2);
+		return gr;
+	}
+
+}
+

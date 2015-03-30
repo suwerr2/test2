@@ -1,0 +1,272 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">${listTypeString}</h2>
+					<div class="btnComposition"><a class="large layerPopType3"><span>작곡등록</span></a></div>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text" id="searchWord" onkeypress="javascript:search()"><i class="fa fa-search searchIcon"></i></div>
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="javascript:sortGo(1)">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(2)">최신순</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(3)">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+			</div>
+
+			
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+			
+
+
+<script type="text/javascript">
+
+	//순별로 가져오기.
+	function sortGo(orderBy){
+
+		AutoAddLine.orderby = orderBy;		
+		AutoAddLine.page = 1;
+		
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+
+	
+	$(document).ready(function(target) {
+	    //폼 등록 버튼 클릭시 호출
+	    $('#arrange-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#arrange-payment-form').attr('action','/music/arrange/initArrange?composeNo='+62).submit()
+	    });	    
+	    
+	    //폼 등록 버튼 클릭시 호출
+	    $('#compose-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#compose-payment-form').attr('action','/music/compose/initCompose').submit();
+	    });	   
+	});
+	
+    function getComposeNo(composeNoTemp, arrangeMemberNo) {
+    	
+    	if(AutoAddLine.memberNo != arrangeMemberNo){
+    		alert('해당 작곡에 대하여 편곡자로 지정되신분만 구매가능합니다.');
+    		return;
+    	}else if(AutoAddLine.memberNo == arrangeMemberNo){
+    		composeNo = composeNoTemp;    		
+    	}
+    	
+    }
+    
+
+
+	function fanFllow(musicNo, musicMemberNo){
+		
+		if(AutoAddLine.memberNo==0 || AutoAddLine.memberNo=="" ){
+			alert('로그인 이후 이용가능합니다.');
+			return;
+		}
+
+		var musicClass = "01";  //작곡테이블
+		fanMemberNo = ${memberNo};
+		
+		targetUrl = "/music/common/addFan?fanMemberNo=" + fanMemberNo + "&musicMemberNo=" + musicMemberNo + "&musicClass=" + musicClass + "&musicNo=" + musicNo;
+		
+		$.ajax({     
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+			type : "GET",
+			url : targetUrl,
+			success : function(data){
+				
+				var fanCount=0;				
+				$.each(data, function(key, state){
+					if(key=="fanCommand"){
+						
+						$.each(state, function(key2, state2){
+							if(key2=="fanCount"){
+								fanCount = state2;
+							}
+						});												
+						
+ 						className = "#fanCnt" + musicNo;						
+ 						$(className).html(fanCount); 						
+ 						alert('팬으로 등록 되었습니다.');						
+					}					
+				});
+			},
+			error : function(xhr, status, error){
+	      		alert('등록오류가 발생하였습니다.');
+			}
+		});			
+	}    
+    
+</script>
+
+
+<%@ include file="../include/listCommonLayer.jsp" %>
+<%@ include file="../include/bottom.jsp" %>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	
+	AutoAddLine.callScroll = function(){};
+	AutoAddLine.prototype.callScroll = function(){
+		
+		//보내줄 URL
+		var param = "?page=" + AutoAddLine.page + "&listType=" + AutoAddLine.listType + 
+					"&genreNo=" + AutoAddLine.genreNo + "&orderBy=" + AutoAddLine.orderby + 
+					"&searchWord=" + AutoAddLine.searchWord + "&isSearch=" + AutoAddLine.isSearch;			
+		AutoAddLine.url = "/music/compose/composeRemoteList" + param;
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();	
+		e.beginScroll();
+		AutoAddLine.page++;
+	}
+	
+	
+	
+	//편곡 라인 추가 함수
+	AutoAddLine.addRow = function(){};	
+	AutoAddLine.prototype.addRow = function(data){
+	
+	    $(".arrList").append(
+	            
+				"<li class='secType1 oh'>" + 
+				"<div class='coverArt'>" +
+					"<a href='/music/compose/composeDetail?composeNo=" + data['composeNo'] + "&listType=" + AutoAddLine.listType + "'><img src='/music/resources/images/holderType3.gif' alt='' style='width: 110px; height: 110px;'></a>" +							
+				"</div>" +
+				"<div class='soundArea'>" +
+					"<div class='soundHeader'>" +
+						"<a class='bulPlay' href='javascript:audioPop(" + data['composeNo'] + ")'><i class='fa fa-2x fa-play-circle'></i></a> " +
+						"<span class='songTitle'><a href='#none'>" + data['composeTitle'] + "</a></span>" +
+						"<span class='songSinger'><a href='#none'>" + data['composeMemberNickName'] + "</a></span>" +
+					"</div>" +
+					
+					"<div class='soundBody'>" +
+	                 "<div class='pajaImg'><img src='/music/resources/images/arrage/holderType2.gif' alt='' style='width: 100%;'></div>" +
+	                 "<div class='soundBar'></div>" +
+					"</div>" +
+	
+	             "<div class='soundFooter'>" +
+	                 "<a class='btn large btnType1' href='javascript:fanFllow(" + data['composeNo'] + "," + data['composeMemberNo'] + ")'><span>Fan</span></a> " +
+	                 "<a class='btn large btnType2' href='#none' data-showing='0'><span>Comment</span></a> " +
+	                 "<a class='btn large btnType3' href='#none'><span>연주자 현황</span></a> " +
+	                 "<a class='btn large btnPoint btnType4' href='#none'><span>참여하기</span></a> " +
+	                 "<a class='btn large btnType5' href='#none'><span>Play list</span></a> " +
+	                 "<a class='btn large btnType6' href='javascript:layer_open_common(\"mapView\")'><span>맵보기</span></a> " +
+	                 "<a class='btn large btnPoint3 btnType7' id='buyCompose' data-member='" + data['arrangeMemberNo'] + "' href='javascript:getComposeNo(" + data['composeNo'] + "," + data['arrangeMemberNo'] + ")'><span>구매</span></a> " +
+	                 "<a class='btn large btnPoint btnType12' href='#none'><span>작사등록</span></a> " +                             
+	                 "<a class='btn large btnType8' href='javascript:layer_open_common(\"sheetMusic\")'><span>악보</span></a> " +                                                          
+	                 "<a class='btn large btnType9' href='#none'><span>SponsorsShip</span></a> " +
+	                 "<a class='btn large btnType10' href='#none'><span>편곡 보컬 참여</span></a> " +
+	                 "<a class='btn large btnType11' href='#none'><span><i class='fa fa-share-square-o'></i> Share</span></a> " +                             
+	                 "<ul class='soundFooterRight'>" +
+	                 "          <ul class='soundFooterRight'> " +
+	                 "               <li> " +
+	                 "                    <i class='fa fa-heart'></i> " +
+	                 "                    <strong id='fanCnt"+data['composeNo']+"'>" + data['fanCount'] + "</strong> " +
+	                 "               </li> " +
+	                 "               <li> " +
+	                 "                    <i class='fa fa-download'></i> " +
+	                 "                    <strong>" + data['downloadCount'] + "</strong> " +
+	                 "               </li> " +
+	                 "               <li> " +
+	                 "                    <i class='fa fa-dollar'></i> " +
+	                 "                    <strong>100,000</strong> " +
+	                 "               </li> " +
+	                 "               <li> " +
+	                 "                    <a href='#none'><span class='deletIcon'><i class='fa fa-trash'></i></span></a> " +
+	                 "               </li> " +
+	                 "          </ul> " +
+	                 "</ul>" +
+	             "</div>" +
+	             "<div class='commentWrap' style='display: none;'>" +
+	             "	<span class='commetText'>comment</span> " +
+	             "	<input type='text' class='cmtMemo' style='width: 700px;' placeholder='글을 입력 하세요' onkeypress='javascript:cmt_write_common(" + data['composeNo'] + ",this.value)'>" +
+	             "</div>" +
+				"</div>" +
+			"</li>"                     
+				
+	 	);
+	
+		 //버튼 숨기기
+		 $(".arrList li:last-child .btnType3, .arrList li:last-child .btnType4, .arrList li:last-child .btnType5, .arrList li:last-child .btnType9, .arrList li:last-child .btnType10, .arrList li:last-child .btnType11, .arrList li:last-child .btnType12").remove();
+		 $(".soundFooterRight:last li:gt(1)").remove();
+	 
+		if(AutoAddLine.memberNo == data['arrangeMemberNo'] && AutoAddLine.memberNo != ''){ //구매버튼 권한체크             
+			$(".arrList li:last-child .btnType7").attr("class", "btn large btnPoint btnType7");
+		}
+	    
+	};	
+	
+
+
+
+	/*이벤트 객체 생성*/
+	var e = new AutoAddLine_event.Event.InfiniteScroll();
+	
+	var AutoAddLine = new AutoAddLine();
+		
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};	
+	
+	//변수초기화    
+	AutoAddLine.load_cnt = 1;
+	AutoAddLine.scroll_able = true;
+	AutoAddLine.scrollOK = true;
+	AutoAddLine.scrollLock = false;    
+
+
+	AutoAddLine.callScroll();
+		
+    //sound list append	    
+	$(window).scroll(function(){
+		if(AutoAddLine.scrollOK==true){
+	
+			if(AutoAddLine.scrollLock==false){
+				
+				var pageBottom = ($(document).height() - $(window).height());
+			
+				if($(window).scrollTop() >= pageBottom - 150){
+					if(AutoAddLine.pageon==1){												
+						AutoAddLine.callScroll();
+					}
+				}
+			
+			}
+		}				
+	});	
+    
+    
+</script>
+
+

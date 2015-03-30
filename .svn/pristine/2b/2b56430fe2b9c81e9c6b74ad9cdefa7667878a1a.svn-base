@@ -1,0 +1,22 @@
+package com.ma2rix.music.dao.interfaces;
+
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.domain.Fan;
+
+public interface FanDao {
+	
+	public FanCommand getFancountByMusicNo(Fan fan);
+	
+	public void insertFan(Fan fan);
+	
+	public void deleteFan(Fan fan);
+	
+	public int getMyFanCount();
+
+	public void updateCompositionFan (Fan fan);
+	
+	public void updateVocalFan (Fan fan);
+	
+}
+
+

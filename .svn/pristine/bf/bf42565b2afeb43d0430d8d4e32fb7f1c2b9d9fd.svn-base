@@ -1,0 +1,20 @@
+package com.ma2rix.music.dao.interfaces;
+
+import java.util.ArrayList;
+
+import com.ma2rix.music.model.command.SongWritingCommand;
+import com.ma2rix.music.model.domain.SongWriting;
+
+public interface WritingDao {
+
+	public int getWritingCount();
+	public ArrayList<SongWriting> getAllWritings();
+	public SongWriting getWritingByWriteNo(int writeNo);
+	public SongWriting getWritingsByWriteMemberNo(int writeMemberNo);
+	public void insertWriting(SongWriting songWriting);
+	public void updateWriting(SongWriting songWriting);
+	public void deleteWriting(int writeNo);
+	public void delelteWritingsByWriteMemberNo(int writeMemberNo);
+	public ArrayList<SongWritingCommand> getWritingCommandByWriteNo(int arrangeNo);
+	
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.PerformanceMapper">
+	<cache />
+	<select id = "getPerformanceCountByPerformMemberNo" resultType = "int">
+		<![CDATA[
+			SELECT COUNT(PERFORM_NO) FROM TBL_PERFORMANCE 
+				WHERE PERFORM_MEMBER_NO = #{performMemberNo}
+		]]>
+	</select>
+	
+	<select id="getPerformanceByPerformMemberNo" parameterType="int" resultType="com.ma2rix.music.model.domain.Performance">
+		<![CDATA[
+
+			SELECT 
+				  PERFORM_NO 		AS performNo, 
+				  ARRANGE_NO 		AS arrangeNo, 
+				  PLAY_FIELD_NO 	AS playFieldNo, 
+				  PLAY_FIELD_NAME 	AS playFieldName, 
+				  PERFORM_MEMBER_NO AS performMemberNo, 
+				  PERFORM_RATE 		AS performRate, 
+				  PERFORM_SOUND 	AS performSound, 
+				  PERFORM_MEMO 		AS performMemo, 
+				  PERFORM_STATUS 	AS performStatus, 
+				  REG_DATETIME 		AS regDatetime, 
+				  MOD_MEMBER_NO 	AS modMemberNo, 
+				  MOD_DATETIME 		AS modDatetime 
+			FROM TBL_PERFORMANCE
+			WHERE PERFORM_MEMBER_NO = ${performMemberNo}
+
+		]]>
+	</select>
+	
+	<select id="getPerformanceMaxPerformNo"  resultType="int">
+		<![CDATA[
+			SELECT MAX(PERFORM_NO) FROM TBL_PERFORMANCE
+		]]>
+	</select>
+	
+</mapper>

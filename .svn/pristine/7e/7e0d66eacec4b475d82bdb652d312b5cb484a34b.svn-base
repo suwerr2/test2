@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.WorkspaceMapper">
+
+
+	<select id = "getProjectsByComposeMemberNoAndComposeStatus" parameterType="map" resultType = "com.ma2rix.music.model.domain.Workspace">
+		<![CDATA[
+			SELECT
+				COMPOSE_NO                     as composeNo               ,
+				COMPOSE_MEMBER_NO              as composeMemberNo         ,
+				COMPOSE_TITLE     			   as composeTitle            ,
+				OPEN_STATUS    				   as openStatus             ,
+				COMPOSE_RATE                   as composeRate             ,
+				COMPOSE_MEMO				   as composeMemo			  ,
+				ARRANGE_COUNT				   as arrangeCount			  ,
+				VOCAL_COUNT					   as vocalCount              ,
+				FAN_COUNT					   as fanCount                ,
+				COMPOSE_HITS                   as composeHits             ,
+				COMPOSE_IMAGE                  as composeImage            ,
+				COMPOSE_SCORE                  as composeScore            ,
+				COMPOSE_SOUND                  as composeSound            ,
+				SALE_PRICE					   as salePrice               ,
+				CHARGE_STATUS                  as chargeStatus            ,
+				COMPOSE_STATUS                 as composeStatus           ,
+				SALE_STATUS                    as saleStatus              ,
+				REG_DATETIME                   as regDateTime             ,
+				MOD_ADMIN_NO                   as modAdminNo              ,
+				MOD_DATETIME                   as modDateTime             
+			FROM   
+			    TBL_COMPOSITION
+			WHERE
+				COMPOSE_MEMBER_NO = #{memberNo}
+		]]>
+	</select>
+	
+	
+	<select id = "getProjectsByArrangeMemberNoAndArrangeMemberStatus" parameterType="map" resultType = "com.ma2rix.music.model.domain.Arrangement">
+            SELECT
+				ARRANGE_NO									 		AS arrangeNo			,	/* 편곡번호 */
+				COMPOSE_NO											AS composeNo			,	/* 작곡번호 */
+				ARRANGE_MEMBER_NO									AS arrangeMemberNo		,	/* 편곡자회원번호 */
+				ARRANGE_TITLE										AS arrangeTitle			,	/* 편곡제목 */
+				GENRE_NO											AS genreNo				,	/* 쟝르번호 */
+				OPEN_STATUS											AS openStatus			,	/* 보컬공개여부 */
+				COMPOSE_RATE										AS composeRate			,	/* 작곡배분율 */
+				ARRANGE_RATE										AS arrangeRate			,	/* 편곡배분율 */
+				VOCAL_RATE											AS vocalRate			,	/* 보컬배분율 */
+				LYRICS_RATE											AS lyricsRate			,	/* 작사배분율 */
+				ARRANGE_MEMO										AS arrangeMemo			,	/* 편곡 메모 */
+				LIMIT_COUNT											AS limitCount			,	/* 배포제한수 */
+				VOCAL_COUNT											AS vocalCount			,	/* 보컬수 */
+				FAN_COUNT											AS fanCount				,	/* 팬수 */
+				LYRICS_COUNT			   							AS LyricsCount			,	/* 작사수 */
+				PERFORM_COUNT										AS PerformCount			,	/* 연주수 */
+				ARRANGE_HITS										AS arrangeHits			,	/* 조회수 */
+				ARRANGE_IMAGE										AS arrangeImage			,	/* 편곡이미지파일 */
+				ARRANGE_SCORE										AS arrangeScore			,	/* 악보파일 */
+				ARRANGE_ZIP									    	AS arrangeZip			,	/* 기타 파일 */
+				ARRANGE_SOUND										AS arrangeSound			,	/* 음원파일 */           
+				GUIDE_SOUND											AS guideSound			,	/* 가이드음원파일 */           
+				SALE_PRICE											AS salePrice			,	/* 판매가격 */
+				LIMIT_STATUS										AS limitStatus			,	/* 배포제한여부 */
+				CHARGE_STATUS										AS chargeStatus			,	/* 유료여부 */
+				ARRANGE_STATUS										AS arrangeStatus		,	/* 편곡상태 */
+				SALE_STATUS											AS saleStatus			,	/* 판매상태 */
+                REG_ADMIN_NO                                        AS regAdminNo           ,   /* 등록관리자번호 */
+				REG_DATETIME										AS regDateTime		    ,   /* 등록일시 */
+				MOD_ADMIN_NO                                        AS modAdminNo           ,   /* 수정관리자번호 */
+				MOD_DATETIME                                        AS modDatetime              /* 수정일시 */
+			FROM
+				TBL_ARRANGEMENT
+			
+			WHERE
+				ARRANGE_MEMBER_NO = #{memberNo}
+            AND 
+                ARRANGE_STATUS = #{arrangeStatus}
+            <if test="composeStatus1 != null"> 
+            AND
+                COMPOSE_STATUS = #{composeStatus1}
+            </if>
+			<if test="composeStatus2 != null">
+			OR 
+			    COMPOSE_STATUS = #{composeStatus2}
+			</if>
+            <if test="ingSale != null">
+            AND
+                SALE_STATUS = #{ingSale}
+            </if>
+	</select>
+	
+	
+	<select id = "getProjectsByperformMemberNoperformStatus" parameterType="map" resultType = "com.ma2rix.music.model.domain.Performance">
+		<![CDATA[
+		  SELECT
+                PERFORM_NO              AS performNo                ,    /* 연주번호         */
+                ARRANGE_NO              AS arrangeNo                ,    /* 편곡번호         */
+                PLAY_FIELD_NO           AS playFieldNo              ,    /* 연주분야번호     */
+                PLAY_FIELD_NAME         AS playFieldName            ,    /* 연주분야명       */
+                PERFORM_MEMBER_NO       AS performMemberNo          ,    /* 연주자회원번호   */
+                PERFORM_RATE            AS performRate              ,    /* 연주배분율       */
+                PERFORM_SOUND           AS performSound             ,    /* 음원파일         */
+                PERFORM_MEMO            AS performMemo              ,    /* 메모             */
+                /* CHOICE_STATUS           AS choiceStatus             ,     선택여부         */
+                /* CONFIRM_STATUS          AS confirmStatus            ,     확정여부         */
+                PERFORM_STATUS          AS performStatus            ,    /* 연주상태         */
+                REG_DATETIME            AS regDateTime              ,    /* 등록일시         */
+                MOD_MEMBER_NO           AS modMemberNo              ,    /* 수정회원번호     */
+                MOD_DATETIME            AS modDateTime                   /* 수정일시         */
+			FROM
+                TBL_PERFORMANCE
+			WHERE
+				PERFORM_MEMBER_NO = #{memberNo}
+            AND 
+                PERFORM_STATUS = #{performStatus}
+		]]>
+	</select>
+
+	<select id = "getProjectsByVocalMemberNoVocalStatus" parameterType="map" resultType = "com.ma2rix.music.model.domain.Vocal">
+		<![CDATA[
+		 SELECT
+                VOCAL_NO                  AS vocalNo       ,        /*보컬번호*/              
+                ARRANGE_NO                AS arrangeNo     ,        /*편곡번호*/
+                WRITE_NO                  AS writeNo       ,        /*작사번호*/
+                VOCAL_MEMBER_NO           AS vocalMemberNo ,        /*보컬회원번호*/
+                VOCAL_RATE                AS vocalRate     ,        /*보컬배분율*/
+                VOCAL_MEMO                AS vocalMemo     ,        /*메모 */
+                FAN_COUNT                 AS fanCount      ,        /*팬수 */
+                ARRANGE_HITS              AS arrangeHits   ,        /*조회수*/
+                VOCAL_IMAGE               AS vocal_image   ,        /*보컬이미지파일*/
+                VOCAL_SOUND               AS vocalSound    ,        /*음원파일*/
+                SALE_PRICE                AS salePrice     ,        /*판매가격*/
+                CHOICE_STATUS             AS choiceStatus  ,        /*선택여부*/
+                CONFIRM_STATUS            AS confirmStatus ,        /*확정여부*/
+                VOCAL_STATUS              AS vocalStatus   ,        /*보컬상태*/
+                REG_DATETIME              AS regDatetime   ,        /*등록일시*/
+                MOD_ADMIN_NO              AS modAdmin_no   ,        /*수정관리자번호*/
+                MOD_DATETIME              AS modDatetime            /*수정일시*/  	       
+            FROM
+				TBL_VOCAL
+			WHERE
+				VOCAL_MEMBER_NO = #{memberNo}
+            AND 
+                VOCAL_STATUS = #{vocalStatus}
+		]]>
+	</select>
+	
+	<select id = "getProjectsByWriteMemberNoWriteStatus" parameterType="map" resultType = "com.ma2rix.music.model.domain.SongWriting">
+		<![CDATA[
+			SELECT
+				WRITE_NO						as writeNo				,   /*작사번호*/
+				ARRANGE_NO						as arrangeNo			,   /*편곡번호*/
+				WRITE_MEMBER_NO					as write_member_no		,   /*작사회원번호*/
+				WRITE_TITLE						as writeTitle			,   /*작사제목*/
+				WRITE_INTENT					as writeIntent			,   /*작사의도*/
+				WRITE_WORDS						as writeWords			,   /*작사내용*/
+				LANGUAGE_NO						as languageNo			,   /*언어코드*/
+				VOCAL_COUNT						as vocalCount			,   /*보컬수*/
+				FAN_COUNT						as fanCount				,   /*팬수*/
+				WRITE_HITS						as writeHits			,   /*조회수*/
+				WRITE_STATUS					as writeStatus			,   /*작사상태*/
+				REG_DATETIME					as regDateTime			,   /*등록일시*/
+				MOD_ADMIN_NO					as modAdminNo			,   /*수정관리자번호*/
+				MOD_DATETIME					as modDateTime              /*수정일시*/
+			FROM 
+				TBL_SONGWRITING
+			WHERE 
+				WRITE_MEMBER_NO	= #{member_no}
+		    AND 
+		        WRITE_STATUS = #{writeStatus}					 
+		]]>
+	</select>
+	
+	<select id = "getMyPart" parameterType = "int" resultType = "com.ma2rix.music.model.domain.Code">
+		<![CDATA[
+            SELECT 
+			     CLASS_CODE_NO 			AS classCodeNo		,
+			     CODE_NO 				AS codeNo			,
+			     GROUP_CONCAT(CODE_NAME separator ' | ') 				AS codeName			,
+			     CODE_NAME2 			AS codeName2		,
+			     CODE_NAME3 			AS codeName3		,
+			     CODE_SORT 				AS codeSort			,
+			     USE_STATUS 			AS useStatus		,
+			     CLASS_REMARKS 			AS classRemarks		,
+			     REG_ADMIN_NO 			AS regAdminNo		,
+			     REG_DATETIME 			AS regDateTime		,
+			     MOD_ADMIN_NO 			AS modAdminNo		,
+			     MOD_DATETIME 			AS modDateTime
+            FROM (
+                  SELECT  
+                      B.MUSIC_FIELD
+			      FROM 
+                      TBL_MEMBER A,
+                      TBL_MEMBER_FIELD B
+                  WHERE
+                      A.MEMBER_NO = B.MEMBER_NO
+                  AND B.MEMBER_NO = #{memberNo}
+                 ) A,
+               TBL_CODE B
+            WHERE  
+                   B.CLASS_CODE_NO = 'MA008' 
+            AND    
+                   A.MUSIC_FIELD =  B.CODE_NO
+		]]>
+	</select>
+	
+	<select id = "getFanCount" parameterType = "int" resultType = "int">
+		<![CDATA[
+		    SELECT 
+		           COUNT(*)
+            FROM   
+                   TBL_MEMBER A,
+                   TBL_FAN B
+            WHERE  
+                   A.MEMBER_NO = B.MUSIC_MEMBER_NO
+             AND   
+                   A.MEMBER_NO = #{memberNo}
+		]]>
+	</select>
+	
+	<select id = "getSponsorAmount" parameterType = "int" resultType = "int">
+		<![CDATA[
+	        SELECT 
+	               IFNULL(SUM(B.SPONSOR_AMOUNT), 0)
+            FROM   
+                   TBL_MEMBER A,
+                   TBL_SPONSOR B
+            WHERE  
+                   A.MEMBER_NO = B.MEMBER_NO
+            AND    
+                   A.MEMBER_NO = #{memberNo}
+		]]>
+	</select>
+	
+</mapper>

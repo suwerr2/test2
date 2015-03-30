@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>로그인 이력조회</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/common_admin.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<div class="mrWrap">
+		<!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.gif" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a href="#none">워크스페이스</a></li>
+		                <li><a href="#none">작곡</a></li>
+		                <li><a href="#none">진행중인편곡</a></li>
+		                <li><a href="#none">완료된편곡</a></li>
+		                <li><a href="#none">곡리스트</a></li>
+		            </ul>
+		        </div>
+	    	</div>
+		</div>
+		<!-- //header -->
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">로그인 이력조회</h2>
+				</div>
+				<div class="conArea">
+					<input type="text" placeholder="E-mail입력" style="width: 200px;">
+					<a class="btn" href="#none"><span>찾기</span></a>
+					<div class="accuntArea">
+						<h3>정산관리</h3>
+						<div class="searchpPriod">
+							<span class="">조회기간 :</span>
+							<input type="radio" id=""><label for="">일</label>
+							<input type="radio" id=""><label for="">주</label>
+							<input type="radio" id=""><label for="">월</label>
+							<input type="radio" id=""><label for="">기간</label>
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a> ~
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a>
+							<span class=""><a class="btn" href="#none"><span>달력</span></a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- footer -->
+			<div class="mrFooter">
+				<div class="footerArea">
+					온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+				</div>
+			</div>
+			<!-- //footer -->
+		</div>
+		<!-- //contents -->
+	</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+package com.ma2rix.music.service.interfaces;
+
+import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
+import com.ma2rix.music.model.command.RankCommand;
+
+@Transactional
+public interface RankService {
+
+	public ArrayList<RankCommand> getRankCommandList (int rankNo, String rType, int genreNo);
+	
+}

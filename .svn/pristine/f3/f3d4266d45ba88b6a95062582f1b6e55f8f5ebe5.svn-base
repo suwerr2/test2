@@ -1,0 +1,97 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">${listTypeString}</h2>
+					<div class="arrayWrap">
+						<div class="checkSelect">			
+									
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:sortGenre()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre" items="${genreList}">
+	                                <option value="${genre.genreNo}" <c:if test="${genre.genreNo == genreNo}">selected="selected"</c:if>>${genre.genreName}</option>
+								</c:forEach>
+                            </select>
+
+						</div> 
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="javascript:sortGo(1)">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(2)">최신순</a><span class="bar"></span></dd>
+							<dd><a href="javascript:sortGo(3)">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList">
+					<!-- 리스트 출력부분  -->
+					</ul>
+				</div>
+			</div>
+			
+			
+    <c:choose> 
+    <c:when test ="${userSession == '0'}">	    
+    	var userSession = 0;
+    </c:when>
+    <c:when test ="${userSession == '1'}">	    
+		var userSession = 1;     
+	</c:when>
+	</c:choose>			
+
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>	
+			
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript">
+
+	//리스트 변수 초기화
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "${pageon}";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};
+	
+	//순별로 가져오기.
+	function sortGo(orderBy){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.orderby = orderBy;
+		AutoAddLine.genreNo = $("#genre_sel").val();
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+	
+	function sortGenre(){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.genreNo = $("#genre_sel").val();			
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+	    
+	new $$loop_progress_init();
+	new $$open_loop_progress();	
+	e.beginScroll();
+		
+</script>
+
+

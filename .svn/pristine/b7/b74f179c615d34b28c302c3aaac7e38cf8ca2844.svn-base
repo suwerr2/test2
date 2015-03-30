@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Income</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/default.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+</head>
+<body>
+	<!-- 오디오 컨트롤러 셋 -->
+	<div id="audioSet"></div>
+	<!-- //오디오 컨트롤러 셋 -->
+    <div class="mrWrap">
+        <!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.png" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a href="#none">워크스페이스</a></li>
+		                <li><a href="#none">작곡</a></li>
+		                <li><a href="#none">진행중인편곡</a></li>
+		                <li><a href="#none">완료된편곡</a></li>
+		                <li><a href="#none">곡리스트</a></li>
+		            </ul>
+		        </div>
+		        <div class="lnbWrap">
+	                <span class="mChart"><a class="btn ylw" href="#none"><span>Ma2rix Chart</span></a></span>
+	                <a class="bulInfo" title="알림" href="#none"><i class="fa fa-bell"></i></a>
+	                <a class="bulMail" title="메시지" href="#none"><i class="fa fa-envelope"></i></a>
+	                <a class="bulMail" title="다국어" href="#none"><i class="fa fa-globe"></i></a>
+               		<ul class="dropType1 dropStyle1">
+	                    <li>
+	                        <a class="btn topayc" href="#none"><span>Topayc</span><img src="../../images/arrow01.png" alt=""></a>
+	                        <ul>
+	                            <li><a href="#none">My Profile</a></li>
+	                            <li><a href="#none">My Playlist</a></li>
+	                            <li class="div"><a href="#none">My Fans</a></li>
+	                            <li><a href="#none">Workspace</a></li>
+	                            <li><a href="#none">My Message</a></li>
+	                            <li class="div"><a href="#none">My Income</a></li>
+	                            <li><a href="#none">Logout</a></li>
+	                        </ul>
+	                    </li>
+               		</ul>
+		    	</div>
+	    	</div>
+		</div>
+		<!-- //header -->
+        <!-- contents -->
+        <div class="mrContainer">
+            <div class="contents">
+                <div class="titleWrap">
+                    <h2>My Income</h2>
+                </div>
+                <div class="hType1">
+                    <h3>정산조회(개인)</h3>
+                </div>  
+                <div class="accuntArea mb10">
+					<div class="searchpPriod">
+						<span class="">조회기간 :</span>
+						<input type="radio" id=""><label for="">일</label>
+						<input type="radio" id=""><label for="">주</label>
+						<input type="radio" id=""><label for="">월</label>
+						<input type="radio" id=""><label for="">기간</label>
+						<input type="text"> <a class="btnPro btn large btnPoint btnType4" href="#none"><span>달력</span></a> ~
+						<input type="text"> <a class="btnPro btn large btnPoint btnType4" href="#none"><span>달력</span></a>
+						<div class="floatR">
+							<a class="btnPro btn large btnPoint btnType4" href="#none"><span>검색</span></a>
+							<a class="btnPro btn large btnPoint btnType4" href="#none"><span>초기화</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="checkboxArea mb30">
+					<input type="checkbox" id="comp"> <label for="comp">작곡</label>
+					<input type="checkbox" id="arrage"> <label for="arrage">편곡</label>
+					<input type="checkbox" id="musi"> <label for="musi">뮤지션</label>
+					<input type="checkbox" id="write"> <label for="write">작사</label>
+				</div>  
+               	<table class="tblType03 arrange addTrType2">
+                    <colgroup>
+                        <col style="width: 3%">
+                        <col style="width: 8%">
+                        <col style="width: 30%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: 10%">
+                        <col style="width: auto">
+                    </colgroup>
+                    <tr>
+                    	<th>번호</th>
+                        <th>구분</th>
+                        <th>제목</th>
+                        <th>판매가</th>
+                        <th>배분율</th>
+                        <th>판매갯수</th>
+                        <th>총배분금액($)</th>
+                        <th>정산</th>
+                        <th>미정산</th>
+                    </tr>
+                    <tr>
+                    	<td class="textC">1</td>
+                    	<td class="textC">작곡</td>
+                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+                    	<td>100</td>
+                    	<td>30%</td>
+                    	<td>110</td>
+                    	<td>30</td>
+                    	<td>190</td>
+                    	<td>30</td>
+                    </tr>
+                    <tr>
+                    	<td class="textC">2</td>
+                    	<td class="textC">뮤지션</td>
+                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+                    	<td>100</td>
+                    	<td>30%</td>
+                    	<td>110</td>
+                    	<td>30</td>
+                    	<td>190</td>
+                    	<td>30</td>
+                    </tr>
+                    <tr>
+                    	<td class="textC">3</td>
+                    	<td class="textC">작곡</td>
+                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+                    	<td>100</td>
+                    	<td>30%</td>
+                    	<td>110</td>
+                    	<td>30</td>
+                    	<td>190</td>
+                    	<td>30</td>
+                    </tr>
+                </table>
+               
+            </div>
+            <!-- //contents -->
+            <!-- footer -->
+			<div class="mrFooter">
+				<div class="footerArea">
+					온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+				</div>
+			</div>
+			<!-- //footer -->
+        </div>
+		<!-- //contents -->
+    </div>
+</body>
+</html>

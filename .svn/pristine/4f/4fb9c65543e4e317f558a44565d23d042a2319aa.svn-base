@@ -1,0 +1,133 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="../include/topAdmin.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">로그인 이력조회</h2>
+				</div>
+				<div class="conArea">
+					<input type="text" id="searchMemberNo" name="searchMemberNo" placeholder="Nick Name" style="width: 200px;" value=1>
+					<a class="btn" href="#none"><span>찾기</span></a>
+					<div class="accuntArea">
+						<h3>정산관리</h3>
+						<div class="searchpPriod">
+							<span class="">조회기간 :</span>
+							<input type="radio" id=""><label for="">일</label>
+							<input type="radio" id=""><label for="">주</label>
+							<input type="radio" id=""><label for="">월</label>
+							<input type="radio" id=""><label for="">기간</label>
+							<input type="text" id="dateFrom" name="dateFrom" value="2014-11-12"> <a class="btn" href="#none"><span>달력</span></a> ~
+							<input type="text" id="dateTo" name="dateTo"  value="2014-11-28"> <a class="btn" href="#none"><span>달력</span></a>
+							<div class="floatR">
+								<a class="btn" href="javascript:fnSearch()"><span>검색</span></a>
+								<a class="btn" href="#none"><span>초기화</span></a>
+							</div>
+						</div>
+					</div>
+					<table class="tblType03 addTrType2"  id="logList_tb">
+	                    <colgroup>
+	                        <col style="width:17%">
+	                        <col style="width:15%">
+	                        <col style="width:auto">
+	                        <col style="width:10%">
+	                        <col style="width:10%">
+	                    </colgroup>
+	                    <tr>
+	                    	<th>등록일시</th>
+	                        <th>회원</th>
+	                        <th>호출URL</th>
+	                        <th>접속IP</th>
+	                        <th>결과</th>
+	                    </tr>
+	                    
+	                </table>
+				</div>
+			</div>
+		
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+
+<script type="text/javascript">
+
+	function fnSearch(){
+/* 		if(!$("#searchWord").val()){
+			alert('검색어를 입력하여주세요');
+			$("#searchWord").focus();
+			return;
+		} */
+		AutoAddLine.page = 1;
+		AutoAddLine.dateFrom = $("#dateFrom").val();
+		AutoAddLine.dateTo = $("#dateTo").val();
+		AutoAddLine.searchMemberNo = $("#searchMemberNo").val();	
+		
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.			
+		AutoAddLine.callScroll();		
+	
+	}
+
+	AutoAddLine.dateFrom = "";
+	AutoAddLine.dateTo = "";
+	AutoAddLine.searchMemberNo = "";	
+
+	AutoAddLine.callScroll = function(){};
+	AutoAddLine.prototype.callScroll = function(){
+		
+		//보내줄 URL
+		//var param = "?dateFrom=2014-11-21&dateTo=2015-01-01&searchMemberNo=1";
+		
+		var param = "?page=" + AutoAddLine.page +
+				"&dateFrom=" + AutoAddLine.dateFrom + 
+				"&dateTo=" + AutoAddLine.dateTo + 
+				"&searchMemberNo=" + AutoAddLine.searchMemberNo;
+		
+		
+		AutoAddLine.url = "/music/admin/getLogListByMemberNo" + param;
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();	
+		e.beginScroll();
+		AutoAddLine.page++;
+	}
+	
+	
+	
+	//편곡 라인 추가 함수
+	AutoAddLine.addRow = function(){};	
+	AutoAddLine.prototype.addRow = function(data){
+	
+	    $("#logList_tb").append(
+	            
+				"<tr>" + 
+	            "<td><span>" + data['regDateTime'] + "</span></td>" +
+	            "<td>" + data['memberNo'] + "</td>" +
+	            "<td class='textL'>" + data['actMenu'] + "</td>" +
+	            "<td>" + data['actIp'] + "</td>" +
+	            "<td class='textL'>" + data['actResult'] + "</td>" +
+				"<tr>"                  
+				
+	 	);
+	};	
+	
+	
+	/*이벤트 객체 생성*/
+	var e = new AutoAddLine_event.Event.InfiniteScroll();
+	
+	var AutoAddLine = new AutoAddLine();
+
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.dateFrom = "${dateFrom}";
+	AutoAddLine.dateTo = "${dateTo}";
+	AutoAddLine.searchMemberNo = "${searchMemberNo}";
+	
+	//변수초기화    
+	AutoAddLine.load_cnt = 1;
+	AutoAddLine.scroll_able = true;
+	AutoAddLine.scrollOK = true;
+	AutoAddLine.scrollLock = false;    
+	AutoAddLine.callScroll();
+		
+	
+</script>

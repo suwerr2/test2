@@ -1,0 +1,24 @@
+package com.ma2rix.music.service.interfaces;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.domain.Fan;
+
+@Transactional
+public interface FanService {
+	
+	public FanCommand getFancountByMusicNo(Fan fan);
+	
+	public void insertFan(Fan fan);
+	
+	public void deleteFan(Fan fan);
+	
+	public void updateCompositionFan(Fan fan);
+	
+	public void updateVocalFan(Fan fan);	
+	
+	public int getMyFanCount(int fanMemberNo);
+	
+}
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.BulletinMapper">
+
+  <select id="getAllBulletin" resultType="com.ma2rix.music.model.domain.Bulletin">
+		SELECT 
+			BULLETIN_NO         as bulletinNo,       
+			BULLETIN_CLASS      as bulletinClass,    
+			BULLETIN_TITLE      as bulletinTitle,    
+			BULLETIN_CONTENT    as bulletinContent,  
+			BULLETIN_STATUS     as bulletinStatus,   
+			CONTENT_TYPE        as contentType,      
+			BULLETIN_HITS       as bulletinHits,     
+			REG_ADMIN_NO        as regAdminNo,       
+			DATE_FORMAT(REG_DATETIME, '%Y-%m-%d %H:%i:%s')	as regDatetime			,	/* 등록일시 */     
+			MOD_ADMIN_NO        as modAdminNo
+		FROM TBL_BULLETIN 
+		    ORDER BY REG_DATETIME DESC
+	</select>
+</mapper>

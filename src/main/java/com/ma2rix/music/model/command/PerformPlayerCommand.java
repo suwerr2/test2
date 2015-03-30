@@ -1,0 +1,288 @@
+package com.ma2rix.music.model.command;
+
+import java.io.Serializable;
+
+import org.joda.time.DateTime;
+
+/**
+ * @author v
+ *
+ */
+public class PerformPlayerCommand implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private int performNo;
+	private int playerMemberNo;
+	private String performPlayerStatus;
+	private DateTime regDatetime;
+	private DateTime modDatetime;
+	private int memberNo;
+	private String memberUserid;
+	private String memberName;
+	private String memberPwd;
+	private String memberNickName;
+	private String memberRoute;
+	private String memberImage;
+	private String countryNo;
+	private String memberCity;
+	private String memberIntroduce;
+	private String memberHompage;
+	private String homepageComment;
+	private String memberStatus;
+	private String emailReceive;
+	private int communityMemberNo;
+	private int spnsorAmount;
+	private DateTime lastDatetime;
+	private DateTime modDatiemtiem;
+	private int modAdminNo;
+	private int playerMemberNoTemp;
+	
+	
+	public PerformPlayerCommand(){
+		super();
+	}
+	
+	public PerformPlayerCommand(int performNo, int playerMemberNo,
+			String performPlayerStatus, DateTime regDatetime,
+			DateTime modDatetime, int memberNo, String memberUserid,
+			String memberName, String memberPwd, String memberNickName,
+			String memberRoute, String memberImage, String countryNo,
+			String memberCity, String memberIntroduce, String memberHompage,
+			String homepageComment, String memberStatus, String emailReceive,
+			int communityMemberNo, int spnsorAmount, DateTime lastDatetime,
+			DateTime modDatiemtiem, int modAdminNo, int playerMemberNoTemp) {
+		super();
+		this.performNo = performNo;
+		this.playerMemberNo = playerMemberNo;
+		this.performPlayerStatus = performPlayerStatus;
+		this.regDatetime = regDatetime;
+		this.modDatetime = modDatetime;
+		this.memberNo = memberNo;
+		this.memberUserid = memberUserid;
+		this.memberName = memberName;
+		this.memberPwd = memberPwd;
+		this.memberNickName = memberNickName;
+		this.memberRoute = memberRoute;
+		this.memberImage = memberImage;
+		this.countryNo = countryNo;
+		this.memberCity = memberCity;
+		this.memberIntroduce = memberIntroduce;
+		this.memberHompage = memberHompage;
+		this.homepageComment = homepageComment;
+		this.memberStatus = memberStatus;
+		this.emailReceive = emailReceive;
+		this.communityMemberNo = communityMemberNo;
+		this.spnsorAmount = spnsorAmount;
+		this.lastDatetime = lastDatetime;
+		this.modDatiemtiem = modDatiemtiem;
+		this.modAdminNo = modAdminNo;
+		this.playerMemberNoTemp = playerMemberNoTemp;
+	}
+
+	
+	
+	public int getPerformNo() {
+		return performNo;
+	}
+
+	public void setPerformNo(int performNo) {
+		this.performNo = performNo;
+	}
+
+	public int getPlayerMemberNo() {
+		return playerMemberNo;
+	}
+
+	public void setPlayerMemberNo(int playerMemberNo) {
+		this.playerMemberNo = playerMemberNo;
+	}
+
+	public String getPerformPlayerStatus() {
+		return performPlayerStatus;
+	}
+
+	public void setPerformPlayerStatus(String performPlayerStatus) {
+		this.performPlayerStatus = performPlayerStatus;
+	}
+
+	public DateTime getRegDatetime() {
+		return regDatetime;
+	}
+
+	public void setRegDatetime(DateTime regDatetime) {
+		this.regDatetime = regDatetime;
+	}
+
+	public DateTime getModDatetime() {
+		return modDatetime;
+	}
+
+	public void setModDatetime(DateTime modDatetime) {
+		this.modDatetime = modDatetime;
+	}
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
+	public String getMemberUserid() {
+		return memberUserid;
+	}
+
+	public void setMemberUserid(String memberUserid) {
+		this.memberUserid = memberUserid;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public String getMemberPwd() {
+		return memberPwd;
+	}
+
+	public void setMemberPwd(String memberPwd) {
+		this.memberPwd = memberPwd;
+	}
+
+	public String getMemberNickName() {
+		return memberNickName;
+	}
+
+	public void setMemberNickName(String memberNickName) {
+		this.memberNickName = memberNickName;
+	}
+
+	public String getMemberRoute() {
+		return memberRoute;
+	}
+
+	public void setMemberRoute(String memberRoute) {
+		this.memberRoute = memberRoute;
+	}
+
+	public String getMemberImage() {
+		return memberImage;
+	}
+
+	public void setMemberImage(String memberImage) {
+		this.memberImage = memberImage;
+	}
+
+	public String getCountryNo() {
+		return countryNo;
+	}
+
+	public void setCountryNo(String countryNo) {
+		this.countryNo = countryNo;
+	}
+
+	public String getMemberCity() {
+		return memberCity;
+	}
+
+	public void setMemberCity(String memberCity) {
+		this.memberCity = memberCity;
+	}
+
+	public String getMemberIntroduce() {
+		return memberIntroduce;
+	}
+
+	public void setMemberIntroduce(String memberIntroduce) {
+		this.memberIntroduce = memberIntroduce;
+	}
+
+	public String getMemberHompage() {
+		return memberHompage;
+	}
+
+	public void setMemberHompage(String memberHompage) {
+		this.memberHompage = memberHompage;
+	}
+
+	public String getHomepageComment() {
+		return homepageComment;
+	}
+
+	public void setHomepageComment(String homepageComment) {
+		this.homepageComment = homepageComment;
+	}
+
+	public String getMemberStatus() {
+		return memberStatus;
+	}
+
+	public void setMemberStatus(String memberStatus) {
+		this.memberStatus = memberStatus;
+	}
+
+	public String getEmailReceive() {
+		return emailReceive;
+	}
+
+	public void setEmailReceive(String emailReceive) {
+		this.emailReceive = emailReceive;
+	}
+
+	public int getCommunityMemberNo() {
+		return communityMemberNo;
+	}
+
+	public void setCommunityMemberNo(int communityMemberNo) {
+		this.communityMemberNo = communityMemberNo;
+	}
+
+	public int getSpnsorAmount() {
+		return spnsorAmount;
+	}
+
+	public void setSpnsorAmount(int spnsorAmount) {
+		this.spnsorAmount = spnsorAmount;
+	}
+
+	public DateTime getLastDatetime() {
+		return lastDatetime;
+	}
+
+	public void setLastDatetime(DateTime lastDatetime) {
+		this.lastDatetime = lastDatetime;
+	}
+
+	public DateTime getModDatiemtiem() {
+		return modDatiemtiem;
+	}
+
+	public void setModDatiemtiem(DateTime modDatiemtiem) {
+		this.modDatiemtiem = modDatiemtiem;
+	}
+
+	public int getModAdminNo() {
+		return modAdminNo;
+	}
+
+	public void setModAdminNo(int modAdminNo) {
+		this.modAdminNo = modAdminNo;
+	}
+
+	public int getPlayerMemberNoTemp() {
+		return playerMemberNoTemp;
+	}
+
+	public void setPlayerMemberNoTemp(int playerMemberNoTemp) {
+		this.playerMemberNoTemp = playerMemberNoTemp;
+	}
+      
+      
+      
+	
+}

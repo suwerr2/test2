@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.PlayListMapper">
+
+	<select id = "getPlayListCount" resultType = "int">
+
+			SELECT 
+				COUNT(*)        	  
+			FROM 
+			  TBL_VOCAL           AS T1
+			INNER JOIN TBL_MEMBER AS T2
+			  ON (
+			T2.MEMBER_NO = T1.VOCAL_MEMBER_NO  
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T3
+			  ON(
+			    T3.ATTACH_NO = T1.VOCAL_IMAGE
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T4
+			  ON(
+			    T4.ATTACH_NO = T1.VOCAL_SOUND
+			  )
+			INNER JOIN TBL_ARRANGEMENT AS T5        
+			  ON(
+			    T5.ARRANGE_NO = T1.ARRANGE_NO
+			  )      
+			LEFT JOIN TBL_GENRE AS T6
+			  ON(
+			    T6.GENRE_NO = T5.GENRE_NO
+			  )        
+			INNER JOIN TBL_PLAY_LIST AS T7
+			  ON (
+			    T1.VOCAL_NO = T7.MUSIC_NO
+			  )
+      WHERE 
+        1=1
+      AND
+	         T7.MUSIC_CLASS='03' || T7.MUSIC_CLASS='04' 
+			<if test="memberNo != 0">
+			  AND T7.MEMBER_NO = #{memberNo}
+			</if>               
+
+	</select>
+	
+
+	<select id="getPlayList" resultType="com.ma2rix.music.model.command.PlayListCommand">
+	
+			SELECT 
+			  T1.VOCAL_NO               			AS vocalNo			, 					/* 보컬번호 */
+			  T1.ARRANGE_NO             			AS arrangeNo		,   				/* 편곡번호 */   
+			  T1.WRITE_NO               			AS writeNo			, 					/* 작사번호 */
+			  T1.VOCAL_MEMBER_NO        			AS vocalMemberNo	,					/* 보컬회원번호 */
+			  T2.MEMBER_NAME            			AS memberName		,					/* 보컬명 */
+			  T2.MEMBER_NICK_NAME       			AS memberNickName	,					/* 보컬닉네임 */
+			  T1.FAN_COUNT              			AS fanCount			,					/* 팬수 */ 
+			  T1.ARRANGE_HITS           			AS arrangeHits		,					/* 조회수 */ 
+			  T1.VOCAL_IMAGE            			AS vocalImage		,					/* 보컬이미지 */ 
+			  CONCAT(T3.WEB_PATH,  T3.FILE_NAME2)	AS vocalImageWeb		,				/* 편곡이미지파일 Web Path */
+			  CONCAT(T3.FILE_PATH, T3.FILE_NAME2)	AS vocalImageFile		,				/* 편곡이미지파일 Local Path */  			  
+			  T1.VOCAL_SOUND            			AS vocalSound			,   			/* 보컬사운드 */ 
+			  CONCAT(T4.WEB_PATH,  T4.FILE_NAME2)	AS vocalSoundWeb		,				/* 음원파일 Web Path */  
+			  CONCAT(T4.FILE_PATH, T4.FILE_NAME2)	AS vocalSoundFile		,				/* 음원파일 Local Path */ 
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'mp3')	AS vocalSoundMp3	,	/* 음원파일 mp3 Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'ogg')	AS vocalSoundOgg	,	/* 음원파일 ogg Path */
+			  GET_SOUND_FILE(T4.WEB_PATH,  T4.FILE_NAME2, 'png')	AS vocalSoundPng	,	/* 음원파일 pbg Path */  			   			  
+        (SELECT IFNULL(SUM(SPONSOR_AMOUNT), 0) FROM TBL_SPONSOR WHERE MEMBER_NO = T1.VOCAL_MEMBER_NO) AS sponsorAmount,					/* 스폰서 카운트수 */
+        T6.GENRE_NAME                       AS genreName		,                     /* 장르명 */
+        T5.ARRANGE_TITLE                		AS arrangeTitle		,				  /* 노래제목 */
+        T7.PLAY_LIST_NO                        AS playListNo                	  	  /* 플레이리스트 일련번호 */
+			FROM 
+			  TBL_VOCAL           AS T1
+			INNER JOIN TBL_MEMBER AS T2
+			  ON (
+			T2.MEMBER_NO = T1.VOCAL_MEMBER_NO  
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T3
+			  ON(
+			    T3.ATTACH_NO = T1.VOCAL_IMAGE
+			  )
+			LEFT JOIN TBL_ATTACH_MUSIC AS T4
+			  ON(
+			    T4.ATTACH_NO = T1.VOCAL_SOUND
+			  )
+			INNER JOIN TBL_ARRANGEMENT AS T5        
+			  ON(
+			    T5.ARRANGE_NO = T1.ARRANGE_NO
+			  )      
+			LEFT JOIN TBL_GENRE AS T6
+			  ON(
+			    T6.GENRE_NO = T5.GENRE_NO
+			  )        
+			INNER JOIN TBL_PLAY_LIST AS T7
+			  ON (
+			    T1.VOCAL_NO = T7.MUSIC_NO
+			  )
+	        WHERE 
+	          1=1
+	        AND
+	          T7.MUSIC_CLASS='03' || T7.MUSIC_CLASS='04' 
+			<if test="memberNo != 0">
+			  AND T7.MEMBER_NO = #{memberNo}
+			</if>
+			<if test="pageCount != -1">
+				LIMIT #{pageCount}, #{pageOffset}
+			</if>
+	</select>	
+	
+	
+	
+	<insert id="insertPlayList" parameterType="com.ma2rix.music.model.domain.PlayList">
+		<![CDATA[
+			INSERT 
+				INTO TBL_PLAY_LIST
+			(
+				MUSIC_CLASS	, 
+				MUSIC_NO	, 
+				MEMBER_NO
+			)
+			VALUES
+			(
+				#{musicClass}, 
+				#{musicNo}	 , 
+				#{memberNo}
+			)
+		]]>
+
+		<selectKey keyProperty="playListNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>	
+	
+	
+	
+	<delete id="deletePlayList">
+	<![CDATA[
+		DELETE FROM
+			TBL_PLAY_LIST
+		WHERE
+			PLAY_LIST_NO		= #{playListNo}
+	]]> 
+	</delete>	
+	
+	
+	
+</mapper>

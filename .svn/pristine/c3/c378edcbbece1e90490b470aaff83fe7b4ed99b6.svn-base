@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.EventMapper">
+	<select id="getEventCount"  resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_EVENT
+		]]>
+	</select>
+	
+	<select id="getAllEventList"  resultType="com.ma2rix.music.model.domain.Event">
+			SELECT
+				EVENT_NO   as eventNo,
+				( SELECT C.CODE_NAME FROM TBL_CODE AS C WHERE C.CLASS_CODE_NO = 'MA005' AND C.CODE_NO = T1.MUSIC_CLASS) AS musicClass, 
+				EVENT_CNT   as eventCnt,
+				DATE_FORMAT(EV_FROM_DATE, '%Y-%m-%d')   as evFromDate,
+				DATE_FORMAT(EV_TO_DATE, '%Y-%m-%d')   as evToDate,
+				DATE_FORMAT(REG_DATETIME, '%Y-%m-%d %H:%i:%s')   as regDateTime
+			FROM
+				TBL_EVENT as T1
+				ORDER BY REG_DATETIME DESC
+			<if test="pageCount != 0">
+			LIMIT #{pageCount}, #{pageOffset}
+			</if>
+	</select>
+	
+	
+	<insert id="insertEvent" parameterType ="com.ma2rix.music.model.domain.Event" >
+		<![CDATA[
+			INSERT INTO
+				TBL_EVENT
+			(
+				MUSIC_CLASS,
+				EVENT_CNT,
+				EV_FROM_DATE,
+				EV_TO_DATE,
+				REG_DATETIME
+			)
+			VALUES
+			(
+				#{musicClass} ,
+				#{eventCnt} ,
+				#{evFromDate} ,
+				#{evToDate} ,
+				NOW()
+			)
+		]]>
+
+		<selectKey keyProperty="eventNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="deleteEvent"  parameterType ="int" >
+           DELETE FROM TBL_EVENT 
+           	 WHERE  EVENT_NO = #{eventNo} 
+	</update>
+
+</mapper>

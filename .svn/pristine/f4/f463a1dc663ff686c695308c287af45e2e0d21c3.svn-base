@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.LogMapper">
+	<select id="getLogCount"  resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_LOG
+		]]>
+	</select>
+	
+	<select id="getAllLogList"  resultType="com.ma2rix.music.model.domain.Log">
+		<![CDATA[
+			SELECT
+				LOG_NO				AS logNo		,
+				ACT_MENU			AS actMenu		,
+				MEMBER_NO			AS memberNo		,
+				ACT_RESULT			AS actResult	,
+				ACT_IP		    	AS actIp	    ,
+				REG_DATETIME		AS regDateTime	
+			FROM
+				TBL_LOG
+				ORDER BY REG_DATETIME DESC
+		]]>	
+	</select>
+	
+	<select id="getLogByMemberNo"   resultType="com.ma2rix.music.model.command.LogCommand">
+			SELECT
+				LOG_NO				AS logNo		,
+				ACT_MENU			AS actMenu		,
+				MEMBER_NO			AS memberNo		,
+				ACT_RESULT			AS actResult	,
+				ACT_IP		    	AS actIp	    ,
+				REG_DATETIME		AS regDateTime	
+			FROM
+				TBL_LOG
+			WHERE
+			    DATE_FORMAT(REG_DATETIME, '%Y-%m-%d') BETWEEN #{dateFrom} AND #{dateTo}
+			    <if test="searchMemberNo != 0">
+				AND MEMBER_NO  = #{searchMemberNo}
+				</if>
+				ORDER BY REG_DATETIME DESC
+	</select>
+	
+	
+	<insert id="insertLog" parameterType ="com.ma2rix.music.model.domain.Log" >
+		<![CDATA[
+			INSERT INTO
+				TBL_LOG
+			(
+				ACT_MENU,	
+				MEMBER_NO,	
+				ACT_RESULT,	
+				ACT_IP,
+				REG_DATETIME		
+			)
+			VALUES
+			(
+				#{actMenu}		,		
+				#{memberNo}		,		
+				#{actResult}	,
+				#{actIp}	,	
+				NOW()
+			)
+		]]>
+
+		<selectKey keyProperty="logNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+</mapper>

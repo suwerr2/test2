@@ -1,0 +1,8 @@
+package com.ma2rix.music.dao.mapper;
+
+
+public interface FanMapper {
+
+	public int getMyFanCount ();
+
+}

@@ -1,0 +1,9 @@
+package com.ma2rix.music.model.domain;
+
+import org.joda.time.DateTime;
+
+public class PlayList {
+	
+	
+	
+}

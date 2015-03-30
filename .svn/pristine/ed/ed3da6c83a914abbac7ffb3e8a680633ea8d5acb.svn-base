@@ -1,0 +1,24 @@
+package com.ma2rix.music.dao;
+
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.WorkspaceDao;
+import com.ma2rix.music.dao.mapper.WorkspaceMapper;
+import com.ma2rix.music.model.domain.Workspace;
+
+@Repository
+public class WorkspaceDaoImpl implements WorkspaceDao {
+
+	@Autowired WorkspaceMapper workspaceMapper;
+	
+	@Override
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+			int composeMemberNo, String composeStatus) {
+		return workspaceMapper.getProjectsByComposeMemberNoAndComposeStatus(composeMemberNo, composeStatus);
+	}
+
+}

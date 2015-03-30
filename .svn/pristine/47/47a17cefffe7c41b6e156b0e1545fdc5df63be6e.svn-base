@@ -1,0 +1,38 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">${listTypeString}</h2>
+					<div class="arrayWrap">
+						<div class="checkSelect">			
+									
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:genre_go()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre" items="${genreList}">
+	                                <option value="${genre.genreNo}" <c:if test="${genre.genreNo == genreNo}">selected="selected"</c:if>>${genre.genreName}</option>
+								</c:forEach>
+                            </select>
+
+						</div> 
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="javascript:genre_go(1)">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="javascript:genre_go(2)">최신순</a><span class="bar"></span></dd>
+							<dd><a href="javascript:genre_go(3)">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList">
+					</ul>
+				</div>
+			</div>	
+			
+<%@ include file="../include/bottom.jsp" %>
+
+
+

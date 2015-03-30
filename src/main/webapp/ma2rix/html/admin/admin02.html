@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>정산조회(관리자)</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/common_admin.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<div class="mrWrap">
+		<!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.png" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a href="admin01.html">로그인 이력조회</a></li>
+		                <li><a class="on" href="admin02.html">정산조회(관리자)</a></li>
+		                <li><a href="admin03.html">정산조회(개인)</a></li>
+		                <li><a href="admin04.html">무료구매관리(이벤트기간, 횟수지정)</a></li>
+		                <li><a href="admin05.html">관리자 곡선택 노출관리</a></li>
+		            </ul>
+		        </div>
+	    	</div>
+		</div>
+		<!-- //header -->
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">정산조회(관리자)</h2>
+				</div>
+				<div class="conArea">
+					<input type="text" placeholder="E-mail입력" style="width: 200px;">
+					<a class="btn" href="#none"><span>찾기</span></a>
+					<div class="accuntArea mt30">
+						<h3>정산관리</h3>
+						<div class="searchpPriod">
+							<span class="">조회기간 :</span>
+							<input type="radio" id=""><label for="">일</label>
+							<input type="radio" id=""><label for="">주</label>
+							<input type="radio" id=""><label for="">월</label>
+							<input type="radio" id=""><label for="">기간</label>
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a> ~
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a>
+							<div class="floatR">
+								<a class="btn" href="#none"><span>검색</span></a>
+								<a class="btn" href="#none"><span>초기화</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="checkboxArea">
+						<input type="checkbox" id="comp"> <label for="comp">작곡</label>
+						<input type="checkbox" id="arrage"> <label for="arrage">편곡</label>
+						<input type="checkbox" id="musi"> <label for="musi">뮤지션</label>
+						<input type="checkbox" id="write"> <label for="write">작사</label>
+					</div>
+					<div class="tblScroll">
+						<table class="tblType03 arrange addTrType2">
+		                    <colgroup>
+		                        <col style="width: 3%">
+		                        <col style="width: 8%">
+		                        <col style="width: 30%">
+		                        <col style="width: 10%">
+		                        <col style="width: 10%">
+		                        <col style="width: 10%">
+		                        <col style="width: 10%">
+		                        <col style="width: 10%">
+		                        <col style="width: auto">
+		                    </colgroup>
+		                    <tr>
+		                    	<th>번호</th>
+		                        <th>구분</th>
+		                        <th>제목</th>
+		                        <th>판매가</th>
+		                        <th>배분율</th>
+		                        <th>판매갯수</th>
+		                        <th>총배분금액($)</th>
+		                        <th>정산</th>
+		                        <th>미정산</th>
+		                    </tr>
+		                    <tr>
+		                    	<td class="textC">1</td>
+		                    	<td class="textC">작곡</td>
+		                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+		                    	<td>100</td>
+		                    	<td>30%</td>
+		                    	<td>110</td>
+		                    	<td>30</td>
+		                    	<td>190</td>
+		                    	<td>30</td>
+		                    </tr>
+		                    <tr>
+		                    	<td class="textC">2</td>
+		                    	<td class="textC">뮤지션</td>
+		                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+		                    	<td>100</td>
+		                    	<td>30%</td>
+		                    	<td>110</td>
+		                    	<td>30</td>
+		                    	<td>190</td>
+		                    	<td>30</td>
+		                    </tr>
+		                    <tr>
+		                    	<td class="textC">3</td>
+		                    	<td class="textC">작곡</td>
+		                    	<td class="textL">우리앞에 생이 끝나갈때~</td>
+		                    	<td>100</td>
+		                    	<td>30%</td>
+		                    	<td>110</td>
+		                    	<td>30</td>
+		                    	<td>190</td>
+		                    	<td>30</td>
+		                    </tr>
+		                </table>
+		            </div>
+				</div>
+			</div>
+		</div>
+		<!-- //contents -->
+		<!-- footer -->
+		<div class="mrFooter">
+			<div class="footerArea">
+				온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+			</div>
+		</div>
+		<!-- //footer -->
+	</div>
+</body>
+</html>

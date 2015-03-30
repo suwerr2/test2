@@ -1,0 +1,37 @@
+package com.ma2rix.music.dao.mapper;
+
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.ma2rix.music.model.domain.Arrangement;
+import com.ma2rix.music.model.domain.Code;
+import com.ma2rix.music.model.domain.Performance;
+import com.ma2rix.music.model.domain.SongWriting;
+import com.ma2rix.music.model.domain.Vocal;
+import com.ma2rix.music.model.domain.Workspace;
+
+public interface WorkspaceMapper {
+
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+			@Param("memberNo") int memberNo, @Param("composeStatus1") String composeStatus1, @Param("composeStatus2") String composeStatus2,
+			@Param("ingSale") String ingSale);
+
+	public ArrayList<Arrangement> getProjectsByArrangeMemberNoAndArrangeMemberStatus(
+			@Param("memberNo") int memberNo, @Param("arrangeStatus") String arrangeStatus);
+	
+	public ArrayList<Performance> getProjectsByperformMemberNoperformStatus(
+			@Param("memberNo") int memberNo, @Param("performStatus") String performStatus);
+	
+	public ArrayList<Vocal> getProjectsByVocalMemberNoVocalStatus(
+			@Param("memberNo") int memberNo, @Param("vocalStatus") String vocalStatus);
+	
+	public ArrayList<SongWriting> getProjectsByWriteMemberNoWriteStatus(
+			@Param("memberNo") int memberNo, @Param("writeStatus") String writeStatus);
+
+	public Code getMyPart(int memberNo);
+	
+	public int getFanCount(int memberNo);
+
+	public int getSponsorAmount(int memberNo);
+}

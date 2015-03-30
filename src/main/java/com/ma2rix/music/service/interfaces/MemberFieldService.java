@@ -1,0 +1,25 @@
+package com.ma2rix.music.service.interfaces;
+
+import java.util.ArrayList;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ma2rix.music.model.command.MemberCommand;
+import com.ma2rix.music.model.command.PerformanceCommand;
+import com.ma2rix.music.model.domain.MemberField;
+import com.ma2rix.music.model.domain.User;
+
+@Transactional
+public interface MemberFieldService {
+	public ArrayList<MemberField> getMemberFieldsByUser(User user);
+	public ArrayList<MemberField> getMemberFieldsByMemberNo(int memberNo);
+	public void insertMemberField(MemberField memberField);
+	public void deleteMemberField(MemberField activity);
+	public void deleteAllMemberFieldsByMemberNo(int memberNo);
+	public void updateMemberField(MemberField memberField);
+	public ArrayList<MemberCommand> getMusicianSelectList(User user);
+	public ArrayList<MemberCommand> getMusicianArrangementSelectList(User user);
+	public ArrayList<MemberCommand> getMusicianArrangementParticipationSelectList(int arrangeNo);
+	public ArrayList<MemberCommand> getMusicianArrangementVocalSelectList(User user);
+	public ArrayList<PerformanceCommand> getMusicianArrangementPerformanceSelectList(int arrangeNo);
+}

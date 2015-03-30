@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.MemberFieldMapper">
+
+	<select id="getMemberFieldsByUser" parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.domain.MemberField">
+		SELECT 	MEMBER_NO AS memberNo,
+				MUSIC_FIELD AS musicField,
+				REG_DATETIME as regDateTime
+		FROM TBL_MEMBER_FIELD 
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="getMemberFieldsByMemberNo" parameterType="int" resultType="com.ma2rix.music.model.domain.MemberField">
+		SELECT 	MEMBER_NO AS memberNo,
+				MUSIC_FIELD AS musicField,
+				REG_DATETIME as regDateTime
+		FROM TBL_MEMBER_FIELD 
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	
+	<insert id="insertMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		INSERT INTO TBL_MEMBER_FIELD
+			(MEMBER_NO,MUSIC_FIELD,REG_DATETIME)
+		VALUES 
+			(#{memberNo}, #{musicField},NOW()) 
+			
+	    <selectKey keyProperty="memberNo" resultType="java.lang.Integer" order ="AFTER">
+		    SELECT LAST_INSERT_ID()
+	    </selectKey>	
+	</insert>
+	
+	<delete id="deleteMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		DELETE FROM TBL_MEMBER_FIELD  where member_no = #{memberNo}
+	</delete>
+	
+	<delete id="deleteAllMemberFieldsByMemberNo" parameterType="int">
+		DELETE FROM TBL_MEMBER_FIELD  where member_no = #{memberNo}
+	</delete>
+	
+	<update id="updateMemberField" parameterType="com.ma2rix.music.model.domain.MemberField">
+		UPDATE TBL_MEMBER_FIELD SET
+			MEMBER_NO = #{memberNo},
+			MUSIC_FIELD = #{musicField},
+			REG_DATETIME = #{regDateTime}
+		WHERE MEMBER_NO = #{memberNo} 
+	</update>
+	
+	<select id="getMusicianSelectList"  parameterType="com.ma2rix.music.model.domain.User" resultType="com.ma2rix.music.model.command.MemberCommand">
+		SELECT 
+				T1.MEMBER_NO AS memberNo,
+				T1.MEMBER_USERID AS memberUserId,
+				T1.MEMBER_NAME AS memberName,
+				T1.MEMBER_PWD AS memberPwd,
+				T1.MEMBER_ROUTE AS memberRoute,
+				T1.MEMBER_NICKNAME AS memberNickName,
+				T1.MEMBER_IMAGE AS memberImage,
+				T1.COUNTRY_NO AS countryNo,
+				T1.MEMBER_CITY AS memberCity,
+				T1.MEMBER_INTRODUCE AS memberIntroduce,
+				T1.MEMBER_HOMEPAGE AS memberHomePage,
+				T1.HOMEPAGE_COMMENT AS homePageComment,
+				T1.MEMBER_STATUS AS memberStatus,
+				T1.EMAIL_RECEIVE AS emailReceive,
+				T1.COMMUNITY_MEMBER_NO AS communityMemberNo,
+				T1.SPONSOR_AMOUNT AS sponsorAmout,
+				T1.LAST_DATETIME AS lastDateTime,
+				T1.REG_DATETIME AS regDateTime,
+				T1.MOD_ADMIN_NO AS modAdminNo,
+				T1.MOD_DATETIME AS modDateTime,
+				T2.MUSIC_FIELD AS musicField
+		FROM TBL_MEMBER	AS   T1
+			LEFT OUTER JOIN
+			TBL_MEMBER_FIELD	AS T2
+				ON (
+						T1.MEMBER_NO	= T2.MEMBER_NO
+					)
+			WHERE
+				T1.MEMBER_USERID LIKE CONCAT('%',#{memberUserId},'%')
+			ORDER BY
+				T1.MEMBER_USERID
+	</select>
+	
+	</mapper>

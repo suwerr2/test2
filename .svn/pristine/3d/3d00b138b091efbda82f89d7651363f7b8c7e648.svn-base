@@ -1,0 +1,125 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.ma2rix.music.common.Pagination;
+import com.ma2rix.music.manager.AppConstants;
+import com.ma2rix.music.manager.ForwardingMessageType;
+import com.ma2rix.music.model.command.ArrangeUpdateCommand;
+import com.ma2rix.music.model.command.ArrangeVocalCommand;
+import com.ma2rix.music.model.command.ArrangementCommand;
+import com.ma2rix.music.model.command.CommentCommand;
+import com.ma2rix.music.model.command.CompositionCommand;
+import com.ma2rix.music.model.command.PerformanceCommand;
+import com.ma2rix.music.model.domain.Arrangement;
+import com.ma2rix.music.model.domain.Composition;
+import com.ma2rix.music.model.domain.Genre;
+import com.ma2rix.music.model.domain.PlayField;
+import com.ma2rix.music.model.domain.Workspace;
+import com.ma2rix.music.model.dto.ForwardingMessage;
+import com.ma2rix.music.model.dto.MemberMessageType;
+import com.ma2rix.music.model.dto.ajaxresponse.AjaxResultBase;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.ArrangeVocalService;
+import com.ma2rix.music.service.interfaces.ArrangementService;
+import com.ma2rix.music.service.interfaces.CodeService;
+import com.ma2rix.music.service.interfaces.CommentService;
+import com.ma2rix.music.service.interfaces.CompositionService;
+import com.ma2rix.music.service.interfaces.GenreService;
+import com.ma2rix.music.service.interfaces.PlayFieldService;
+import com.ma2rix.music.service.interfaces.UserService;
+import com.ma2rix.music.service.interfaces.WorkspaceService;
+import com.ma2rix.music.web.security.LoginInfo;
+import com.ma2rix.music.web.validator.ArrangementUpdateValidator;
+
+@Controller
+@SessionAttributes({"workspaceUpdateCommand"})
+@RequestMapping("/workspace")
+public class WorkspaceController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class WorkspaceForward {
+		public static final String WORKSPACE_LIST 				        = "workspace/workspaceAllView"; 
+	}
+	
+	/**
+	 * 재지정(304) redirect하기 위한 내부 클래스 
+	 *
+	 */
+	public static class ArrangeRedirect{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";
+		public static final String REGISTER_RESULT 						= "redirect:/arrange/registerResult";
+		public static final String UPDATE_RESULT 						= "redirect:/arrange/updateResult";
+		public static final String ACTION_RESULT   						= "redirect:/user/actionResult";
+	}
+	
+	public static class pageType{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";		
+	}
+	
+	
+	public static ArrayList<MemberMessageType> memberMessageTypes;
+	
+	static {
+		memberMessageTypes= new ArrayList<MemberMessageType>();
+		memberMessageTypes.add(new MemberMessageType("01", "편곡 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("02", "연주 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("03", "보컬 참여 요청"));
+		memberMessageTypes.add(new MemberMessageType("04", "일반 메세지"));
+	}
+	
+	@Autowired private WorkspaceService workspaceService;
+	
+	/**
+	 * Workspace 리스트에 대한 요청 처리  
+	 * 
+	 */
+	@RequestMapping(value ="/workspaceList", method = RequestMethod.GET)
+	public String arrangeRemoteList(
+			@RequestParam("listType") int listType, 
+			ModelMap model) {
+	
+        LoginInfo loginInfo = loginInfoProvider.get();
+        int composeMemberNo = loginInfo.getCurrentUser().getMemberNo();  
+		
+        // TODO 이 부분은 나중에 상수로 빼야 됨
+        String composeStatus = "01";    //  작곡상태 : 01 작곡중 
+		ArrayList<Workspace> ongoingProjects = workspaceService.getProjectsByComposeMemberNoAndComposeStatus(
+				composeMemberNo, composeStatus);
+		int ongoingProjectsCount = ongoingProjects.size();
+		
+		// TODO 이 부분은 나중에 상수로 빼야 됨
+        composeStatus = "02";    //  작곡상태 : 02 작곡완료
+		ArrayList<Workspace> completedprojects = workspaceService.getProjectsByComposeMemberNoAndComposeStatus(
+				composeMemberNo, composeStatus);
+		int completedprojectsCount = completedprojects.size();
+		
+		model.addAttribute("ongoingProjects", ongoingProjects);
+		model.addAttribute("ongoingProjectsCount", ongoingProjectsCount);
+		model.addAttribute("completedprojects", completedprojects);
+		model.addAttribute("completedprojectsCount", completedprojectsCount);
+
+		return  WorkspaceForward.WORKSPACE_LIST;
+	}
+	
+}
+

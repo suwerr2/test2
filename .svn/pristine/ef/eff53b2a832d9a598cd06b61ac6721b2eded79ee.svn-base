@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">음원 리스트</h2>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text" id="searchWord" onkeypress="javascript:search()"><i class="fa fa-search searchIcon"></i></div>
+						<div class="checkSelect">
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:sortGenre()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre" items="${genreList}">
+	                                <option value="${genre.genreNo}" <c:if test="${genre.genreNo == genreNo}">selected="selected"</c:if>>${genre.genreName}</option>
+								</c:forEach>
+                            </select>
+						</div> 
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+	            
+			</div>
+			
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+
+
+<%@ include file="../include/listCommonLayer.jsp" %>			
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript">
+
+	//리스트 변수 초기화
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};
+	
+	//순별로 가져오기.
+	function sortGo(orderBy){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.orderby = orderBy;
+		AutoAddLine.genreNo = $("#genre_sel").val();
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+	
+	function sortGenre(){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.genreNo = $("#genre_sel").val();			
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+
+	new $$loop_progress_init();
+	new $$open_loop_progress();	
+	e.beginScroll();
+		
+</script>
+
+

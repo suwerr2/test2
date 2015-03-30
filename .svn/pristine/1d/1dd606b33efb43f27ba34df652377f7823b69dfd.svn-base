@@ -1,0 +1,330 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ma2rix.music.model.command.CommentCommand;
+import com.ma2rix.music.model.command.CompositionCommand;
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.command.MemberCommand;
+import com.ma2rix.music.model.command.PerformanceCommand;
+import com.ma2rix.music.model.domain.Bulletin;
+import com.ma2rix.music.model.domain.Fan;
+import com.ma2rix.music.model.domain.User;
+import com.ma2rix.music.model.dto.ajaxresponse.AjaxResultBase;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.ArrangementService;
+import com.ma2rix.music.service.interfaces.BulletinService;
+import com.ma2rix.music.service.interfaces.CommentService;
+import com.ma2rix.music.service.interfaces.FanService;
+import com.ma2rix.music.service.interfaces.MemberFieldService;
+import com.ma2rix.music.web.controller.CompositionController.CompositionForward;
+import com.ma2rix.music.web.security.LoginInfo;
+
+@Controller
+@RequestMapping("/common")
+public class CommonController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class CommonForward {
+
+		public static final String BULLETIN_LIST			    = "workspace/noticeList";
+		
+	}
+	@Autowired private MemberFieldService memberFieldService;
+	@Autowired private CommentService commentService;
+	@Autowired private ArrangementService arrangementService;
+	@Autowired private FanService fanService;
+	@Autowired private BulletinService bulletinService;
+	
+	/**
+	 * 뮤지션선택에 대한 ajax 요청 처리  
+	 * 뮤지션 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/musicianSelectList", method = RequestMethod.GET)
+	public GenericResponse<MemberCommand> musicianSelectList(
+			@RequestParam("memberUserId") String memberUserId,
+			@RequestParam("selectOpt") String selectOpt,
+			ModelMap model)
+	{	
+
+		User user = new User();
+		user.setMemberUserId(memberUserId);
+		user.setSelectOpt(selectOpt);
+		GenericResponse<MemberCommand> gr = new GenericResponse<MemberCommand>();
+		ArrayList<MemberCommand> musicianSelectList = memberFieldService.getMusicianSelectList(user);
+		gr.setObjects(musicianSelectList);
+		return gr;
+	}
+
+	
+	/**
+	 * 코멘트에 대한 ajax 요청 처리  
+	 * 뮤지션 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/commentList", method = RequestMethod.GET)
+	public GenericResponse<CommentCommand> commentList(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam("musicNo") int musicNo,
+			ModelMap model)
+	{	
+		GenericResponse<CommentCommand> gr = new GenericResponse<CommentCommand>();
+		ArrayList<CommentCommand> commentList = commentService.getCommentsByMusicClassNoAndMusicNo(musicClassNo, musicNo);
+		gr.setObjects(commentList);
+		return gr;
+	}	
+	
+	
+	/**
+	 * ajax comment 등록 요청 처리 
+	 * @param musicClassNo
+	 * @param musicNo
+	 * @param commentContents
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/comment", method = RequestMethod.GET)
+	public AjaxResultBase comment(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam("musicNo") int musicNo,
+			@RequestParam("commentContents") String commentContents
+			){
+		AjaxResultBase res = new AjaxResultBase();
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int memberNo; 
+		
+		if (loginInfo == null){
+			memberNo = 1;
+		}else {
+			memberNo = loginInfo.getCurrentUser().getMemberNo();
+		}
+		try {
+			commentService.insertComment(musicClassNo,musicNo, memberNo, commentContents);
+			res.setResultCode(1);
+			res.setMessage("success");
+			res.setValue(commentContents);
+		} catch (Exception e) {
+			res.setResultCode(0);
+			res.setMessage("comment fail");
+			res.setValue(commentContents);
+		
+		}
+		return res;
+	}
+	
+	/**
+	 * 코멘트에 대한 ajax 요청 처리  
+	 * 뮤지션 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/performanceList", method = RequestMethod.GET)
+	public GenericResponse<PerformanceCommand> performanceList(
+			@RequestParam("arrangeNo") int arrangeNo,
+			ModelMap model)
+	{	
+		GenericResponse<PerformanceCommand> gr = new GenericResponse<PerformanceCommand>();
+		
+		ArrayList<PerformanceCommand> performanceList = arrangementService.getPerformanceCommandsByArrangeNo(arrangeNo);
+		
+		gr.setObjects(performanceList);
+		
+		return gr;
+	}	
+	
+	
+	/**
+	 * ajax fan 등록 요청 처리 
+	 * @param Fan
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/addFan", method = RequestMethod.GET)
+	public ModelMap insertFan(
+			@RequestParam("fanMemberNo") int fanMemberNo,
+			@RequestParam("musicMemberNo") int musicMemberNo,
+			@RequestParam("musicClass") String musicClass,
+			@RequestParam("musicNo") int musicNo,
+			ModelMap model){
+		
+		Logger logger = Logger.getLogger(CommonController.class);
+		
+		LoginInfo loginInfo = loginInfoProvider.get();
+		
+		Fan fan = new Fan();
+		fan.setFanMemberNo(loginInfo.getCurrentUser().getMemberNo());
+		fan.setMusicMemberNo(musicMemberNo);
+		fan.setMusicClass(musicClass);
+		fan.setMusicNo(musicNo);
+
+		try {
+			//insert 팬수
+			fanService.insertFan(fan);
+
+			//update 작곡 팬수
+			fanService.updateCompositionFan(fan);
+			
+			FanCommand fanCommand = new FanCommand();
+			
+			//select 팬수
+			fanCommand = fanService.getFancountByMusicNo(fan);
+			
+			model.addAttribute("fanCommand", fanCommand);
+			
+		} catch (Exception e) {
+		}
+		return model;
+	}
+	/**
+	 * ajax fan 등록 요청 처리 
+	 * @param Fan
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/subFan", method = RequestMethod.GET)
+	public ModelMap deleteFan(
+			@RequestParam("fanMemberNo") int fanMemberNo,
+			@RequestParam("musicMemberNo") int musicMemberNo,
+			@RequestParam("musicClass") String musicClass,
+			@RequestParam("musicNo") int musicNo,
+			ModelMap model){
+		
+		Logger logger = Logger.getLogger(CommonController.class);
+		
+		LoginInfo loginInfo = loginInfoProvider.get();
+		
+		Fan fan = new Fan();
+		fan.setFanMemberNo(loginInfo.getCurrentUser().getMemberNo());
+		fan.setMusicMemberNo(musicMemberNo);
+		fan.setMusicClass(musicClass);
+		fan.setMusicNo(musicNo);
+
+		try {
+			//insert 팬수
+			fanService.deleteFan(fan);
+
+			//update 작곡 팬수
+			fanService.updateCompositionFan(fan);
+			
+			FanCommand fanCommand = new FanCommand();
+			
+			//select 팬수
+			fanCommand = fanService.getFancountByMusicNo(fan);
+			
+			model.addAttribute("fanCommand", fanCommand);
+			
+		} catch (Exception e) {
+		}
+		return model;
+	}	
+	/**
+	 * 연주자선택에 대한 ajax 요청 처리  
+	 * 연주자 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/musicianArrangementSelectList", method = RequestMethod.GET)
+	public GenericResponse<MemberCommand> musicianArrangementSelectList(
+			@RequestParam("memberUserId") String memberUserId,
+			@RequestParam("selectOpt") String selectOpt,
+			ModelMap model)
+	{	
+		User user = new User();
+		user.setMemberUserId(memberUserId);
+		user.setSelectOpt(selectOpt);
+
+		GenericResponse<MemberCommand> gr = new GenericResponse<MemberCommand>();
+
+		ArrayList<MemberCommand> musicianArrangementSelectList = memberFieldService.getMusicianArrangementSelectList(user);
+		gr.setObjects(musicianArrangementSelectList);
+		return gr;
+	}
+	
+	
+	/**
+	 * 참여요청 연주자 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/musicianArrangementParticipationSelectList", method = RequestMethod.GET)
+	public GenericResponse<MemberCommand> musicianArrangementParticipationSelectList(
+			@RequestParam("arrangeNo") int arrangeNo,
+			ModelMap model)
+	{	
+
+		GenericResponse<MemberCommand> gr = new GenericResponse<MemberCommand>();
+
+		ArrayList<MemberCommand> musicianArrangementParticipationSelectList= memberFieldService.getMusicianArrangementParticipationSelectList(arrangeNo);
+		gr.setObjects(musicianArrangementParticipationSelectList);
+		return gr;
+	}
+	
+	
+	/**
+	 * 보컬선택에 대한 ajax 요청 처리  
+	 * 보컬 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/musicianArrangementVocalSelectList", method = RequestMethod.GET)
+	public GenericResponse<MemberCommand> musicianArrangementVocalSelectList(
+			@RequestParam("memberUserId") String memberUserId,
+			@RequestParam("selectOpt") String selectOpt,
+			ModelMap model)
+	{	
+		User user = new User();
+		user.setMemberUserId(memberUserId);
+		user.setSelectOpt(selectOpt);
+
+		GenericResponse<MemberCommand> gr = new GenericResponse<MemberCommand>();
+
+		ArrayList<MemberCommand> musicianArrangementVocalSelectList = memberFieldService.getMusicianArrangementVocalSelectList(user);
+		gr.setObjects(musicianArrangementVocalSelectList);
+		return gr;
+	}
+		
+	/**
+	 * 공지사항 ajax 요청 처리  
+	 * 공지사항목록 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/getBulletinSelectList", method = RequestMethod.GET)
+	public GenericResponse<Bulletin> getBulletinSelectList(
+			ModelMap model)
+	{	
+
+		GenericResponse<Bulletin> gr = new GenericResponse<Bulletin>();
+
+		ArrayList<Bulletin> getBulletinSelectList = bulletinService.getAllBulletin();
+		gr.setObjects(getBulletinSelectList);
+		return gr;
+	}
+	
+	/**
+	 * 공지사항 리스트페이지
+	 */
+	@RequestMapping(value = "/bulletinList", method = RequestMethod.GET)
+	public String list(ModelMap model) {
+
+		ArrayList<Bulletin> getBulletinSelectList = bulletinService.getAllBulletin();
+		model.addAttribute("Bulletin", getBulletinSelectList);
+	
+		return CommonForward.BULLETIN_LIST;
+	}
+}

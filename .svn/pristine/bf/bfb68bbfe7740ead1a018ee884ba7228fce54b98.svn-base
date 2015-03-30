@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AudioSet</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/default.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<!-- 오디오 컨트롤러 셋 -->
+	<div class="audioSetWrap">
+	    <div id="audioSet"></div>
+	    <div id="jp_container_1" class="jp-audio">
+	    	<!-- 앨범소개 -->
+	    	<div class="infoWrap">
+	    		<div class="visual"><img src="../../images/holderType3.gif" alt="" style="width: 50px; height: 50px;"></div>
+	    		<div class="infoText">
+	    			<strong class="tit">Somewhere over the rainbow</strong>
+	    			<p class="singler">By andoridpub</p>
+	    		</div>
+	    		<div class="muszList">
+	    			<ul>
+	    				<li>작곡가 : ahn</li>
+	    				<li>작사가 : ahn</li>
+	    				<li>편곡자 : ahn</li>
+	    			</ul>
+	    		</div>
+	    	</div>
+	    	<!-- //앨범소개 -->
+	    	<!-- 오디어 제어버튼 -->
+	        <div class="jp-type-single">
+	            <div class="jp-gui jp-interface">
+	                <ul class="jp-controls">
+	                    <li><a href="javascript:;" class="jp-before" tabindex="1">play</a></li>
+	                    <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+	                    <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+	                    <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+	                    <li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+	                </ul>
+	            </div>
+	            <!-- <div class="jp-details">
+	                <ul>
+	                    <li><span class="jp-title">타이틀 들어가는 곳</span></li>
+	                </ul>
+	            </div>
+	             -->
+	            <div class="jp-no-solution">
+	                <span>Update Required</span>
+	                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+	            </div>
+	        </div>
+	        <!-- //오디어 제어버튼 -->
+	    </div>
+	</div>
+	<!-- //오디오 컨트롤러 셋 -->
+</body>
+</html>

@@ -1,0 +1,69 @@
+package com.ma2rix.music.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.FanDao;
+import com.ma2rix.music.dao.mapper.FanMapper;
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.command.FanManCommand;
+import com.ma2rix.music.model.domain.Fan;
+
+@Repository
+public class FanDaoImpl implements FanDao {
+
+	@Autowired FanMapper fanMapper;
+
+	
+	@Override
+	public FanCommand getFancountByMusicNo(Fan fan){
+		return fanMapper.getFancountByMusicNo(fan);
+	};
+
+	
+	@Override
+	public void insertFan(Fan fan){
+		fanMapper.insertFan(fan);
+	};
+	
+	@Override
+	public void deleteFan(Fan fan){
+		fanMapper.deleteFan(fan);
+	};	
+	
+	@Override
+	public void updateCompositionFan(Fan fan){
+		fanMapper.updateCompositionFan(fan);
+	};
+	
+	@Override
+	public void updateVocalFan(Fan fan){
+		fanMapper.updateVocalFan(fan);
+	};	
+	
+	@Override
+	public int getMyFanCount(int fanMemberNo){
+		return fanMapper.getMyFanCount(fanMemberNo);
+	};
+	
+	@Override
+	public int getFancountByMusicMemberNo(int musicMemberNo){
+		return fanMapper.getFancountByMusicMemberNo(musicMemberNo);
+	};	
+	
+	@Override
+	public ArrayList<FanManCommand> getFanListAndMemberByMusicMemberNo(int musicMemberNo, int pageCount){
+		return fanMapper.getFanListAndMemberByMusicMemberNo(musicMemberNo, pageCount);
+	};
+	
+	@Override
+	public int getFanListAndMemberCount(){
+		return fanMapper.getFanListAndMemberCount();
+	};	
+	
+	
+	
+		
+}

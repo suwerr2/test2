@@ -1,0 +1,119 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">음원 리스트</h2>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text" id="searchWord" onkeypress="javascript:search()"><i class="fa fa-search searchIcon"></i></div>
+						<div class="checkSelect">
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:sortGenre()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre" items="${genreList}">
+	                                <option value="${genre.genreNo}" <c:if test="${genre.genreNo == genreNo}">selected="selected"</c:if>>${genre.genreName}</option>
+								</c:forEach>
+                            </select>
+						</div> 
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+				
+				<!-- layer popup : 스폰서 -->
+                <div class="layer">
+                    <div class="bg"></div>
+	                <div id="sponsorPop" class="pop-layer">
+	                	<div class="layerPopupWrap">
+	                		<h3>Sponsor</h3>
+	                		<div class="popCont">
+	                			<div class="arrInfoWrap floatL pd0">
+	                				<h4>금액</h4>
+	                			</div>
+		                		<div class="floatL mb10 ml10">
+			                		<select class="dropdown" name="">
+			                            <option>1$</option>
+			                            <option>2$</option>
+			                            <option>3$</option>
+			                            <option>4$</option>
+			                            <option>5$</option>
+			                            <option>6$</option>
+			                            <option>7$</option>
+			                            <option>8$</option>
+			                            <option>9$</option>
+			                            <option>10$</option>
+			                        </select>
+			                    </div>
+			                    <div class="contBox01">
+			                    	<ul>
+			                    		<li>스폰 금액은 최대 10달러 까지 가능합니다.</li>
+			                    		<li>스폰 금액은 실제 결제되는 것이 아니라, 입력하신 금액에 대응하는 포인트로 보컬에게 부여됩니다.</li>
+			                    	</ul>
+			                    </div>
+		                        <div class="textC mt20">
+		                        	<a class="btn large btnPoint btnClose" href="#none"><span>취소</span></a>
+		                        	<a class="btn large btnPoint btnClose" href="#none"><span>확인</span></a>
+		                        </div>
+	                        </div>
+	                	</div> 
+	                </div>
+	            </div>
+	            <!-- //layer popup : 스폰서 -->
+	            
+			</div>
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+			
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript">
+
+	//리스트 변수 초기화
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "${pageon}";
+	AutoAddLine.searchWord = "";
+	AutoAddLine.isSearch = "";
+	AutoAddLine.memberNo = ${memberNo};
+	
+	//순별로 가져오기.
+	function sortGo(orderBy){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.orderby = orderBy;
+		AutoAddLine.genreNo = $("#genre_sel").val();
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+	
+	function sortGenre(){
+		
+		AutoAddLine.page = 1;
+		AutoAddLine.genreNo = $("#genre_sel").val();			
+				
+		AutoAddLine.addRowTypeEmpty(); // 리스트 비우기.
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+		
+	}
+
+	new $$loop_progress_init();
+	new $$open_loop_progress();	
+	e.beginScroll();
+		
+</script>
+
+

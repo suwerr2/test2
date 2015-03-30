@@ -1,0 +1,20 @@
+package com.ma2rix.music.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.FanDao;
+import com.ma2rix.music.dao.mapper.FanMapper;
+
+@Repository
+public class FanDaoImpl implements FanDao {
+
+	@Autowired private FanMapper fanMapper;
+
+	
+	@Override
+	public int getMyFanCount(){
+		return fanMapper.getMyFanCount();
+	};
+
+}

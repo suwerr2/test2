@@ -1,0 +1,220 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.ma2rix.music.common.Pagination;
+import com.ma2rix.music.model.command.SongWritingCommand;
+import com.ma2rix.music.model.command.VocalCommand;
+import com.ma2rix.music.model.domain.Sponsor;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.CodeService;
+import com.ma2rix.music.service.interfaces.GenreService;
+import com.ma2rix.music.service.interfaces.PlayFieldService;
+import com.ma2rix.music.service.interfaces.PlayListService;
+import com.ma2rix.music.service.interfaces.SongWritingService;
+import com.ma2rix.music.service.interfaces.SponsorService;
+import com.ma2rix.music.service.interfaces.UserService;
+import com.ma2rix.music.service.interfaces.VocalService;
+import com.ma2rix.music.web.security.LoginInfo;
+
+@Controller
+@SessionAttributes({"userId"})
+@RequestMapping("/vocal")
+public class VocalController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class VocalForward {
+		public static final String VOCAL_LIST 							= "vocal/vocalList";
+		public static final String VOCAL_DETAIL 						= "vocal/vocalDetail";
+	}
+	
+	/**
+	 * 재지정(304) redirect하기 위한 내부 클래스 
+	 *
+	 */
+	public static class VocalRedirect{
+		public static final String VOCAL_VOCALLIST 						= "redirect:/vocal/vocalList";
+		public static final String REGISTER_RESULT 						= "redirect:/arrange/registerResult";
+		public static final String UPDATE_RESULT 						= "redirect:/arrange/updateResult";
+		public static final String ACTION_RESULT   						= "redirect:/user/actionResult";
+		public static final String REGISTER_UPDATE_FORM 				= "redirect:/arrange/update"; 
+	}
+	
+	public static class pageType{
+		public static final String ARRANGE_INDEX 						= "redirect:/arrange/index";		
+	}
+	
+	
+	@Autowired private GenreService genreService;
+	@Autowired private PlayFieldService playFieldService;
+	@Autowired private CodeService codeService;
+	@Autowired private UserService userService;
+	@Autowired private VocalService vocalService;
+    @Autowired private SongWritingService songWritingService;
+    @Autowired private SponsorService sponsorService;
+    @Autowired private PlayListService playListService;
+	
+
+	/**
+	 * 편곡 리스트페이지
+	 */
+	@RequestMapping(value = "/vocalList", method = RequestMethod.GET)
+	public String vocalList(
+			@RequestParam(value = "listType",   required = false   ,defaultValue = "1") int listType,
+			@RequestParam(value = "page" 	,   required = false   ,defaultValue = "1") int page,
+			@RequestParam(value = "genreNo" ,   required = false   ,defaultValue = "0") int genreNo,
+			@RequestParam(value = "orderBy" ,   required = false   ,defaultValue = "1") int orderBy,			
+			ModelMap model) {
+
+			model.addAttribute("listTypeString", "음원 리스트");
+			model.addAttribute("page", page);			
+			model.addAttribute("listType", listType);
+			model.addAttribute("genreNo", genreNo);
+			model.addAttribute("orderBy", orderBy);
+			model.addAttribute("genreList", genreService.getAllGenres());			
+		
+			return VocalForward.VOCAL_LIST;		
+		
+	}	
+	
+	
+	
+	/**
+	 * 편곡 리스트에 대한 ajax 요청 처리  
+	 * 전달된 page 파라미터에 따른 (등록된) 편곡 리스트를 반환.
+	 * page 파라미터가 전달되지 않는 다면, 1로 세팅
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/vocalRemoteList", method = RequestMethod.GET)
+	public GenericResponse<VocalCommand> vocalRemoteList(
+			@RequestParam(value = "listType",   required = false   ,defaultValue = "1") int listType,
+			@RequestParam(value = "page"	, required = false, defaultValue = "1" ) int page,
+			@RequestParam(value = "genreNo"	, required = false, defaultValue = "0" ) int genreNo,
+			@RequestParam(value = "orderBy"	, required = false, defaultValue = "1" ) int orderBy,
+			@RequestParam(value = "searchWord"	, required = false, defaultValue = "" ) String searchWord,
+			@RequestParam(value = "isSearch"	, required = false, defaultValue = "0" ) String isSearch,			
+			ModelMap model)
+	{	
+
+		Logger logger = Logger.getLogger(VocalController.class);
+		
+		int vocalTotalRow = vocalService.getVocalCount(genreNo, isSearch, searchWord);		
+		GenericResponse<VocalCommand> gr = new GenericResponse<VocalCommand>();
+		Pagination pagination = new Pagination(vocalTotalRow, page, VocalService.PAGE_OFFSET);
+		
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int loginMemberNo = 0;
+		if ( loginInfo.getCurrentUser() != null){
+			loginMemberNo = loginInfo.getCurrentUser().getMemberNo();
+		}		
+		
+		ArrayList<VocalCommand> VocalCommandList = 
+				vocalService.getVocalCommandList(genreNo,
+						pagination.getStartRow(),
+						VocalService.PAGE_OFFSET,
+						searchWord,
+						isSearch,
+						loginMemberNo
+		);
+		
+		gr.setResultCode(1);
+		gr.setListType(listType);
+		gr.setMessage("success");
+		gr.setCurrentRowCount(VocalCommandList.size());
+		gr.setTotalPage(VocalCommandList.size());
+		gr.setCurrentPage(page);
+		gr.setTotalRow(vocalTotalRow);
+		gr.setObjects(VocalCommandList);
+		return gr;
+	}		
+	
+	
+	
+	
+	/**
+	 * 플레이 리스트 등록.
+	 * @return
+	 */	
+	@ResponseBody
+	@RequestMapping(value ="/vocalRemoteInsert", method = RequestMethod.GET)
+	public void vocalRemoteInsert(
+			@RequestParam(value = "musicClass", required = false, defaultValue = "1") String musicClass,
+			@RequestParam(value = "musicNo"	  , required = false, defaultValue = "1") int musicNo,
+			@RequestParam(value = "memberNo"  , required = false, defaultValue = "0") int memberNo,			
+			ModelMap model)
+	{	
+		Logger logger = Logger.getLogger(VocalController.class);		
+		playListService.insertPlayList(musicClass, musicNo, memberNo);
+	}		
+	
+	
+	
+	
+	/**
+	 * 해당 작곡 세부 정보 요청을 처리
+	 * @param composeNo
+	 * @return
+	 */
+	@RequestMapping(value ="/vocalDetail", method = RequestMethod.GET)
+	public String composeDetail(
+			@RequestParam(value = "vocalNo", required = true) int vocalNo, 
+			ModelMap model){
+		
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int loginMemberNo = 0;
+		if ( loginInfo.getCurrentUser() != null){
+			loginMemberNo = loginInfo.getCurrentUser().getMemberNo();
+		}				
+		
+		VocalCommand vocalCommand = vocalService.getVocalByvocalNo(vocalNo, loginMemberNo);
+		int arrangeNo = vocalCommand.getArrangeNo();
+		
+		ArrayList<SongWritingCommand> songList = songWritingService.getWritingCommandByWriteNo(arrangeNo);		
+		model.addAttribute("songList", songList);
+		model.addAttribute("vocalCommand", vocalCommand);		
+
+		return VocalForward.VOCAL_DETAIL;
+	}	
+	
+
+	
+	//스폰서 정보 입력
+	@ResponseBody	
+	@RequestMapping( value ="/initSponsor", method = RequestMethod.GET)
+	public Sponsor initSponsor(
+			@RequestParam(value = "memberId", required = true) int memberId,			
+			@RequestParam(value = "memberSponsorId", required = true) int memberSponsorId,
+			@RequestParam(value = "sponsorAmount", required = true) int sponsorAmount,
+			@RequestParam(value = "vocalNum", required = true) int vocalNum,			
+			ModelMap model) {
+
+		Sponsor sponsor = new Sponsor();
+
+		sponsor.setMemberNo(memberId);
+		sponsor.setSponsorMemberNo(memberSponsorId);
+		sponsor.setSponsorAmount(sponsorAmount);		
+		sponsorService.insertSponsor(sponsor);
+		
+		sponsor.setSponsorAmount(sponsorService.getSponByMemberNo(memberId));
+		sponsor.setSponsorNo(vocalNum);
+		
+		return sponsor;
+
+	}	
+	
+}
+

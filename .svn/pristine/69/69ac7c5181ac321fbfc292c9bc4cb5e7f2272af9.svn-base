@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.PlayListMapper">
+	<cache />
+	<select id = "getPaymentCount" resultType = "int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_PAYMENT
+		]]>
+	</select>
+	
+	<select id="getPaymentByPayNo" parameterType="int" resultType="com.ma2rix.music.model.domain.Payment">
+		<![CDATA[
+			SELECT
+				PAY_NO					as payNo				,
+				PAY_DATE				as payDate				,
+				PAY_TIME				as payTime				,
+				PAY_MEMBER_NO			as payMemberNo			,
+				PAY_AMOUNT				as payAmount			,
+				PAY_FEE					as payFee				,
+				PG_NO					as pgNo					,
+				PAY_CARD				as pgCard				,
+				PAY_TID					as payTid				,
+				PAY_AUTH_CODE			as payAuthCode			,
+				PAY_RESULT_CODE			as payResultCode		,
+				PAY_RESULT_MSG			as payResultMsg			,
+				PAY_AUTH_DATE			as payAuthDate			,
+				PAY_AUTH_TIME			as payAuthTime			,
+				PAY_CANCEL_DATE			as payCancelDate		,
+				PAY_CANCEL_TIME			as payCancelTime		,
+				PAY_TYPE				as payType				,
+				PAY_STATUS				as payStatus			,
+				REG_DATETIME			as regDateTime			,
+				MOD_DATETIME			as modDateTime				 			
+			FROM 
+				TBL_PAYMENT
+			WHERE 
+				PAY_NO = #{payNo}
+		]]>
+	</select>
+	
+</mapper>

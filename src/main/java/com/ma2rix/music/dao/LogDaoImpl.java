@@ -1,0 +1,36 @@
+package com.ma2rix.music.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.LogDao;
+import com.ma2rix.music.dao.mapper.LogMapper;
+import com.ma2rix.music.model.domain.Log;
+
+@Repository
+public class LogDaoImpl implements LogDao {
+
+	@Autowired LogMapper logMapper;
+
+	@Override
+	public int getLogCount() {
+		return logMapper.getLogCount();
+	}
+
+	@Override
+	public ArrayList<Log> getAllLogList() {
+		return logMapper.getAllLogList();
+	}
+	@Override
+	public ArrayList<Log> getLogByMemberNo(int pageCount, int pageOffset, int searchMemberNo, String dateFrom, String dateTo) {
+		return logMapper.getLogByMemberNo(pageCount, pageOffset, searchMemberNo, dateFrom, dateTo);
+	}
+
+	@Override
+	public void insertLog(Log log) {
+		logMapper.insertLog(log);
+	}
+
+}

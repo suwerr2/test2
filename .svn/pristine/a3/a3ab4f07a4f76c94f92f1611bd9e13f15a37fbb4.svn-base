@@ -1,0 +1,102 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>
+
+        <!-- contents -->
+        <div class="mrContainer">
+            <div class="contents">
+                <div class="titleWrap">
+                    <h2>보컬 상세</h2>
+                </div>
+                <div class="detailTop">
+                	<div class="visual"><img src="../resources/images/vocal_sample.jpg" alt="" style="width: 150px; height: 150px;"></div>
+                	<div class="soundArea">
+                		<div class="soundHeader">
+							<a class="bulPlay" href="#none"><i class="fa fa-play-circle fa-2x"></i></a>
+							<span class="songTitle">You raise up me</span>
+							<span class="songSinger"><a href="#none">by ${vocalCommand.memberNickName}</a></span>
+							<span class="songSinger">2014-10-10</span>
+							<a class="btn small btnPoint ctgView" href="#none"><span>${vocalCommand.genreName}</span></a>
+						</div>
+
+						<div class="soundBody">
+	                        <div class="pajaImg"><img src="../resources/images/holderType2.gif" alt="" style="width: 100%;"></div>
+	                        <!-- <div class="soundBar"></div> -->
+						</div>
+
+                		<div class="textL mt10">
+		                    <a class="btn large" href="#none"><span>Fan</span></a>
+		                    <a class="btn large" href="#none"><span>PlayList</span></a>
+		                    <a class="btn large" href="javascript:layer_open_common('mapView')"><span>Map</span></a>
+		                    <a class="btn large" href="javascript:layer_open_common('sponsorPop')"><span>Sponsor</span></a>
+		                    <a class="btn large" href="#none"><span>구매</span></a>
+		                    <a class="btn large btnType7" href="#none"><span><i class="fa fa-share-square-o"></i> Share</span></a>
+		                    <span class="floatR">
+                               	<i class="fa fa-heart"></i>
+                                <span><strong>${vocalCommand.fanCount}</strong></span>
+                                <span class="bar"></span>
+                                <i class="fa fa-download"></i>
+                                <span><strong>100</strong></span>
+                                <span class="bar"></span>
+                                <i class="fa fa-dollar"></i>
+                                <span><strong>${vocalCommand.sponsorAmount}</strong></span>
+                            </span>
+		                </div>
+                	</div>
+                </div>
+                <div class="hType1 pt0">
+                    <h3>보컬 메모</h3>
+                </div>  
+                <textarea cols="50" rows="5" placeholder="보컬 메모 내용 삽입" style="width: 908px">${vocalCommand.vocalMemo}</textarea>
+				
+				<div class="hType1">
+                    <h3 class="floatL">가사</h3>
+					<div class="floatR"><a href="#none" class="addLineType1 btn topayc"><span>가사보기</span></a></div>
+                </div>  
+
+                
+                <table class="tblType02 textL addTrType2">
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: auto">
+                    </colgroup>                    
+                    <tbody>
+                    
+	<c:if test="${fn:length(songList)==0}">
+	                    <tr>
+	                        <td colspan="2" class="textL">
+	                        	<div class="mb10"> <strong>등록된 가사가 없습니다.</strong></div>
+	                        </td>
+	                    </tr>
+	</c:if>                    
+
+    <c:forEach items="${songList}" var="songList">                    
+	                    <tr>
+	                    	<td colspan="2"><span class="bulList">제목 :</span> <strong>${songList.writeTitle}</strong></td>
+	                    </tr>
+	                    <tr>
+	                        <td><img src="../resources/images/holderType3.gif" alt="" style="width: 50px; height: 50px;"></td>
+	                        <td class="textL">
+	                        	<div class="mb10"><a href="#">${songList.memberUserid}</a></div>
+	                        	<p><i class="fa fa-heart"></i> <strong>${songList.fanCount}</strong></p>
+	                        </td>
+	                    </tr>
+    </c:forEach>	                	                    
+	                </tbody>
+                </table>    
+
+    				
+		        <input type="hidden" id="musicClassNo"  name="musicClassNo" 	value="03" />
+		        <input type="hidden" id="musicNo" 		name="musicNo"      	value=${vocalCommand.vocalNo} />				
+
+				<div class="hType1">
+                    <h3>Comment</h3>
+                </div>
+                
+                <%@ include file="../include/comment.jsp" %>
+
+         
+            </div>
+            <!-- //contents -->
+<%@ include file="../include/layer.jsp" %>	            
+<%@ include file="../include/bottom.jsp" %>

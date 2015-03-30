@@ -1,0 +1,130 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn">음원 리스트</h2>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text"><i class="fa fa-search searchIcon"></i></div>
+						<div class="checkSelect">
+                            <select class="dropdown">
+                                <option value="">장르 카테고리</option>
+                                <option value="">팝</option>
+                                <option value="">발라드</option>
+                                <option value="">락, 발라드</option>
+                                <option value="">재즈</option>
+                                <option value="">etc</option>
+                            </select>
+						</div> 
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList">
+						<li class="secType1 oh">
+							<div class="coverArt">
+								<a href="#none"><img src="/music/resources/images/holderType3.gif" alt="" style="width: 110px; height: 110px;"></a>
+							</div>
+							<div class="soundArea">
+								<div class="soundHeader">
+									<a class="bulPlay data-sound-url" href="#none" data-sound-url=""><i class="fa fa-play-circle fa-2x"></i></a>
+									<span class="songTitle"><a href="#none">You raise up me</a></span>
+									<span class="songSinger"><a href="#none">ma2rix</a></span>
+									<a class="btn small btnPoint ctgView" href="#none"><span>rock</span></a>
+								</div>
+								<!-- 개발에서 확인요망 -->
+								<div class="soundBody">
+                                    <div class="pajaImg"><img src="/music/resources/images/holderType2.gif" alt="" style="width: 100%;"></div>
+                                    <div class="soundBar"></div>
+								</div>
+								<!-- //개발에서 확인요망 -->
+                                <div class="soundFooter">
+                                    <a class="btn large btnType1" href="#none"><span>Fan</span></a>
+                                    <a class="btn large btnType2" href="#none" data-showing="0"><span>Comment</span></a>
+                                    <a class="btn large btnType3" href="#none"><span>연주자 현황</span></a>
+                                    <a class="btn large btnPoint btnType4" href="#none"><span>참여하기</span></a>
+                                    <a class="btn large btnType5" href="#none"><span>Play list</span></a>
+                                    <a class="btn large btnType6" href="#none"><span>맵보기</span></a>
+                                    <a class="btn large btnPoint btnType7" href="#none"><span>구매</span></a>
+                                    <a class="btn large btnType8" href="#none"><span>악보</span></a>
+                                    <a class="btn large btnType9" href="#none"><span>SponsorsShip</span></a>
+                                    <a class="btn large btnType10" href="#none"><span>편곡 보컬 참여</span></a>
+                                    <a class="btn large btnType11" href="#none"><span><i class="fa fa-share-square-o"></i> Share</span></a>
+                                    <ul class="soundFooterRight">
+                                        <li>
+                                            <i class="fa fa-heart"></i>
+                                            <strong>15</strong>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-download"></i>
+                                            <strong>100</strong>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-dollar"></i>
+                                            <strong>100,000</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+								<div class="commentWrap">
+	                                <span class="commetText">comment</span>
+									<input type="text" style="width: 700px;" placeholder="글을 입력 하세요">
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<!-- layer popup : 스폰서 -->
+                <div class="layer">
+                    <div class="bg"></div>
+	                <div id="vocalSearch" class="pop-layer">
+	                	<div class="layerPopupWrap">
+	                		<h3>Sponsor</h3>
+	                		<div class="popCont">
+	                			<div class="arrInfoWrap floatL pd0">
+	                				<h4>금액</h4>
+	                			</div>
+		                		<div class="floatL mb10 ml10">
+			                		<select class="dropdown" name="">
+			                            <option>1$</option>
+			                            <option>2$</option>
+			                            <option>3$</option>
+			                            <option>4$</option>
+			                            <option>5$</option>
+			                            <option>6$</option>
+			                            <option>7$</option>
+			                            <option>8$</option>
+			                            <option>9$</option>
+			                            <option>10$</option>
+			                        </select>
+			                    </div>
+			                    <div class="contBox01">
+			                    	<ul>
+			                    		<li>스폰 금액은 최대 10달러 까지 가능합니다.</li>
+			                    		<li>스폰 금액은 실제 결제되는 것이 아니라, 입력하신 금액에 대응하는 포인트로 보컬에게 부여됩니다.</li>
+			                    	</ul>
+			                    </div>
+		                        <div class="textC mt20">
+		                        	<a class="btn large btnPoint btnClose" href="#none"><span>취소</span></a>
+		                        	<a class="btn large btnPoint btnClose" href="#none"><span>확인</span></a>
+		                        </div>
+	                        </div>
+	                	</div> 
+	                </div>
+	            </div>
+	            <!-- //layer popup : 스폰서 -->
+	            
+			</div>
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+			
+
+
+
+
+<%@ include file="../include/bottom.jsp" %>
+
+

@@ -1,0 +1,39 @@
+package com.ma2rix.music.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ma2rix.music.dao.interfaces.PlayListDao;
+import com.ma2rix.music.dao.mapper.PlayListMapper;
+import com.ma2rix.music.model.command.PlayListCommand;
+
+@Repository
+public class PlayListDaoImpl implements PlayListDao {
+
+	@Autowired 
+	private PlayListMapper playListMapper;
+	
+	@Override
+	public int getPlayListCount(int memberNo) {
+		return playListMapper.getPlayListCount(memberNo);
+	}	
+		
+	@Override
+	public ArrayList<PlayListCommand> getPlayList(int memberNo, int pageCount, int pageOffset){
+		return playListMapper.getPlayList(memberNo, pageCount, pageOffset);		
+	}
+
+	@Override
+	public void insertPlayList(String musicClass, int musicNo, int memberNo){
+		playListMapper.insertPlayList(musicClass, musicNo, memberNo);		
+	}
+	
+	@Override
+	public void deletePlayList(int playListNo){
+		playListMapper.deletePlayList(playListNo);		
+	}	
+	
+	
+}

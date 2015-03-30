@@ -1,0 +1,39 @@
+package com.ma2rix.music.service;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ma2rix.music.dao.interfaces.VocalDao;
+import com.ma2rix.music.model.command.VocalCommand;
+import com.ma2rix.music.service.interfaces.VocalService;
+
+
+@Service
+public class VocalServiceImpl implements VocalService {
+
+	@Autowired private VocalDao vocalDao;
+	
+	@Override
+	public int getVocalCount(){
+		return vocalDao.getVocalCount();
+	};
+
+	@Override	
+	public ArrayList<VocalCommand> getVocalCommandList(int pageCount, int pageOffset){
+		return vocalDao.getVocalCommandList(pageCount, pageOffset);			
+	};
+	
+	@Override	
+	public ArrayList<VocalCommand> getAllVocalCommandList(){
+		return vocalDao.getAllVocalCommandList();		
+	};
+
+	@Override	
+	public VocalCommand getVocalByvocalNo(int vocalNo){
+		return vocalDao.getVocalByvocalNo(vocalNo);				
+	};	
+
+	
+}

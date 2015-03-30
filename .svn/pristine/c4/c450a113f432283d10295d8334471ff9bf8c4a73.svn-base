@@ -1,0 +1,17 @@
+package com.ma2rix.music.service.interfaces;
+
+import java.util.ArrayList;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ma2rix.music.model.command.ComposeArrangeCommand;
+import com.ma2rix.music.model.command.ComposeUpdateCommand;
+import com.ma2rix.music.model.command.CompositionCommand;
+import com.ma2rix.music.model.domain.Composition;
+import com.ma2rix.music.model.domain.Workspace;
+
+@Transactional
+public interface WorkspaceService {
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+			int composeMemberNo, String composeStatus);
+}

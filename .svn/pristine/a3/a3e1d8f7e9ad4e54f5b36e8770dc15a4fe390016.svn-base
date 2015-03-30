@@ -1,0 +1,158 @@
+/**
+ * 개발일자:2014.11.03
+ * 개발자:김기수
+ * 컨트롤러 설명 : 차트 관련 콘트롤러
+ * 
+ * @author v
+ *
+ */
+
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ma2rix.music.model.command.RankCommand;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.ArrangementService;
+import com.ma2rix.music.service.interfaces.GenreService;
+import com.ma2rix.music.service.interfaces.RankService;
+
+
+@Controller
+@RequestMapping("/rank")
+public class RankController extends ApplicationController{
+
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class RankForward {
+		public static final String RANK_PAGE 				= "rank/rankPage"; 	
+		public static final String AUDIO_POPUP_PAGE			= "popup/audioSet";
+	}
+	
+	@Autowired private RankService rankService;
+	@Autowired private GenreService genreService;
+	@Autowired private ArrangementService arrangementService;
+	
+	/**
+	 * 차트페이지
+	 * @param arrangeNo
+	 * @return
+	 */
+	@RequestMapping(value ="/rankPage", method = RequestMethod.GET)
+	public String rankPage(
+//			@RequestParam("rankNo") int rankNo,
+//			@RequestParam(value = "rtype"	, required = false, defaultValue = "1" ) String rtype,
+//			@RequestParam(value = "genreNo"	, required = false, defaultValue = "1" ) int genreNo,
+//			@RequestParam(value = "limit"	, required = false, defaultValue = "1" ) int limit,			
+			ModelMap model){
+		
+		Logger logger = Logger.getLogger(RankController.class);
+		
+		int rankNo = 1; String rtype = "M"; int genreNo = 1; int limitNum = 8;		
+		ArrayList<RankCommand> rankCommandListRecent = rankService.getRankCommandList(rankNo, rtype, genreNo, limitNum);
+		model.addAttribute("genreNo", genreNo);
+		model.addAttribute("recentList", rankCommandListRecent);
+		
+		rankNo = 1; rtype = "M"; genreNo = 1; limitNum = 8;		
+		ArrayList<RankCommand> rankCommandListRecom = rankService.getRankCommandList(rankNo, rtype, genreNo, limitNum);
+		model.addAttribute("genreNo", genreNo);		
+		model.addAttribute("recommList", rankCommandListRecom);
+
+		rankNo = 1; rtype = "M"; genreNo = 1; limitNum = 50;		
+		ArrayList<RankCommand> rankCommandListWeek = rankService.getRankCommandList(rankNo, rtype, genreNo, limitNum);
+		model.addAttribute("weekList", rankCommandListWeek);
+		
+		rankNo = 1; rtype = "M"; genreNo = 1; limitNum = 50;		
+		ArrayList<RankCommand> rankCommandListMonth = rankService.getRankCommandList(rankNo, rtype, genreNo, limitNum);
+		model.addAttribute("monthList", rankCommandListMonth);
+		
+		rankNo = 1; rtype = "M"; genreNo = 1; limitNum = 50;		
+		ArrayList<RankCommand> rankCommandListPlay = rankService.getRankCommandList(rankNo, rtype, genreNo, limitNum);
+		model.addAttribute("playList", rankCommandListPlay);		
+		
+		model.addAttribute("genreList", genreService.getAllGenres());				
+		return RankForward.RANK_PAGE;
+		
+	}
+
+	
+	
+	
+	
+	/**
+	 * 최신 싱글 리스트에 대한 ajax 요청 처리  
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/rankListRecentRemoteList", method = RequestMethod.GET)
+	public GenericResponse<RankCommand> rankListRecentRemoteList(
+//			@RequestParam("listType") int listType,
+//			@RequestParam(value = "page"	, required = false, defaultValue = "1" ) int page,
+//			@RequestParam(value = "genreNo"	, required = false, defaultValue = "0" ) int genreNo,
+//			@RequestParam(value = "orderBy"	, required = false, defaultValue = "1" ) int orderBy,
+			ModelMap model)
+	{
+
+		Logger logger = Logger.getLogger(RankController.class);
+		
+		int arrangeTotalRow = arrangementService.getArrangementCount();
+		GenericResponse<RankCommand> gr = new GenericResponse<RankCommand>();
+
+		int rankNo = 1; String rtype = "M"; int genreNo = 1; int limitNum = 8;		
+		ArrayList<RankCommand> rankCommandListRecent = rankService.
+				getRankCommandList(
+						rankNo, 
+						rtype, 
+						genreNo, 
+						limitNum);
+		
+		gr.setResultCode(1);
+//		gr.setListType(listType);
+		gr.setMessage("success");
+		gr.setCurrentRowCount(rankCommandListRecent.size());
+		gr.setTotalPage(rankCommandListRecent.size());
+//		gr.setCurrentPage(page);
+		gr.setTotalRow(arrangeTotalRow);
+		gr.setObjects(rankCommandListRecent);
+		return gr;
+	}	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 뮤직플레이어 팝업창
+	 * popAudio
+	 */
+	@RequestMapping(value ="/popAudio", method = RequestMethod.GET)
+	public String popAudio(
+			@RequestParam(value = "arrangeNo", required = false, defaultValue = "1" ) int arrangeNo,			
+			ModelMap model){
+				
+		model.addAttribute("arrangeDetail", arrangementService.getArrangementCommandByArrangeNo(arrangeNo));		
+		
+		Logger logger = Logger.getLogger(RankController.class);			
+		return RankForward.AUDIO_POPUP_PAGE;
+		
+	}
+	
+	
+	
+	
+	
+
+
+}

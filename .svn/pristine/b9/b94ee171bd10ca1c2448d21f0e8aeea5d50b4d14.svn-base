@@ -1,0 +1,62 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ma2rix.music.model.domain.Log;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.LogService;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController extends ApplicationController{
+	
+	/**
+	 * 요청에 대해서 Forwarding 하기 위한 내부 클래스 
+	 *
+	 */
+	public static class AdminForward {
+
+		public static final String LOG_LIST	= "admin/logList";
+		
+	}
+	
+	@Autowired private LogService logService;
+
+	/**
+	 * 로그조회 ajax 요청 처리  
+	 * 관리자 로그목록 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/getLogListByMemberNo", method = RequestMethod.GET)
+	public GenericResponse<Log> getLogByMemberNo(
+			@RequestParam("searchMemberNo") int searchMemberNo,
+			@RequestParam("dateFrom") String dateFrom,
+			@RequestParam("dateTo") String dateTo,
+			ModelMap model)
+	{	
+
+		GenericResponse<Log> gr = new GenericResponse<Log>();
+
+		ArrayList<Log> getLogList = logService.getLogByMemberNo(searchMemberNo, dateFrom, dateTo);
+		gr.setObjects(getLogList);
+		return gr;
+	}
+	
+	/**
+	 * 로그조회 리스트페이지
+	 */
+	@RequestMapping(value = "/logList", method = RequestMethod.GET)
+	public String list(ModelMap model) {
+
+		return AdminForward.LOG_LIST;
+	}
+}

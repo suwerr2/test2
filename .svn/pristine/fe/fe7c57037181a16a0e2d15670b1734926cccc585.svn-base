@@ -1,0 +1,11 @@
+package com.ma2rix.music.service.interfaces;
+
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+public interface FanService {
+	
+	public int getMyFanCount();
+	
+}
+

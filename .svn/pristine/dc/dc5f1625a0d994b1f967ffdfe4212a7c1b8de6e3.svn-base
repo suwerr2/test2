@@ -1,0 +1,26 @@
+	//변수초기화    
+	AutoAddLine.load_cnt = 1;
+	AutoAddLine.scroll_able = true;
+	AutoAddLine.scrollOK = true;
+	AutoAddLine.scrollLock = false;    
+
+
+	AutoAddLine.callScroll();
+		
+    //sound list append	    
+	$(window).scroll(function(){
+		if(AutoAddLine.scrollOK==true){
+	
+			if(AutoAddLine.scrollLock==false){
+				
+				var pageBottom = ($(document).height() - $(window).height());
+			
+				if($(window).scrollTop() >= pageBottom - 150){
+					if(AutoAddLine.pageon==1){												
+						AutoAddLine.callScroll();
+					}
+				}
+			
+			}
+		}				
+	});	

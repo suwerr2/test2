@@ -1,0 +1,10 @@
+package com.ma2rix.music.dao.interfaces;
+
+import java.util.ArrayList;
+
+import com.ma2rix.music.model.domain.Workspace;
+
+public interface WorkspaceDao {
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+			int composeMemberNo, String composeStatus);
+}

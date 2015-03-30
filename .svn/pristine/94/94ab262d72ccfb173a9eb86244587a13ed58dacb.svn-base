@@ -1,0 +1,312 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">${listTypeString}</h2>
+					<div class="btnComposition"><a class="large layerPopType3"><span>작곡등록</span></a></div>
+					<div class="arrayWrap">
+						<div class="listSearch"><input type="text"><i class="fa fa-search searchIcon"></i></div>
+						<dl class="arrayArea">
+							<dt>[정렬]</dt>
+							<dd><a href="javascript:genre_go(1)">팬 수</a><span class="bar"></span></dd>
+							<dd><a href="javascript:genre_go(2)">최신순</a><span class="bar"></span></dd>
+							<dd><a href="javascript:genre_go(3)">판매순</a></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="listWrap">
+					<ul class="arrList"></ul>
+				</div>
+			</div>
+
+
+
+			<form id ="arrange-payment-form" name ="arrange-payment-form" method ="post" >
+			<!-- layer popup : 편곡방 개설 -->
+            <div class="layer">
+            	<div class="bg"></div>
+               	<div id="vocalSearch2" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>편곡방 개설</h3>
+               			<div class="popCont">
+               				<h4 class="tit01">구매정보</h4>
+               				<table class="tblType01 mb30">
+		                        <colgroup>
+		                            <col style="width:25%">
+		                            <col style="width:auto">
+		                        </colgroup>
+		                        <caption></caption>
+		                        <tbody>
+			                        <tr>
+			                            <th>작곡자</th>
+			                            <td>홍길동</td>
+			                        </tr>
+			                        <tr>
+			                            <th>곡제목</th>
+			                            <td>young blood</td>
+			                        </tr>
+			                        <tr>
+			                            <th>곡 공개 여부</th>
+			                            <td>공개</td>
+			                        </tr>
+			                        <tr>
+			                            <th>작곡가 수익률</th>
+			                            <td>50%</td>
+			                        </tr>
+			                    </tbody>
+			                </table>
+               				<h4 class="tit01">결제정보</h4>
+                       		<div class="contBox01 mb20">
+		                    	<ul>
+			                		<li>결제대상 : 작곡방 구매</li>
+			                		<li>결제금액 : <strong class="pointColor">1$</strong></li>
+			                	</ul>
+		                    </div>
+		                    <div class="contBox02">
+		                    	<ul>
+			                		<li>
+			                			<span class="cardTitle">카드구분</span>
+				                		<select class="dropdown" name="">
+				                            <option>카드1</option>
+				                            <option>카드2</option>
+		                                    <option>카드2</option>
+				                        </select>
+			                		</li>
+			                		<li>
+			                			<span class="cardTitle">카드번호</span>
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                		<li>
+			                			<span class="cardTitle">CVS</span>
+			                			<input type="text">
+			                		</li>
+			                	</ul>
+		                    </div>
+
+		                    <input type="hidden" name="arrangeTitle" value="arrangeTitle" />
+		                    <input type="hidden" name="openStatus" value="N" />
+		                    <input type="hidden" name="arrangeMemo" value="arrangeMemo" />
+                            <input type="hidden" name="chargeStatus" value="N" />
+		                    <input type="hidden" name="arrangeStatus" value="01" />
+		                    <input type="hidden" name="saleStatus"    value="01" />
+		                    <input type="hidden" name="limitStatus"    value="N" />
+
+	                        <div class="textC mt20">
+	                        	<a class="btn large btnPoint" href="#none" id="arrange-payment-submit"><span>결제하기</span></a>
+	                        	<a class="btn large btnClose" href="#none"><span>취소</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            </form>
+            <!-- //layer popup : 편곡방 개설 -->
+
+
+            
+			<!-- layer popup : 작곡방 개설 -->
+			<form id ="compose-payment-form" name ="compose-payment-form" method ="post" >
+            <div class="layer">
+            	<div class="bg"></div>
+               	<div id="vocalSearch" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>작곡방 개설</h3>
+               			<div class="popCont">
+               				<h4 class="tit01">결제정보</h4>
+                       		<div class="contBox01 mb20">
+		                    	<ul>
+			                		<li>결제대상 : 작곡방 구매</li>
+			                		<li>결제금액 : <strong class="pointColor">1$</strong></li>
+			                	</ul>
+		                    </div>
+		                    <div class="contBox02">
+		                    	<ul>
+			                		<li>
+			                			<span class="cardTitle">카드구분</span>
+				                		<select class="dropdown" name="">
+				                            <option>카드1</option>
+				                            <option>카드2</option>
+		                                    <option>카드2</option>
+				                        </select>
+			                		</li>
+			                		<li>
+			                			<span class="cardTitle">카드번호</span>
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                			<input type="text" style="width: 50px;">
+			                		<li>
+			                			<span class="cardTitle">CVS</span>
+			                			<input type="text">
+			                		</li>
+			                	</ul>
+		                    </div>
+		                    
+		                    <input type="hidden" name="composeTitle" value="composeTitle" />
+		                    <input type="hidden" name="openStatus" value="N" />
+		                    <input type="hidden" name="composeMemo" value="composeMemo" />
+		                    <input type="hidden" name="chargeStatus" value="N" />
+		                    <input type="hidden" name="composeStatus" value="01" />
+		                    <input type="hidden" name="saleStatus"    value="01" />
+		                    
+	                        <div class="textC mt20">
+	                        	<a class="btn large btnPoint" href="#none"  id="compose-payment-submit"><span>결제하기</span></a>
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            </form>
+            <!-- //layer popup : 작곡방 개설 -->		
+            
+            
+            <!-- layer popup : 악보보기 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="sheetMusic" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>악보보기</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"><img src="/music/resources/images/arrage/music.gif" alt="" style="width: 500px; height: 600px;"><br>악보 임시 이미지</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 악보보기 -->
+            
+            
+            <!-- layer popup : 맵보기 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="mapView" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>맵보기</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"> 맵보기 프로그램 차후 구현</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 악보보기 -->            
+			
+			
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+			
+
+
+<script type="text/javascript">
+
+	//리스트 변수 초기화
+	AutoAddLine.listType = "${listType}";
+	AutoAddLine.page = "${page}";	
+	AutoAddLine.orderby = "${orderBy}";
+	AutoAddLine.genreNo = "${genreNo}";
+	AutoAddLine.pageon = "${pageon}";
+
+	//순별로 가져오기.
+	function genre_go(orderBy){
+
+		AutoAddLine.orderby = orderBy;		
+		AutoAddLine.page = 1;
+		
+		AutoAddLine.addRowType1_empty(); // 리스트 비우기.		
+		
+		new $$loop_progress_init();
+		new $$open_loop_progress();
+		e.beginScroll();
+
+		AutoAddLine.page = 2;
+		
+	}
+
+	new $$loop_progress_init();
+	new $$open_loop_progress();	
+	e.beginScroll();
+
+	AutoAddLine.page++;
+
+	$(document).ready(function(target) {
+	    //폼 등록 버튼 클릭시 호출
+	    $('#arrange-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#arrange-payment-form').attr('action','/music/arrange/initArrange?composeNo='+composeNo).submit()
+	    });	    
+	    
+	    //폼 등록 버튼 클릭시 호출
+	    $('#compose-payment-submit').click(function(event){
+	    	event.preventDefault();
+	    	$('#compose-payment-form').attr('action','/music/compose/initCompose').submit();
+	    });	   
+	});
+	
+    function getComposeNo(composeNoTemp) {
+		composeNo = composeNoTemp;
+    }
+    
+
+    
+	function fanFllow(composeNo){
+		$.ajax({     
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+			type : "GET",
+			url : "/music/compose/fanCount?composeNo=" + composeNo,
+			success : function(data){
+				$.each(data, function(key, state){
+					if(key=="CompositionCommand"){
+						
+						className = "#fanCnt" + composeNo;						
+						$(className).html(state['fanCount']);
+						
+					}					
+				});
+			},
+			error : function(xhr, status, error){
+	      		alert('등록오류가 발생하였습니다.');
+			}
+		});			
+	}    
+	
+	
+	function cmt_write2(musicNo, commentContents){
+
+		var musicClassNo = '01'; //01작곡, 02편곡, 03보컬  
+		
+		if(event.keyCode==13){
+					
+			$.ajax({     
+				contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+				type : "GET",
+				url : "/music/common/comment?musicClassNo=" + musicClassNo + "&musicNo=" + musicNo +"&commentContents=" + commentContents,
+				success : function(result){
+		      		alert('해당 음원에 대해 댓글이 등록되었습니다.');
+		      		$(".commentWrap").hide();
+				},
+				error : function(xhr, status, error){
+		      		alert('등록오류가 발생하였습니다.');
+				}
+			});	
+
+		}
+		
+	}	    
+    
+</script>
+
+
+
+<%@ include file="../include/bottom.jsp" %>
+
+

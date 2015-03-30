@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.FanMapper">
+
+	<!-- 음원에 대한 팬수를 반환 -->
+	<select id="getFancountByMusicNo" parameterType="com.ma2rix.music.model.domain.Fan" resultType="com.ma2rix.music.model.command.FanCommand">
+		<![CDATA[
+			SELECT COUNT(*) as fanCount,
+			    IFNULL((SELECT COUNT(1) FROM TBL_FAN F WHERE F.MUSIC_CLASS = #{musicClass} AND F.MUSIC_NO = C.MUSIC_NO AND F.FAN_MEMBER_NO = #{fanMemberNo} ), 0) as fanHeartCount
+				FROM TBL_FAN C 
+				WHERE  MUSIC_CLASS = #{musicClass}
+			  	AND  MUSIC_NO = #{musicNo}
+		]]>
+	</select>
+	
+	
+	<!--  뮤지션의 팬등록 -->
+	<insert id="insertFan" parameterType ="com.ma2rix.music.model.domain.Fan" >
+		<![CDATA[
+			INSERT INTO
+				TBL_FAN
+			(
+				FAN_MEMBER_NO	,
+				MUSIC_MEMBER_NO	,
+				MUSIC_CLASS		,
+				MUSIC_NO		,
+				REG_DATETIME
+			)
+			SELECT
+				#{fanMemberNo}	,
+				#{musicMemberNo},
+				#{musicClass}	,
+				#{musicNo}		,
+				NOW()
+			FROM DUAL	
+			      WHERE NOT EXISTS 
+				      ( SELECT * FROM TBL_FAN AS B 
+				        WHERE  FAN_MEMBER_NO = #{fanMemberNo}
+				        AND    MUSIC_MEMBER_NO = #{musicMemberNo}
+				        AND    MUSIC_CLASS = #{musicClass}
+				        AND    MUSIC_NO = #{musicNo}
+				      )
+		]]>
+		<selectKey keyProperty="fanNo" resultType="java.lang.Integer"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+
+
+
+	<update id="deleteFan" parameterType ="com.ma2rix.music.model.domain.Fan" >
+           DELETE FROM TBL_FAN 
+           	 WHERE  MUSIC_CLASS = #{musicClass} 
+           	 AND  	MUSIC_NO = #{musicNo} 
+             AND    FAN_MEMBER_NO = #{fanMemberNo} 
+	</update>
+
+	<update id="updateCompositionFan" parameterType ="com.ma2rix.music.model.domain.Fan" >
+           UPDATE TBL_COMPOSITION SET FAN_COUNT = ( 
+             	SELECT COUNT(*) FROM TBL_FAN WHERE  MUSIC_CLASS = #{musicClass} AND  MUSIC_NO = #{musicNo} 
+             	)
+           WHERE COMPOSE_NO = #{musicNo}
+	</update>
+	
+	
+	<update id="updateVocalFan" parameterType ="com.ma2rix.music.model.domain.Fan" >
+           UPDATE TBL_VOCAL SET FAN_COUNT = ( 
+             	SELECT COUNT(*) FROM TBL_FAN WHERE  MUSIC_CLASS = #{musicClass} AND  MUSIC_NO = #{musicNo} 
+             	)
+           WHERE VOCAL_NO = #{musicNo}
+	</update>	
+	
+	
+	<!-- 뮤지션이 가진 팬의 총 수를 반환 -->
+	<select id="getFancountByMusicMemberNo" parameterType = "int" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_FAN WHERE MUSIC_MEMBER_NO = #{musicMemberNo}
+		]]>
+	</select>
+	
+	<!-- 자신이 팬으로 등록한 사람의 총 수를 반환 -->
+	<select id = "getMyFanCount" parameterType = "int" resultType ="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_FAN WHERE FAN_MEMBER_NO = #{fanMemberNo}
+		]]>
+	</select>
+	
+	<!--  뮤지션의 팬 리스트를 반환 -->
+	<select id = "getFanListByMusicMemberNo" parameterType = "int" resultType ="com.ma2rix.music.model.domain.Fan">
+		<![CDATA[
+			SELECT 
+				FAN_NO					as fanNo,
+				FAN_MEMBER_NO			as fanMemberNo,
+				MUSIC_MEMBER_NO			as musicMemberNo,
+				MUSIC_CLASS				as musicClass,
+				MUSIC_NO				as musicNo,
+				REG_DATETIME 			as regDateTime 
+			FROM 
+				TBL_FAN 
+			WHERE 
+				MUSIC_MEMBER_NO = #{musicMemberNo}
+		]]>
+	</select>
+
+</mapper>

@@ -1,0 +1,20 @@
+package com.ma2rix.music.dao.mapper;
+
+import com.ma2rix.music.model.command.FanCommand;
+import com.ma2rix.music.model.domain.Fan;
+
+public interface FanMapper {
+
+	public FanCommand getFancountByMusicNo(Fan fan);
+	
+	public int getMyFanCount ();
+	
+	public void insertFan (Fan fan);
+	
+	public void deleteFan (Fan fan);
+	
+	public void updateCompositionFan (Fan fan);
+	
+	public void updateVocalFan (Fan fan);	
+
+}

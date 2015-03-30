@@ -1,0 +1,368 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>
+
+<c:set var = "CompositionCommand" value = "${CompositionCommand}"/>
+        <!-- contents -->
+        <input type="hidden" id="musicClassNo"  name="musicClassNo" 	value="01" />
+        <input type="hidden" id="musicNo" 		name="musicNo"      	value=${CompositionCommand.composeNo} />
+        <input type="hidden" id="fanMemberNo" 	name="fanMemberNo"      value=${CompositionCommand.composeMemberNo} />
+        <input type="hidden" id="musicMemberNo" name="musicMemberNo"    value=${CompositionCommand.composeMemberNo} />
+        <input type="hidden" id="fanHeartCount" name="fanHeartCount"      value=${CompositionCommand.fanHeartCount} />
+        
+        <input type="hidden" id="arrangeNo" 	name="arrangeNo"    	value=1 />
+        
+        
+        <div class="mrContainer">
+            <div class="contents">
+                <div class="titleWrap">
+                    <h2>작곡 상세</h2>
+                </div>
+                <div class="detailTop">
+                	<div class="visual"><img src="../../images/holderType3.gif" alt="" style="width: 150px; height: 150px;"></div>
+                	<div class="soundArea">
+                		<div class="soundHeader">
+							<a class="bulPlay" href="#none"><i class="fa fa-play-circle fa-2x"></i></a>
+							<span class="songTitle">${CompositionCommand.composeTitle}</span>
+							<span class="songSinger profilePop"><a href="javascript:getProfilePopAjax('${CompositionCommand.composeMemberNo}')">by ${CompositionCommand.composeMemberNickName}</a></span>
+						</div>
+						
+						<div class="soundBody">
+							<div class="pajaImg">
+								<img src="../resources/images/holderType2.gif" alt="" style="width: 100%;">
+							</div>
+							<div class="soundBar"></div>
+						</div>
+				
+						<!-- //개발에서 확인요망 -->
+                		<div class="textL mt10">
+		                    <a id="addFan" class="btn large" href="#none"><span>Fan</span></a>
+		                    <a class="btn large layerPopTypeMap" href="#none"><span>Map</span></a>
+		                    <span class="floatR">
+                               	<i id="fanHeart" <c:if test="${CompositionCommand.fanHeartCount == 0}"> class="fa fa-heart" </c:if>
+                               	<c:if test="${CompositionCommand.fanHeartCount > 0}"> class="fa fa-heart pointColorRed" </c:if> > </i>
+                                <strong id="fanCount">${CompositionCommand.fanCount}</strong>
+                                <span class="bar"></span>
+                                <i class="fa fa-download"></i>
+                                <strong>${CompositionCommand.composeHits}</strong>
+                            </span>
+		                </div>
+                	</div>
+                </div>
+                <!--tab-->
+                <div class="tabWrapType1">
+                    <ul class="tabBtnSet1 tabCommon tabCommon">
+                        <li><a href="#none"><span>기본정보</span></a></li>
+                        <li><a href="#none"><span>음원 및 파일</span></a></li>
+                       <!--  <li><a id="getPerformance"  href="#none"><span>현황</span></a></li> -->
+                        <li><a id="getComment" href="#none"><span>Comment</span></a></li>
+                    </ul>
+                    <!-- tabBox1 -->
+                    <div class="tabCont">
+	                	<table class="tblType01 addTrType2">
+                            <colgroup>
+                                <col style="width: 20%">
+                                <col style="width: 30%">
+                                <col style="width: 20%">
+                                <col style="width: 30%">
+                            </colgroup>
+                            <tr>
+                            	<th>제목</th>
+                                <td colspan="3">${CompositionCommand.composeTitle}</td>
+                            </tr>
+                            <tr>
+                                <th>작곡자</th>
+                                <td>${CompositionCommand.composeMemberNickName}</td>
+                                <th class="line">편곡수</th>
+                                <td>${CompositionCommand.arrangeCount}</td>
+                            </tr>
+                        </table>
+		                <div class="hType1">
+		                    <h3>작곡자 메모</h3>
+		                </div>  
+		                <textarea cols="50" rows="5" placeholder="작곡자 메모 내용 삽입" style="width: 908px">${CompositionCommand.composeMemo}</textarea>
+	                </div>
+	                <!-- //tabBox1 -->
+                    <!-- tabBox2 -->
+                    <div class="tabCont">
+                    	<div class="hType1 pt0">
+		                    <h3>연관 파일</h3>
+		                </div>
+		                <div class="needPart">
+						    <span class="label label-score layerPopTypeCompositionSheet">작곡 악보</span>
+						    <span class="label label-source">작곡 음원</span>
+                        </div>
+		            </div>
+                    <!-- tabBox2 -->
+
+                    <!-- tabBox4 -->
+							<%@ include file="../include/comment.jsp" %>
+                    <!-- tabBox4 -->
+                    
+                                        <!-- tabBox3 -->
+                    <div class="tabCont">
+	                    <table class="tblType03 addTrType2"  id="performanceList_tb">
+                            <colgroup>
+                                <col style="width: 12%">
+                                <col style="width: 10%">
+                                <col style="width: 10%">
+                                <col style="width: 13%">
+                                <col style="width: auto">
+                                <col style="width: 10%">
+                            </colgroup>
+                            <tr>
+                            	<th>연주파트</th>
+                                <th>연주자</th>
+                                <th>배분율</th>
+                                <th>상태</th>
+                                <th>상세정보</th>
+                                <th>참여가능여부</th>
+                            </tr>
+                            <tr>
+                            	<td><span class="label label-blue">기타</span></td>
+                            	<td>GD</td>
+                            	<td>10%</td>
+                            	<td>참여가능</td>
+                            	<td class="textL">현재 파트는 참여 요청이 가능합니다.</td>
+                            	<td><span class="label label-joinOK">참여하기</span></td>
+                            </tr>
+                            <tr>
+                            	<td><span class="label label-sky">드럼</span></td>
+                            	<td>GD</td>
+                            	<td>10%</td>
+                            	<td>참여가능</td>
+                            	<td class="textL">편곡자에게 참여를 요청했고, 편곡자의 선택을 기다리고 있습니다.</td>
+                            	<td><span class="label label-joinDone">참여완료</span></td>
+                            </tr>
+                            <tr>
+                            	<td><span class="label label-orange">피아노</span></td>
+                            	<td>GD</td>
+                            	<td>10%</td>
+                            	<td>참여가능</td>
+                            	<td class="textL">편곡자가 당신은 연주자로 선택했습니다. 요청 수락을 누르면 확정되며, 연주탈퇴를 누르면 해당 참여가 취소됩니다.</td>
+                            	<td><span class="label label-joinCancel">참여취소</span></td>
+                            </tr>
+                            <tr>
+                            	<td><span class="label label-green">베이스</span></td>
+                            	<td>GD</td>
+                            	<td>10%</td>
+                            	<td>참여가능</td>
+                            	<td class="textL">연주자가 확정되었습니다. 연주곡을 등록할 수 있습니다.</td>
+                            	<td><span class="label label-joinAsk">요청수락</span></td>
+                            </tr>
+                            <tr>
+                            	<td><span class="label label-red">건반</span></td>
+                            	<td>GD</td>
+                            	<td>10%</td>
+                            	<td>참여가능</td>
+                            	<td class="textL">현재 파트는 참여 요청이 가능합니다.</td>
+                            	<td><span class="label label-joinOut">연주탈퇴</span></td>
+                            </tr>
+                        </table>
+	                </div>
+	                <!-- //tabBox3 -->
+                </div>
+                <!-- //tab -->
+                
+                <!-- layer popup : 맵보기 -->
+                <div class="layer">
+                    <div class="bg"></div>
+                    <div id="viewMap" class="pop-layer">
+                        <div class="layerPopupWrap">
+                            <h3>맵보기[${CompositionCommand.composeTitle}] </h3>
+                            <div class="popCont">
+                                <div class="contBox01">
+			                    	<ul>
+			                    		<li>편곡수 : <strong>3</strong></li>
+			                    		<li>보컬수 : <strong>6</strong></li>
+			                    	</ul>
+			                    </div>
+                                <div class="textC mt20">
+                                    <a class="btn large btnPoint btnClose" href="#none"><span>닫기</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- //layer popup : 맵보기 -->
+                
+                <!-- layer popup : 작곡악보보기 -->
+                <div class="layer">
+                    <div class="bg"></div>
+		            <div id="sheetMusic" class="pop-layer">
+		                <div class="layerPopupWrap">
+		                    <h3>악보보기--[${CompositionCommand.composeTitle}]</h3>
+		          			<div class="popCont">
+		          				<div class="viewMusic"><img src="/music/resources/images/arrage/music.gif" alt="" style="width: 500px; height: 600px;"><br>악보 임시 이미지</div>
+		          				<div class="textC mt20">
+		                    	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+		                    	</div>
+		                  	</div>
+		                </div>
+		            </div>
+                </div>
+                <!-- //layer popup : 작곡악보보기 -->
+                                
+            </div>
+            <!-- //contents -->
+   
+
+<%@ include file="../include/bottom.jsp" %>
+<script type="text/javascript">
+	$(document).ready(function(target) {
+	
+		//getComment
+ 	    //댓글버튼 이벤트 핸들러 
+ 	    //클래스 변경(dsbae 2014.11.05)
+ 	    $("#getComment").on("click", function () {
+ 	    	cmt_reload(false);
+ 	    });
+		
+		//getPerformance
+ 	    //현황버튼 이벤트 핸들러 
+ 	    //클래스 변경(dsbae 2014.11.05)
+ 	    $("#getPerformance").on("click", function () {
+ 	    	getPerformanceAjax(false);
+ 	    });
+		
+		
+		//getPerformance
+ 	    //현황버튼 이벤트 핸들러 
+ 	    //클래스 변경(dsbae 2014.11.05)
+ 	    $("#addFan").on("click", function () {
+ 	    	addFanAjax(false);
+ 	    });
+			
+	});
+
+	/* 연주자 등록처리 */
+	function getPerformanceAjax(init){
+
+		var url = "/music/common/performanceList?arrangeNo=" + $("#arrangeNo").val();
+
+	    $.getJSON(url, function(data) {
+		   	
+			 $("#performanceList_tb tr:not(:first)").remove();
+
+			var totalRow=0;
+			
+	         $.each(data, function(key, state){
+	        	 
+			  if(key=='totalPage'){
+				  totalRow = state;
+			  }
+
+	       	  if(key=='objects'){
+	       		  
+	      		 total_cnt = Object.keys(state).length;
+	      		 
+	       		  for(var i=0;i<total_cnt;i++){            			  
+					var obj = state[i];
+					performanceAppend(obj);
+	       		  }
+	       	  }
+	       	  
+	         });
+	    });
+	}	
+	
+	function performanceAppend(data){
+		
+		var performStatus = data['performStatus'];
+		var performStatusName ="";
+    	
+		if (performStatus == "01")
+			performStatusName = "<td><span class='label label-joinOK'>참여하기</span></td>";
+    	else if (performStatus == "02")
+    		performStatusName = "<td><span class='label label-joinCancel'>참여취소</span></td>" ;
+    	else if (performStatus == "03")
+    		performStatusName = "<td><span class='label label-joinOut'>연주탈퇴</span></td>";
+		
+		$("#performanceList_tb").append(
+				"<tr>" +
+            	"<td><span class='label label-sky'>" + data['playFieldName'] + "</span></td>" +
+            	"<td>" + data['performMemberNickName'] + "</td>" +
+            	"<td>" + data['performRate'] + "%</td>" +
+            	"<td>" + data['performStatusName'] + "</td>" +
+            	"<td class='textL'>" + data['performMemo'] + "</td>" +
+            	performStatusName +
+            	"<tr>"
+			);
+
+	}// end performanceAppend
+	
+    /* 팬등록처리 */
+	function addFanAjax(init){
+		
+		//로그인사용자가 동일뮤지션일 경우 팬이 될수 없음.
+		var musicMemberNo = $("#musicMemberNo").val();
+		
+		var fanHeartCount = $("#fanHeartCount").val();
+		
+		if (musicMemberNo == '${memberNo}'){
+			alert("로그인사용자의 팬이 될수 없습니다.");
+			return;
+		}
+		
+		
+		if ( fanHeartCount > 0 ){
+			if (confirm("해당곡 팬이 삭제됩니다.\n 삭제하겠습니까?") == true){
+				// 팬 삭제처리
+				$.ajax({     
+					contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+					type : "GET",
+					url : "/music/common/subFan?fanMemberNo=" + $("#fanMemberNo").val() + 
+									"&musicMemberNo="+$("#musicMemberNo").val() + 
+									"&musicClass=" + $("#musicClassNo").val() + 
+									"&musicNo="+$("#musicNo").val(),
+					success : function(data){
+						$.each(data, function(key, state){
+							if(key=="fanCommand"){
+								$('#fanCount').text(state['fanCount']);
+								$('#fanHeart').removeClass("pointColorRed");	//본인 체크후
+								$("#fanHeartCount").val(0);
+							}					
+						});
+						//alert('등록된 팬이 삭제되었습니다.');
+					},
+					error : function(xhr, status, error){
+			      		alert('로그인 후 진행하기 바랍니다');
+					}
+				});	
+				
+				
+				return;
+			}else{
+				return;	
+			};
+			
+		}
+		
+		
+		$.ajax({     
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+			type : "GET",
+			url : "/music/common/addFan?fanMemberNo=" + $("#fanMemberNo").val() + 
+							"&musicMemberNo="+$("#musicMemberNo").val() + 
+							"&musicClass=" + $("#musicClassNo").val() + 
+							"&musicNo="+$("#musicNo").val(),
+			success : function(data){
+				$.each(data, function(key, state){
+					if(key=="fanCommand"){
+						$('#fanCount').text(state['fanCount']);
+						$('#fanHeart').addClass("pointColorRed");	//본인 체크후
+						$("#fanHeartCount").val(1);
+					}					
+				});
+				alert('팬으로 등록되었습니다.');
+			},
+			error : function(xhr, status, error){
+	      		alert('로그인 후 진행하기 바랍니다.');
+			}
+		});	
+		
+	}// end addFanAjax
+	
+</script>
+
+

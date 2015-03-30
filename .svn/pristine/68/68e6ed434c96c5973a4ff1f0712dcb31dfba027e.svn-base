@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="../include/topAdmin.jsp" %>	
+
+
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">로그인 이력조회</h2>
+				</div>
+				<div class="conArea">
+					<input type="text" placeholder="E-mail입력" style="width: 200px;">
+					<a class="btn" href="#none"><span>찾기</span></a>
+					<div class="accuntArea">
+						<h3>정산관리</h3>
+						<div class="searchpPriod">
+							<span class="">조회기간 :</span>
+							<input type="radio" id=""><label for="">일</label>
+							<input type="radio" id=""><label for="">주</label>
+							<input type="radio" id=""><label for="">월</label>
+							<input type="radio" id=""><label for="">기간</label>
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a> ~
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a>
+							<div class="floatR">
+								<a class="btn" href="#none"><span>검색</span></a>
+								<a class="btn" href="#none"><span>초기화</span></a>
+							</div>
+						</div>
+					</div>
+					<table class="tblType03 addTrType2">
+	                    <colgroup>
+	                        <col style="width:17%">
+	                        <col style="width:15%">
+	                        <col style="width:auto">
+	                        <col style="width:10%">
+	                        <col style="width:10%">
+	                    </colgroup>
+	                    <tr>
+	                    	<th>등록일시</th>
+	                        <th>회원</th>
+	                        <th>호출URL</th>
+	                        <th>접속IP</th>
+	                        <th>결과</th>
+	                    </tr>
+	                    
+	                    <tr>
+	                    	<td>2014-11-15 14:15:13</td>
+	                    	<td>조용필</td>
+	                    	<td class="textL">http://localhost:8080/music/vocal/vocalRemoteList</td>
+	                    	<td>127.0.0.1</td>
+	                    	<td class="textL">ok</td>
+	                    </tr>
+
+
+	                    
+	                </table>
+				</div>
+			</div>
+		
+<%@ include file="../include/bottom.jsp" %>
+
+<script type="text/javascript" src="../resources/common/js/scroll.js"></script>
+<script type="text/javascript">
+	var AutoAddLine = function(){};
+	//작곡 라인 추가 함수
+	AutoAddLine.addRowType1 = function(){};	
+	AutoAddLine.prototype.addRowType1 = function(data){
+	
+         $(".arrList").append(
+                 
+				"<tr>" + 
+                "<td><span class='label label-blue'>2014-11-15 14:15:13</span></td>" +
+                "<td>조용필</td>" +
+                "<td>http://localhost:8080/music/vocal/vocalRemoteList</td>" +
+                "<td>127.0.0.1</td>" +
+                "<td class='textL'>ok</td>" +
+				"<tr>"                     
+					
+         );        	 
+	};
+
+		
+</script>

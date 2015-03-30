@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>관리자 곡선택 노출관리</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/common_admin.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<div class="mrWrap">
+		<!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.png" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a href="admin01.html">로그인 이력조회</a></li>
+		                <li><a href="admin02.html">정산조회(관리자)</a></li>
+		                <li><a href="admin03.html">정산조회(개인)</a></li>
+		                <li><a href="admin04.html">무료구매관리(이벤트기간, 횟수지정)</a></li>
+		                <li><a class="on" href="admin05.html">관리자 곡선택 노출관리</a></li>
+		            </ul>
+		        </div>
+	    	</div>
+		</div>
+		<!-- //header -->
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">관리자 곡선택 노출관리</h2>
+				</div>
+				<div class="conArea">
+					<div class="accuntArea">
+						<input type="radio" id="musicChoice01"><label for="musicChoice01">작곡</label>
+						<input type="radio" id="musicChoice02"><label for="musicChoice02">편곡중인</label>
+						<input type="radio" id="musicChoice03"><label for="musicChoice03">편곡완료</label>
+						<input type="radio" id="musicChoice04"><label for="musicChoice04">보컬음원</label>
+						<input type="radio" id="musicChoice05"><label for="musicChoice05">차트 추천음악</label><br>
+						<div class="mt20 ml10">
+							<input type="text" placeholder="E-mail입력" style="width: 200px;">
+							<a class="btn" href="#none"><span>찾기</span></a>
+						</div>
+					</div>
+					<div class="tblScroll mt30">
+						<table class="tblType03 addTrType2">
+		                    <colgroup>
+		                        <col style="width: 10%">
+		                        <col style="width: auto">
+		                        <col style="width: 10%">
+		                        <col style="width: 10%">
+		                        <col style="width: 15%">
+		                    </colgroup>
+		                    <tr>
+		                    	<th>번호</th>
+		                        <th>제목</th>
+		                        <th>ID</th>
+		                        <th>선택</th>
+		                        <th>날짜</th>
+		                    </tr>
+		                    <tr>
+		                    	<td>1</td>
+		                    	<td class="textL">너에게로 가는 길</td>
+		                    	<td>rucia</td>
+		                    	<td><input type="checkbox"></td>
+		                    	<td>2014-12-13</td>
+		                    </tr>
+		                    <tr>
+		                    	<td>2</td>
+		                    	<td class="textL">너에게로 가는 길</td>
+		                    	<td>rucia</td>
+		                    	<td><input type="checkbox"></td>
+		                    	<td>2014-12-13</td>
+		                    </tr>
+		                    <tr>
+		                    	<td>3</td>
+		                    	<td class="textL">너에게로 가는 길</td>
+		                    	<td>rucia</td>
+		                    	<td><input type="checkbox"></td>
+		                    	<td>2014-12-13</td>
+		                    </tr>
+		                </table>
+		            </div>
+				</div>
+			</div>
+		</div>
+		<!-- //contents -->
+		<!-- footer -->
+		<div class="mrFooter">
+			<div class="footerArea">
+				온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+			</div>
+		</div>
+		<!-- //footer -->
+	</div>
+</body>
+</html>

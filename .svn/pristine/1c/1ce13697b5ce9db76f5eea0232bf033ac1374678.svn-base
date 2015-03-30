@@ -1,0 +1,12 @@
+package com.ma2rix.music.dao.mapper;
+
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.ma2rix.music.model.domain.Workspace;
+
+public interface WorkspaceMapper {
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+			@Param("composeMemberNo") int composeMemberNo, @Param("composeStatus") String composeStatus);
+}

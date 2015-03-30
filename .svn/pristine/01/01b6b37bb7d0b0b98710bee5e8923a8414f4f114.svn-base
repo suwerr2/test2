@@ -1,0 +1,197 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp" %>	
+
+        <!-- contents -->
+        <div class="mrContainer">
+            <div class="contents">
+                <div class="mainLeft">
+                	<div class="recentSingle">
+		                <h2>최신 싱글</h2>
+                    	<div class="checkSelect floatL mt5 mb20 ml20">
+                            
+                            <select class="dropdown" id="genre_sel" name="genre_sel" onchange="javascript:genre_recent()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre1" items="${genreList}">
+	                                <option value="${genre1.genreNo}" <c:if test="${genre1.genreNo == genreNo}">selected="selected"</c:if>>${genre1.genreName}</option>
+								</c:forEach>
+                            </select>                            
+                            
+						</div>
+	                    <div class="chartList recent">
+	                    	<ul>
+	                    	<c:forEach var="rankCommand" items="${recentList}">
+	                    		<li>
+	                    			<a href="javascript:audioPop()">
+		                    			<span class="visual"><img src="../resources/images/holderType3.gif" alt="" style="width: 100px; height: 100px;"></span>
+		                    			<span class="con">
+		                    				<strong>${rankCommand.arrangeTitle}</strong>
+		                    				<span class="vocal">${rankCommand.arrangeMemberNickName}</span>
+		                    			</span>
+	                    			</a>	                    			
+	                    		</li>
+							</c:forEach>	                    		
+	                    	</ul>
+	                    </div>
+                	</div>
+                	<div class="recommendSingle">
+                		<h2>추천 싱글</h2>
+		                <div class="mb20">
+	                    	<div class="checkSelect floatL mt5 mb20 ml20">
+	                            
+                            <select class="dropdown" id="genre_sel2" name="genre_sel2" onchange="javascript:genre_go()">                            
+	                                <option value="0">--전체장르--</option>                            
+								<c:forEach var="genre2" items="${genreList}">
+	                                <option value="${genre2.genreNo}" <c:if test="${genre2.genreNo == genreNo}">selected="selected"</c:if>>${genre2.genreName}</option>
+								</c:forEach>
+                            </select>       	                            
+	                            
+							</div>
+	                    </div>
+	                    <div class="chartList recommad">
+	                    	<ul>
+	                    	<c:forEach var="rankRecomCommand" items="${recommList}">
+	                    		<li>
+	                    			<a href="#none">
+		                    			<span class="visual"><img src="../resources/images/holderType3.gif" alt="" style="width: 100px; height: 100px;"></span>
+		                    			<span class="con">
+		                    				<strong>${rankRecomCommand.arrangeTitle}</strong>
+		                    				<span class="vocal">${rankRecomCommand.arrangeMemberNickName}</span>
+		                    			</span>
+	                    			</a>
+	                    		</li>
+							</c:forEach>	 
+	                    	</ul>
+	                    </div>
+                	</div>
+                </div>
+                <div class="mainRight">
+                	<!--tab-->
+	                <div class="tabWrapType1">
+	                    <ul class="tabBtnSet3 tabCommon">
+	                        <li><a href="#none" class="active"><span>주간</span></a></li>
+	                        <li><a href="#none"><span>월간</span></a></li>
+	                        <li><a href="#none"><span>플레이</span></a></li>
+	                    </ul>
+	                    <!-- tabBox1 -->
+	                    <div class="tabCont">
+	                    	<div class="chartList2">
+		                    	<ul>
+	                    	<c:forEach var="rankCommandWeek" items="${weekList}">		                    	
+		                    		<li>
+		                    			<a href="#none">
+			                    			<span class="visual"><img src="../resources/images/holderType3.gif" alt="" style="width: 50px; height: 50px;"></span>
+			                    			<span class="detail">
+				                    			<span class="tit">${rankCommandWeek.arrangeTitle}</span>
+				                    			<span class="vocalName">${rankCommandWeek.arrangeMemberNickName}</span>
+				                    		</span>
+		                    			</a>
+		                    		</li>
+							</c:forEach>						
+		                    	</ul>
+		                    </div>
+	                    </div>
+	                    <!-- //tabBox1 -->
+	                    <!-- tabBox2 -->
+	                    <div class="tabCont">
+	                    	<div class="chartList2">
+		                    	<ul>
+	                    	<c:forEach var="rankCommandMonth" items="${monthList}">			                    	
+		                    		<li>
+		                    			<a href="#none">
+			                    			<span class="visual"><img src="../resources/images/holderType3.gif" alt="" style="width: 50px; height: 50px;"></span>
+			                    			<span class="detail">
+				                    			<span class="tit">${rankCommandMonth.arrangeTitle}</span>
+				                    			<span class="vocalName">${rankCommandMonth.arrangeMemberNickName}</span>
+				                    		</span>
+		                    			</a>
+		                    		</li>
+		                    </c:forEach>
+		                    	</ul>
+		                    </div>
+	                    </div>
+	                    <!-- //tabBox2 -->
+	                    <!-- tabBox3 -->
+	                    <div class="tabCont">
+	                    	<div class="chartList2">
+		                    	<ul>
+	                    	<c:forEach var="rankCommandPlay" items="${playList}">			                    	
+		                    		<li>
+		                    			<a href="#none">
+			                    			<span class="visual"><img src="../resources/images/holderType3.gif" alt="" style="width: 50px; height: 50px;"></span>
+			                    			<span class="detail">
+				                    			<span class="tit">${rankCommandPlay.arrangeTitle}</span>
+				                    			<span class="vocalName">${rankCommandPlay.arrangeMemberNickName}</span>
+				                    		</span>
+		                    			</a>
+		                    		</li>
+		                    </c:forEach>		                   
+		                    	</ul>
+		                    </div>
+	                    </div>
+	                    <!-- //tabBox3 -->
+                	</div>
+                </div>
+            </div>
+            <!-- //contents -->
+			
+<%@ include file="../include/bottom.jsp" %>
+
+
+	<form name="fom" action = "/music/rank/rankPage" method = "get">
+		<input type = "hidden" name = "listType" id = "listType" value = "${listType}" />
+		<input type = "hidden" name = "page" id = "page" value = "${page}" />
+		<input type = "hidden" name = "orderBy" id = "orderBy" value = "${orderBy}" />
+		<input type = "hidden" name = "genreNo" id = "genreNo" value = "${genreNo}" />
+	</form>		
+
+
+<script type="text/javascript">
+
+function genre_recent(){
+
+	//ajax 통신				
+	$.ajax({           
+		type : "GET",
+		url : "/music/rank/rankListRecentRemoteList",					
+		dataType : "json",
+		success : function(result){
+			list_call_recent();
+		},
+		error : function(xhr, status, error){
+      		alert('더 이상 데이터가 없습니다.');
+		}
+	});	
+
+	
+}
+
+
+function list_call_recent(){
+	
+	$(".recent > ul").empty();	
+	$(".recent > ul").append("<li><a href='javascript:audioPop()'><span class='visual'><img src='../resources/images/holderType3.gif' alt='' style='width: 100px; height: 100px;'></span><span class='con'><strong>xxxxxxxxxxxxx</strong><span class='vocal'>xxxxxxxxxx</span></span></a></li>");	
+		
+	   $.getJSON("/music/rank/rankListRecentRemoteList", function(data) {
+
+	 		 total_cnt = Object.keys(data).length;
+	 		 alert(total_cnt);
+
+	              $.each(data, function(key, state){
+	            	  
+	            	  if(key=='objects'){  //objects만 추출
+	            		  for(var i=0;i<total_cnt;i++){
+
+							var obj = state[i];
+
+	            		  }
+	            	  }
+	              });
+	          });	
+	
+}
+
+</script>
+
+

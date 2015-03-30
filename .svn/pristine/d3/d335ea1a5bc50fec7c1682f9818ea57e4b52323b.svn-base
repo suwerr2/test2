@@ -1,0 +1,29 @@
+package com.ma2rix.music.service;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ma2rix.music.dao.interfaces.WorkspaceDao;
+import com.ma2rix.music.model.domain.Workspace;
+import com.ma2rix.music.service.interfaces.WorkspaceService;
+
+
+@Service
+public class WorkspaceServiceImpl implements WorkspaceService {
+	
+	public static final int BATCH_ACTION_INSERT = 1;
+	public static final int BATCH_ACTION_UPDATE = 2;
+	public static final int BATCH_ACTION_DELETE = 3;
+	
+	@Autowired WorkspaceDao workspaceDao;
+
+	
+	@Override
+	public ArrayList<Workspace> getProjectsByComposeMemberNoAndComposeStatus(
+		int composeMemberNo, String composeStatus) {
+		return workspaceDao.getProjectsByComposeMemberNoAndComposeStatus(composeMemberNo, composeStatus);
+	}
+	
+}

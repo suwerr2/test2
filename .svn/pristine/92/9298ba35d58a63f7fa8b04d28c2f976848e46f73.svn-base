@@ -1,0 +1,42 @@
+package com.ma2rix.music.dao;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import com.ma2rix.music.dao.mapper.SettlementMapper;
+import com.ma2rix.music.model.domain.Settlement;
+import com.ma2rix.music.dao.interfaces.SettlementDao;
+
+@Repository
+public class SettlementDaoImpl implements SettlementDao {
+
+	@Autowired SettlementMapper settlementMapper;
+
+
+	@Override
+	public int getSettlementCount(){
+		return settlementMapper.getSettlementCount();
+	}
+	
+	@Override
+	public ArrayList<Settlement> getAllSettlementList(){
+		return settlementMapper.getAllSettlementList();
+	}
+	
+	@Override
+	public void insertSettlement(Settlement settlement){
+		settlementMapper.insertSettlement(settlement);
+	}
+	
+	@Override
+	public void updateSettlement(Settlement settlement){
+		settlementMapper.updateSettlement(settlement);
+	}
+	
+	@Override
+	public void deleteSettlement(int settleNo){
+		settlementMapper.deleteSettlement(settleNo);
+	}
+
+}

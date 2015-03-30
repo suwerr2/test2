@@ -1,0 +1,111 @@
+package com.ma2rix.music.web.controller;
+
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ma2rix.music.model.command.CommentCommand;
+import com.ma2rix.music.model.command.MemberCommand;
+import com.ma2rix.music.model.domain.User;
+import com.ma2rix.music.model.dto.ajaxresponse.AjaxResultBase;
+import com.ma2rix.music.model.dto.ajaxresponse.GenericResponse;
+import com.ma2rix.music.service.interfaces.CommentService;
+import com.ma2rix.music.service.interfaces.MemberFieldService;
+import com.ma2rix.music.web.security.LoginInfo;
+
+@Controller
+@RequestMapping("/common")
+public class CommonController extends ApplicationController{
+
+	@Autowired private MemberFieldService memberFieldService;
+	@Autowired private CommentService commentService;
+	
+	/**
+	 * 뮤지션선택에 대한 ajax 요청 처리  
+	 * 뮤지션 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/musicianSelectList", method = RequestMethod.GET)
+	public GenericResponse<MemberCommand> musicianSelectList(
+			@RequestParam("memberUserId") String memberUserId,
+			@RequestParam("selectOpt") String selectOpt,
+			ModelMap model)
+	{	
+
+		User user = new User();
+		user.setMemberUserId(memberUserId);
+		user.setSelectOpt(selectOpt);
+		GenericResponse<MemberCommand> gr = new GenericResponse<MemberCommand>();
+		ArrayList<MemberCommand> musicianSelectList = memberFieldService.getMusicianSelectList(user);
+		gr.setObjects(musicianSelectList);
+		System.out.println(">>musicianSelectList.size():::"+musicianSelectList.size());
+		return gr;
+	}
+
+	
+	/**
+	 * 코멘트에 대한 ajax 요청 처리  
+	 * 뮤지션 리스트를 반환.
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/commentList", method = RequestMethod.GET)
+	public GenericResponse<CommentCommand> commentList(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam("musicNo") int musicNo,
+			ModelMap model)
+	{	
+		GenericResponse<CommentCommand> gr = new GenericResponse<CommentCommand>();
+		ArrayList<CommentCommand> commentList = commentService.getCommentsByMusicClassNoAndMusicNo(musicClassNo, musicNo);
+		gr.setObjects(commentList);
+		System.out.println(">>commentList.size():::"+commentList.size());
+		return gr;
+	}	
+	
+	
+	/**
+	 * ajax comment 등록 요청 처리 
+	 * @param musicClassNo
+	 * @param musicNo
+	 * @param commentContents
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/comment", method = RequestMethod.GET)
+	public AjaxResultBase comment(
+			@RequestParam("musicClassNo") String musicClassNo,
+			@RequestParam("musicNo") int musicNo,
+			@RequestParam("commentContents") String commentContents
+			){
+		AjaxResultBase res = new AjaxResultBase();
+		LoginInfo loginInfo = loginInfoProvider.get();
+		int memberNo; 
+		System.out.println(">>commentContents::"+commentContents);
+		
+		if (loginInfo == null){
+			memberNo = 1;
+		}else {
+			//memberNo = loginInfo.getCurrentUser().getMemberNo();
+			memberNo = 1;			
+		}
+		try {
+			commentService.insertComment(musicClassNo,musicNo, memberNo, commentContents);
+			res.setResultCode(1);
+			res.setMessage("success");
+			res.setValue(commentContents);
+		} catch (Exception e) {
+			res.setResultCode(0);
+			res.setMessage("comment fail");
+			res.setValue(commentContents);
+		
+		}
+		return res;
+	}
+}

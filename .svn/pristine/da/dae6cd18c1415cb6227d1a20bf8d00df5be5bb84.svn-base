@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.RankMapper">
+
+	<!-- 순위 리스트 (주별, 월별) -->
+	<select id="getRankCommandList"    resultType="com.ma2rix.music.model.command.RankCommand" >
+	
+		SELECT 
+		  R.RANK_NO			    									AS rankNo		,	        /* 순위 일련번호 */
+		  R.REG_DATETIME											AS regDatetime 	,	        /* 기준날짜 */
+		  R.RANK_NAME												AS rankName		,	      	/* 메뉴명 */
+		  R.R_TYPE			    									AS rType		,	        /* 구분 */
+		  D.RANK_DETAIL_NO											AS rankDetailNo,	    	/* 순위상세일련번호 */
+		  D.RANK_SORT												AS rankSort		,	        /* 순위정렬번호 */
+		  D.ARRANGE_NO												AS arrangeNo	,	        /* 편곡번호 */
+		  D.RANK_NO			    									AS rankNo		,	        /* 편곡번호 */
+		  A.ARRANGE_NO												AS arrangeNo	,	        /* 편곡번호 */
+		  A.COMPOSE_NO												AS composeNo	,	        /* 편곡번호 */
+		  A.ARRANGE_MEMBER_NO										AS arrangeMemberNo,			/* 편곡번호 */
+		  A.ARRANGE_TITLE											AS arrangeTitle	,	 	    /* 편곡번호 */
+		  A.GENRE_NO												AS genreNo		,	    	/* 편곡번호 */ 
+		  A.OPEN_STATUS												AS openStatus	,   	    /* 보컬공개여부*/
+		  A.COMPOSE_RATE											AS composeRate	,  		    /* 작곡배분율 */
+		  A.ARRANGE_RATE											AS arrangeRate	,  	        /* 편곡배분율 */
+		  A.VOCAL_RATE												AS vocalRate	,  	        /* 보컬배분율 */
+		  A.LYRICS_RATE												AS lyricsRate	,   	    /* 작사 배분율 */
+		  A.ARRANGE_MEMO											AS arrangeMemo	,    	    /* 편곡 메모 */
+		  A.LIMIT_COUNT												AS limitCount	,   	    /* 배포제한수 */
+		  A.VOCAL_COUNT												AS vocalCount	,    	    /* 보컬수 */
+		  A.FAN_COUNT       										AS fanCount		,        	/* 팬수 */
+		  A.LYRICS_COUNT											AS lyricsCount	,    	    /* 작사수 */
+		  A.PERFORM_COUNT											AS performCount	,     	    /* 연주수 */
+		  A.ARRANGE_HITS											AS arrangeHits	,    	    /* 조회수 */
+		  A.ARRANGE_IMAGE											AS arrangeImage	,     	  	/* 편곡이미지파일 */
+		  CONCAT(AT1.WEB_PATH,  AT1.FILE_NAME2)						AS arrangeImageWeb		,	/* 편곡이미지파일 Web Path */
+		  CONCAT(AT1.FILE_PATH, AT1.FILE_NAME2)						AS arrangeImageFile		,	/* 편곡이미지파일 Local Path */  
+		  A.ARRANGE_SCORE											AS arrangeScore			,   /* 악보파일 */
+		  CONCAT(AT2.WEB_PATH,  AT2.FILE_NAME2)						AS arrangeScoreWeb		,	/* 악보파일 Web Path */
+		  CONCAT(AT2.FILE_PATH, AT2.FILE_NAME2)						AS arrangeScoreFile		,	/* 악보파일 Local Path */
+		  A.ARRANGE_SOUND											AS arrangeSound			,   /* 음원파일 */  
+		  CONCAT(AT3.WEB_PATH,  AT3.FILE_NAME2)						AS arrangeSoundWeb		,	/* 음원파일 Web Path */  
+		  CONCAT(AT3.FILE_PATH, AT3.FILE_NAME2)						AS arrangeSoundFile		,	/* 음원파일 Local Path */
+		  GET_SOUND_FILE(AT3.WEB_PATH,  AT3.FILE_NAME2, 'mp3')		AS arrangeSoundMp3		,	/* 음원파일 mp3 Path */
+		  GET_SOUND_FILE(AT3.WEB_PATH,  AT3.FILE_NAME2, 'ogg')		AS arrangeSoundOgg		,	/* 음원파일 ogg Path */
+		  GET_SOUND_FILE(AT3.WEB_PATH,  AT3.FILE_NAME2, 'png')		AS arrangeSoundPng		,	/* 음원파일 pbg Path */    
+		  A.GUIDE_SOUND												AS guideSound			,   /* 가이드음원파일 */
+		  CONCAT(AT4.WEB_PATH,  AT4.FILE_NAME2)						AS guideSoundWeb		,	/* 가이드음원파일 Web Path */  
+		  CONCAT(AT4.FILE_PATH, AT4.FILE_NAME2)						AS guideSoundFile		,	/* 가이드음원파일 Local Path */
+		  GET_SOUND_FILE(AT4.WEB_PATH,  AT4.FILE_NAME2, 'mp3')		AS guideSoundMp3		,	/* 가이드음원파일 mp3 Path */  
+		  GET_SOUND_FILE(AT4.WEB_PATH,  AT4.FILE_NAME2, 'ogg')		AS guideSoundOgg		,	/* 가이드음원파일 ogg Path */  
+		  GET_SOUND_FILE(AT4.WEB_PATH,  AT4.FILE_NAME2, 'png')		AS guideSoundPng		,	/* 가이드음원파일 pbg Path */    
+		  A.ARRANGE_ZIP												AS arrangeZip			,   /* 기타파일 */  
+		  CONCAT(AT5.WEB_PATH,  AT5.FILE_NAME2)						AS arrangeZipWeb		,	/* 기타파일 Web Path */  
+		  CONCAT(AT5.FILE_PATH, AT5.FILE_NAME2)						AS arrangeZipFile		,	/* 기타파일 Local Path */    
+		  A.SALE_PRICE												AS salePrice			,   /* 판매가격 */
+		  A.LIMIT_STATUS											AS limitStatus			,   /* 배포제한여부 */
+		  A.CHARGE_STATUS											AS chargeStatus			,   /* 유료여부 */
+		  A.ARRANGE_STATUS											AS arrangeStatus		,   /* 편곡상태 */
+		  A.SALE_STATUS												AS saleStatus      		,   /* 판매상태 */ 
+      	  G.GENRE_NAME												AS genreName      		   /* 장르명 */                                          
+		FROM TBL_RANK R 
+		INNER JOIN TBL_RANK_DETAIL D ON (R.RANK_NO = D.RANK_NO)
+		LEFT JOIN TBL_ARRANGEMENT A ON (D.ARRANGE_NO = A.ARRANGE_NO)
+		LEFT JOIN TBL_ATTACH_MUSIC AT1 ON A.ARRANGE_IMAGE = AT1.ATTACH_NO
+		LEFT JOIN TBL_ATTACH_MUSIC AT2 ON A.ARRANGE_SCORE = AT2.ATTACH_NO
+		LEFT JOIN TBL_ATTACH_MUSIC AT3 ON A.ARRANGE_SOUND = AT3.ATTACH_NO
+		LEFT JOIN TBL_ATTACH_MUSIC AT4 ON A.GUIDE_SOUND = AT4.ATTACH_NO
+		LEFT JOIN TBL_ATTACH_MUSIC AT5 ON A.ARRANGE_ZIP = AT5.ATTACH_NO
+    	LEFT JOIN TBL_GENRE G ON A.GENRE_NO = G.GENRE_NO		
+		WHERE 
+			1 = 1
+		<if test="rType != ''">
+			AND 
+			R_TYPE=#{rType}
+		</if>
+
+		AND 
+		ARRANGE_STATUS='03'
+		
+		<if test="rankNo != 0">		
+			AND 
+			D.RANK_NO=#{rankNo}
+		</if>
+		<if test="genreNo != null">				
+    		AND 
+    		G.GENRE_NO=#{genreNo}
+		</if>
+		ORDER BY RANK_SORT ASC
+			LIMIT 8		
+	</select>
+
+</mapper>

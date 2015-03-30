@@ -1,0 +1,15 @@
+package com.ma2rix.music.dao.interfaces;
+
+import com.ma2rix.music.model.domain.Fan;
+
+public interface FanDao {
+	
+	public int getFancountByMusicNo();
+	
+	public void insertFan(Fan fan);
+	
+	public int getMyFanCount();
+
+}
+
+

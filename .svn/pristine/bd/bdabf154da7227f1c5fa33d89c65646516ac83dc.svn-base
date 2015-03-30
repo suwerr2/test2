@@ -1,0 +1,110 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>   
+
+
+            <!-- layer popup : 악보보기 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="sheetMusic" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>악보보기</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"><img src="/music/resources/images/arrage/music.gif" alt="" style="width: 500px; height: 600px;"><br>악보 임시 이미지</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 악보보기 -->
+            
+            
+            <!-- layer popup : 맵보기 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="mapView" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>맵보기</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"> 맵보기 프로그램 차후 구현</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 맵보기 -->    
+            
+                 
+            <!-- layer popup : 구매팝 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="buyPop" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>구매</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"> 구매 프로그램 차후 구현</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- //layer popup : 구매팝 -->
+            
+            
+            
+            <!-- layer popup : 플레이리스트 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="playList" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>플레이 리스트</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"> 플레이 리스트  프로그램 차후 구현</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- layer popup : 플레이리스트 -->
+            
+            
+			<!-- layer popup : 공유레이어 -->
+            <div class="layer" style="display: none">
+            	<div class="bg"></div>
+               	<div id="sharePop" class="pop-layer">
+               		<div class="layerPopupWrap">
+               			<h3>공유하기</h3>
+               			<div class="popCont">
+               				<div class="viewMusic"> 공유하기 프로그램 차후 구현</div>
+               				<div class="textC mt20">
+	                        	<a class="btn large btnClose" href="#none"><span>닫기</span></a>
+	                        </div>
+                       	</div>
+               		</div> 
+               	</div>
+            </div>
+            <!-- layer popup : 공유레이어 -->
+            
+            
+
+            
+            
+      
+	            
+	            
+	            
+ 	               
+            
+            

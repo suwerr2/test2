@@ -1,0 +1,740 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%@ include file="../include/top.jsp"%>
+
+<div class="contents">
+	<div class="titleWrap">
+		<h2>My workspace</h2>
+	</div>
+	<!--tab-->
+	<div class="tabWrapType1 mt30">
+		<ul class="tabBtnSet1 tabCommon">
+			<li><a href="#none"><span>전체보기</span></a></li>
+			<li><a href="#none"><span>진행중프로젝트</span></a></li>
+			<li><a href="#none"><span>완료된프로젝트</span></a></li>
+			<li><a href="#none"><span>메시지박스</span></a></li>
+		</ul>
+		<!-- tabBox1 -->
+		<div class="tabCont">
+			<div class="myInfo">
+				<div class="imgView">
+					<img src="../resources/images/profile/${memberImage} " alt=""
+						style="width: 150px; height: 150px;">
+				</div>
+				<div class="conView">
+					<ul>
+						<li><span>My fan</span> <strong>${fanCount}<strong></li>
+						<li><span>Sponsors</span> <strong>${sponsorAmount}</strong></li>
+						<li><span>Income</span> <strong>100,000</strong></li>
+						<li><span>My part</span> <strong>${myPart.codeName}</strong>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="myWorkIng">
+				<div class="hType1 pt0">
+					<h3>
+						진행중인프로젝트 <strong>(${ongoingComposeProjectsCount + ongoingArrangeProjectsCount + ongoingPerformProjectsCount + ongoingVocalProjectsCount})</strong>
+					</h3>
+				</div>
+				<div class="arrInfoWrap floatL mb30">
+					<h4>
+						작곡 <strong>(${ongoingComposeProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="ongoingComposeProjects" items="${ongoingComposeProjects}" varStatus = "status">
+							<li><a href="/music/compose/update.do?composeNo=${ongoingComposeProjects.composeNo}">${ongoingComposeProjects.composeTitle}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						편곡 <strong>(${ongoingArrangeProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="ongoingArrangeProjects" items="${ongoingArrangeProjects}" varStatus = "status">
+							<li><a href="/music/arrange/update?arrangeNo=${ongoingArrangeProjects.arrangeNo}">${ongoingArrangeProjects.arrangeTitle}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						연주 <strong>(${ongoingPerformProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="ongoingPerformProjects" items="${ongoingPerformProjects}" varStatus = "status">
+							<li><a href="/music/arrange/update?arrangeNo=${ongoingPerformProjects.arrangeNo}">${ongoingPerformProjects.playFieldName}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap">
+					<h4>
+						보컬 <strong>(${ongoingVocalProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="ongoingVocalProjects" items="${ongoingVocalProjects}" varStatus = "status">
+							<li><a href="#none">${ongoingVocalProjects.vocalMemo}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="myWorkDone">
+				<div class="hType1 pt0">
+					<h3>
+						완료된프로젝트 <strong>(${completedprojectsCount + completedArrangeProjectsCount + completedPerformProjectsCount + completedVocalProjectsCount + completedWriteProjectsCount})</strong>
+					</h3>
+				</div>
+				<div class="arrInfoWrap floatL mb30">
+					<h4>
+						작곡 <strong>(${completedprojectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+						
+							<c:forEach var="completedComposedProjects" items="${completedComposedProjects}" varStatus = "status">
+							<li><a href="/music/compose/composeDetail?composeNo=${completedComposedProjects.composeNo}&listType=1">${completedComposedProjects.composeTitle}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						편곡 <strong>(${completedArrangeProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="completedArrangeProjects" items="${completedArrangeProjects}" varStatus = "status">
+							<li><a href="/music/arrange/arrangeDetail?arrangeNo=${completedArrangeProjects.arrangeNo}&listType=3">${completedArrangeProjects.arrangeTitle}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						연주 <strong>(${completedPerformProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="completedPerformProjects" items="${completedPerformProjects}" varStatus = "status">
+							<li><a href="/music/arrange/arrangeList?listType=3">${completedPerformProjects.playFieldName}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="clearB"></div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						보컬 <strong>(${completedVocalProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="completedVocalProjects" items="${completedVocalProjects}" varStatus = "status">
+							<li><a href="/music/arrange/arrangeList?listType=3">${completedVocalProjects.vocalMemo}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="arrInfoWrap floatL">
+					<h4>
+						작사 <strong>(${completedWriteProjectsCount})</strong>
+					</h4>
+					<div class="listViewWrap">
+						<ul>
+							<c:forEach var="completedWriteProjects" items="${completedWriteProjects}" varStatus = "status">
+							<li><a href="/music/arrange/arrangeList?listType=3">${completedWriteProjects.writeTitle}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- //tabBox1 -->
+		<!-- tabBox2 -->
+		<div class="tabCont">
+			<!--tab-->
+			<div class="tabWrapType1 mt30">
+				<ul class="tabBtnSet2">
+					<li><a href="#none"><span>작곡</span></a></li>
+					<li><a href="#none"><span>편곡</span></a></li>
+					<li><a href="#none"><span>연주</span></a></li>
+					<li><a href="#none"><span>보컬</span></a></li>
+				</ul>
+				<!-- tabBox1 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>등록완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>등록완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>등록완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox1 -->
+				<!-- tabBox2 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>작업 등록대기</td>
+									<td><a href="#none"><span class="label label-joinOut">작업등록</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>편곡 작업 진행중</td>
+									<td><a href="#none"><span class="label label-joinOut">최종
+												편곡 등록</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span> <span
+										class="label label-source">악보</span></td>
+									<td>최종 편곡 등록 완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox2 -->
+				<!-- tabBox3 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>연주등록완료</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>연주등록완료</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>연주등록전</td>
+									<td><a href="#none"><span class="label label-joinOut">연주등록</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox3 -->
+				<!-- tabBox4 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>등록완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>등록완료</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td><span class="label label-score">음원</span></td>
+									<td>등록대기</td>
+									<td><a href="#none"><span class="label label-joinOut">등록</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox4 -->
+			</div>
+		</div>
+		<!-- tabBox2 -->
+		<!-- tabBox3 -->
+		<div class="tabCont">
+			<!--tab-->
+			<div class="tabWrapType1 mt30">
+				<ul class="tabBtnSet2">
+					<li><a href="#none"><span>작곡</span></a></li>
+					<li><a href="#none"><span>편곡</span></a></li>
+					<li><a href="#none"><span>연주</span></a></li>
+					<li><a href="#none"><span>보컬</span></a></li>
+					<li><a href="#none"><span>작사</span></a></li>
+				</ul>
+				<!-- tabBox1 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Arrangement : 1000<br>Vocals : 300
+									</td>
+									<td>판매중</td>
+									<td><a href="#none"><span class="label label-joinOut">판매중지</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Arrangement : 1000<br>Vocals : 300
+									</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Arrangement : 1000<br>Vocals : 300
+									</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox1 -->
+				<!-- tabBox2 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중</td>
+									<td><a href="#none"><span class="label label-joinOut">판매중지</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox2 -->
+				<!-- tabBox3 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중지</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Vocals : 300</td>
+									<td>판매중지</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox3 -->
+				<!-- tabBox4 -->
+				<div class="tabCont">
+					<div class="tab2ListWrap">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+								<col style="width: 20%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Download : 300</td>
+									<td>판매중</td>
+									<td><a href="#none"><span class="label label-joinOut">판매중지</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Download : 300</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+								<tr>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td class="textL">Topayc_0001<br>2010-1010
+									</td>
+									<td>Download : 300</td>
+									<td>판매중지</td>
+									<td><a href="#none"><span class="label label-joinOut">판매개시</span></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox4 -->
+				<!-- tabBox5 -->
+				<div class="tabCont">
+					<p>
+						<i class="fa fa-music"></i> 현재 총 <strong>119</strong> 개의 작사를
+						등록하셨습니다.
+					</p>
+					<div class="checkSelect floatL">
+						<select class="dropdown">
+							<option value="">Language</option>
+							<option value="">English</option>
+							<option value="">Korean</option>
+						</select>
+					</div>
+					<p class="floatL ml10">보시길 원하는 작사의 언어를 선택하세요.</p>
+					<div class="tab2ListWrap mb30">
+						<table>
+							<colgroup>
+								<col style="width: 10%">
+								<col style="width: 5%">
+								<col>
+								<col style="width: 10%">
+								<col style="width: 20%">
+								<col style="width: 13%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td>2014-10-20</td>
+									<td>100</td>
+									<td class="textL">What a wonderful world</td>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td>topayc_0001</td>
+									<td>
+										<div class="checkSelect floatL">
+											<select class="dropdown">
+												<option value="">작업</option>
+												<option value="">작사보기</option>
+												<option value="">작사수정</option>
+												<option value="">작사삭제</option>
+												<option value="">게재시작</option>
+												<option value="">게재중지</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6" class="textL">
+										<div class="gasaTitle">
+											<strong class="pointColor">What a wonderful world !!</strong><span
+												class="floatR"><a class="btn topayc" href="#none"><span>가사수정</span></a></span>
+										</div>
+										<div class="gasaText">가사가 여기에 다 들어갈 수 있을까?가사가 여기에 다 들어갈
+											수 있을까?가사가 여기에 다 들어갈 수 있을까?가사가 여기에 다 들어갈 수 있을까?가사가 여기에 다 들어갈 수
+											있을까?</div>
+									</td>
+								</tr>
+								<tr>
+									<td>2014-10-20</td>
+									<td>100</td>
+									<td class="textL">What a wonderful world</td>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td>topayc_0001</td>
+									<td>
+										<div class="checkSelect floatL">
+											<select class="dropdown">
+												<option value="">작업</option>
+												<option value="">작사보기</option>
+												<option value="">작사수정</option>
+												<option value="">작사삭제</option>
+												<option value="">게재시작</option>
+												<option value="">게재중지</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>2014-10-20</td>
+									<td>100</td>
+									<td class="textL">What a wonderful world</td>
+									<td><img src="../../images/holderType3.gif" alt=""
+										style="width: 50px; height: 50px;"></td>
+									<td>topayc_0001</td>
+									<td>
+										<div class="checkSelect floatL">
+											<select class="dropdown">
+												<option value="">작업</option>
+												<option value="">작사보기</option>
+												<option value="">작사수정</option>
+												<option value="">작사삭제</option>
+												<option value="">게재시작</option>
+												<option value="">게재중지</option>
+											</select>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- //tabBox5 -->
+			</div>
+		</div>
+		<!-- //tabBox3 -->
+		<!-- tabBox4 -->
+		<div class="tabCont">
+			<div class="messageBoxWrap">
+				<ul class="messageBox">
+					<li class="article">
+						<div class="tit">
+							<a href="#none">[일반메시지] 총 <strong>10</strong>개의 메시지가 존재합니다.
+								(읽지 않은 메시지 <strong>100</strong>개)
+							</a>
+						</div>
+						<div class="con">
+							<div class="visual">
+								<a href="#none"><img src="../../images/holderType3.gif"
+									alt="" style="width: 50px; height: 50px;"></a>
+							</div>
+							<div class="userInfo">
+								<strong><a href="#none">Hoons</a></strong><br>composer
+							</div>
+							<div class="msgCon">
+								<p>
+									<a href="#none">수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용</a>
+								</p>
+								<span class="date">2010.10.10 오후 10:00</span>
+							</div>
+						</div>
+					</li>
+					<li class="article">
+						<div class="tit">
+							<a href="#none">[music title] 총 <strong>10</strong>개의 메시지가
+								존재합니다. (읽지 않은 메시지 <strong>100</strong>개)
+							</a>
+						</div>
+						<div class="con">
+							<div class="visual">
+								<a href="#none"><img src="../../images/holderType3.gif"
+									alt="" style="width: 50px; height: 50px;"></a>
+							</div>
+							<div class="userInfo">
+								<strong><a href="#none">Hoons</a></strong><br>composer
+							</div>
+							<div class="msgCon">
+								<p>
+									<a href="#none">수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용</a>
+								</p>
+								<span class="date">2010.10.10 오후 10:00</span>
+							</div>
+						</div>
+					</li>
+					<li class="article">
+						<div class="tit">
+							<a href="#none">[music title] 총 <strong>10</strong>개의 메시지가
+								존재합니다. (읽지 않은 메시지 <strong>100</strong>개)
+							</a>
+						</div>
+						<div class="con">
+							<div class="visual">
+								<a href="#none"><img src="../../images/holderType3.gif"
+									alt="" style="width: 50px; height: 50px;"></a>
+							</div>
+							<div class="userInfo">
+								<strong><a href="#none">Hoons</a></strong><br>composer
+							</div>
+							<div class="msgCon">
+								<p>
+									<a href="#none">수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용수신 받은 최신 메시지
+										내용수신 받은 최신 메시지 내용수신 받은 최신 메시지 내용</a>
+								</p>
+								<span class="date">2010.10.10 오후 10:00</span>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- //tabBox4 -->
+		<!-- tabBox5 -->
+		<div class="tabCont"></div>
+		<!-- tabBox5 -->
+	</div>
+	<!-- //tab -->
+</div>
+<!-- //contents -->
+
+<%@ include file="../include/bottom.jsp"%>
+

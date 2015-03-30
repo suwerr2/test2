@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>로그인 이력조회</title>
+    <link rel="stylesheet" type="text/css" href="../../common/css/common_admin.css">
+    <link rel="stylesheet" type="text/css" href="../../common/css/js.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/common/css/skin/pink.flag/jplayer.pink.flag.css">
+    <script src="../../common/js/jquery-1.11.1.min.js"></script>
+    <script src="../../common/js/dropit.js"></script>
+    <script src="../../common/js/jquery.easydropdown.js"></script>
+    <script src="../../common/js/jquery.jplayer.min.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ma2rixplayer.js"></script><!-- 오디오 -->
+    <script src="../../common/js/ui.js"></script>
+    <script>
+        var buttonSetType = "01"
+    </script>
+</head>
+<body>
+	<div class="mrWrap">
+		<!-- header -->
+		<div class="mrHeader">
+			<div class="headerArea">
+	            <h1><a href="#none"><img src="../../images/logo.png" alt="ma2rix"></a></h1>
+	            <div class="gnbWrap">
+		            <ul>
+		            	<li><a class="on" href="admin01.html">로그인 이력조회</a></li>
+		                <li><a href="admin02.html">정산조회(관리자)</a></li>
+		                <li><a href="admin03.html">정산조회(개인)</a></li>
+		                <li><a href="admin04.html">무료구매관리(이벤트기간, 횟수지정)</a></li>
+		                <li><a href="admin05.html">관리자 곡선택 노출관리</a></li>
+		            </ul>
+		        </div>
+	    	</div>
+		</div>
+		<!-- //header -->
+		<!-- contents -->
+		<div class="mrContainer">
+			<div class="contents">
+				<div class="titleWrap">
+					<h2 class="testBtn floatL">로그인 이력조회</h2>
+				</div>
+				<div class="conArea">
+					<input type="text" placeholder="E-mail입력" style="width: 200px;">
+					<a class="btn" href="#none"><span>찾기</span></a>
+					<div class="accuntArea mt30 mb30">
+						<h3>정산관리</h3>
+						<div class="searchpPriod">
+							<span class="">조회기간 :</span>
+							<input type="radio" id="day"><label for="day">일</label>
+							<input type="radio" id="week"><label for="week">주</label>
+							<input type="radio" id="month"><label for="month">월</label>
+							<input type="radio" id="period"><label for="period">기간</label>
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a> ~
+							<input type="text"> <a class="btn" href="#none"><span>달력</span></a>
+							<div class="floatR">
+								<a class="btn" href="#none"><span>검색</span></a>
+								<a class="btn" href="#none"><span>초기화</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="tblScroll">
+						<table class="tblType03 addTrType2">
+		                    <colgroup>
+		                        <col style="width: 15%">
+		                        <col style="width: 20%">
+		                        <col style="width: 30%">
+		                        <col style="width: auto">
+		                    </colgroup>
+		                    <tr>
+		                    	<th>액션시작일시</th>
+		                        <th>Email ID</th>
+		                        <th>액션결과</th>
+		                        <th>접속IP</th>
+		                    </tr>
+		                    <tr>
+		                    	<td>2014-10-28<br>13:00:13</td>
+		                    	<td>Ma2rix</td>
+		                    	<td>로그인화면</td>
+		                    	<td>132.234.123.11</td>
+		                    </tr>
+		                    <tr>
+		                    	<td>2014-10-28<br>13:00:13</td>
+		                    	<td>Ma2rix</td>
+		                    	<td>로그인화면</td>
+		                    	<td>132.234.123.11</td>
+		                    </tr>
+		                    <tr>
+		                    	<td>2014-10-28<br>13:00:13</td>
+		                    	<td>Ma2rix</td>
+		                    	<td>로그인화면</td>
+		                    	<td>132.234.123.11</td>
+		                    </tr>
+		                </table>
+		            </div>
+				</div>
+
+
+				<div class="layer" style="display:block">
+					<div class="bg"></div>
+					<div id="arrangeFind" class="pop-layer">
+						<div class="layerPopupWrap">
+							<h3>편곡자 찾기</h3>
+							<div class="popCont">
+								<div class="floatL mb10">
+									<select class="dropdown" name="">
+										<option>편곡자1</option>
+										<option>편곡자2</option>
+									</select>
+								</div>
+								<div class="floatR mb10">
+									<input type="text"><a class="btn small btnPoint ctgView" href="#none"><span>검색</span></a>
+								</div>
+								<table class="tblType03 addTrType2">
+									<colgroup>
+										<col style="width: 10%">
+										<col style="width: 25%">
+										<col style="width: auto">
+										<col style="width: 20%">
+									</colgroup>
+									<tr>
+										<th>번호</th>
+										<th>이름</th>
+										<th>활동분야</th>
+										<th>선택</th>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>메투릭스</td>
+										<td>작곡 / 편곡 / 연주</td>
+										<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a>
+										</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>메투릭스</td>
+										<td>작곡 / 편곡 / 연주</td>
+										<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a>
+										</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>메투릭스</td>
+										<td>작곡 / 편곡 / 연주</td>
+										<td><a class="btn small btnPoint ctgView" href="#none"><span>select</span></a>
+										</td>
+									</tr>
+								</table>
+								<div class="textC mt20">
+									<a class="btn large btnPoint btnClose" href="#none"><span>닫기</span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+		</div>
+
+		<!-- //contents -->
+		<!-- footer -->
+		<div class="mrFooter">
+			<div class="footerArea">
+				온라인 음원 제작 사이트 MA2RIX <br>Copyrightⓒ. 2014. MA2RIX. All Rights Reserved.
+			</div>
+		</div>
+		<!-- //footer -->
+	</div>
+</body>
+</html>

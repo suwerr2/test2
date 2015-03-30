@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+<<<<<<< .mine
+encoding//src/main/webapp/ma2rix/common/css/common.css=UTF-8
+=======
+encoding//src/main/webapp/ma2rix/common/css/common.css=UTF-8
+encoding//src/main/webapp/ma2rix/common/css/js.css=UTF-8
+encoding//src/main/webapp/resources/common/css/common.css=UTF-8
+>>>>>>> .r86
+encoding/<project>=UTF-8

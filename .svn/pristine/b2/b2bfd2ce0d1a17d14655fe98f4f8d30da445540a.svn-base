@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ma2rix.music.dao.mapper.PerformPlayerMapper">
+	<cache />
+	<select id = "getPerformPlayerCount" resultType = "int">
+		<![CDATA[
+			SELECT COUNT(*) FROM TBL_PERFOR_PLAYER
+		]]>
+	</select>
+	
+	<select id="getPerformPlayersByPlayerMemberNo" parameterType="int" resultType="com.ma2rix.music.model.domain.PerformPlayer">
+		<![CDATA[
+			SELECT
+				PERFORM_NO				as performNo			,
+				PLAYER_MEMBER_NO		as playerMemberNo		,
+				PERFORM_PLAYER_STATUS	as performPlayerStatus	,    
+				REG_DATETIME			as regDateTime			,
+				MOD_DATETIME			as modDateTime			  			
+			FROM 
+				TBL_PERFORM_PLAYER
+			WHERE 
+				PLAYER_MEMBER_NO = #{playerMemberNo}
+		]]>
+	</select>
+	
+	<select id="getPerformPlayersByPerformNo" parameterType="int" resultType="com.ma2rix.music.model.domain.PerformPlayer">
+		<![CDATA[
+			SELECT
+				PERFORM_NO				as performNo			,
+				PLAYER_MEMBER_NO		as playerMemberNo		,
+				PERFORM_PLAYER_STATUS	as performPlayerStatus	,    
+				REG_DATETIME			as regDateTime			,
+				MOD_DATETIME			as modDateTime			  			
+			FROM 
+				TBL_PERFORM_PLAYER
+			WHERE 
+				PERFORM_NO = #{performNo}
+		]]>
+	</select>
+	
+	
+	<select id="getPerformPlayersByPerformNoAndPlayerMemberNo" parameterType="int" resultType="com.ma2rix.music.model.domain.PerformPlayer">
+		<![CDATA[
+			SELECT
+				PERFORM_NO				as performNo			,
+				PLAYER_MEMBER_NO		as playerMemberNo		,
+				PERFORM_PLAYER_STATUS	as performPlayerStatus	,    
+				REG_DATETIME			as regDateTime			,
+				MOD_DATETIME			as modDateTime			  			
+			FROM 
+				TBL_PERFORM_PLAYER
+			WHERE 
+				PERFORM_NO = #{performNo} AND PLAYER_MEMBER_NO = #{playerMemberNo}
+		]]>
+	</select>
+	
+	<insert id ="insertPerformPlayer" parameterType ="com.ma2rix.music.model.domain.PerformPlayer">
+		<![CDATA[
+			INSERT INTO 
+				TBL_PERFORM_PLAYER
+			(	
+				PERFORM_NO							,
+				PLAYER_MEMBER_NO					,
+				PERFORM_PLAYER_STATUS               ,
+				REG_DATETIME						
+			)
+			VALUES 
+			(
+				#{performNo}						,
+				#{playerMemberNo}	    			,
+				#{performPlayerStatus}				,
+				NOW()				
+			)
+		]]>
+	</insert>
+
+	<update id = "updatePerformPlayer" parameterType= "com.ma2rix.music.model.domain.PerformPlayer">
+		<![CDATA[
+			UPDATE 
+				TBL_PERFORM_PLAYER
+			SET 
+				PERFORM_PLAYER_STATUS	     = #{performPlayerStatus},
+				MOD_DATETIME				 = NOW()		
+			WHERE 
+				PERFORM_NO = #{performNo} 
+			AND PLAYER_MEMBER_NO = #{playerMemberNo}
+		]]>
+	</update>	
+	
+	
+	<delete id = "deletePerformPlayer" >
+		<![CDATA[
+			DELETE FROM 
+				TBL_PERFORM_PLAYER
+			WHERE
+				PERFORM_NO = #{performNo} AND PLAYER_MEMBER_NO = #{playerMemberNo}
+		]]>
+	</delete>	
+	
+	
+	<select id="getPerformPlayersList" resultType="com.ma2rix.music.model.command.PerformPlayerCommand">
+				SELECT 
+				    PP.PERFORM_NO 				as performNo		, 
+				    PP.PLAYER_MEMBER_NO 		as playerMemberNo	, 
+				    PP.PERFORM_PLAYER_STATUS 	as performPlayerStatus, 
+				    PP.REG_DATETIME 			as regDatetime		, 
+				    PP.MOD_DATETIME 			as modDatetime		,
+				    M.MEMBER_NO 				as memberNo			,
+				    M.MEMBER_USERID 			as memberUserid		, 
+				    M.MEMBER_NAME 				as memberName		, 
+				    M.MEMBER_PWD 				as memberPwd		, 
+				    M.MEMBER_NICK_NAME 			as memberNickName	, 
+				    M.MEMBER_ROUTE 				as memberRoute		, 
+				    M.MEMBER_IMAGE 				as memberImage		, 
+				    M.COUNTRY_NO 				as countryNo		, 
+				    M.MEMBER_CITY 				as memberCity		, 
+				    M.MEMBER_INTRODUCE 			as memberIntroduce	, 
+				    M.MEMBER_HOMEPAGE 			as memberHompage	, 
+				    M.HOMEPAGE_COMMENT 			as homepageComment	, 
+				    M.MEMBER_STATUS 			as memberStatus		, 
+				    M.EMAIL_RECEIVE 			as emailReceive		, 
+				    M.COMMUNITY_MEMBER_NO 		as communityMemberNo, 
+				    M.SPONSOR_AMOUNT 			as spnsorAmount		, 
+				    M.LAST_DATETIME 			as lastDatetime		, 
+				    M.MOD_ADMIN_NO 				as modAdminNo		,
+				    M.MOD_DATETIME 				as modDatiemtiem 
+				FROM TBL_PERFORM_PLAYER PP JOIN TBL_MEMBER M 
+				ON PP.PLAYER_MEMBER_NO = M.MEMBER_NO
+				JOIN TBL_PERFORMANCE P
+				ON PP.PERFORM_NO = P.PERFORM_NO
+				WHERE 
+					1 = 1
+					
+				AND P.ARRANGE_NO = #{arrangeNo}
+				
+				<if test="search == 'id'">
+        			AND M.MEMBER_USERID like CONCAT('%',#{searchWord},'%')
+        		</if> 				
+				<if test="search == 'nick'">
+        			AND M.MEMBER_NICK_NAME like CONCAT('%',#{searchWord},'%')
+        		</if> 		
+	</select>	
+	
+	
+	
+	
+	<select id="getPerformPlayersAllList" resultType="com.ma2rix.music.model.command.PerformPlayerCommand">
+
+				SELECT
+				  MEMBER_NO     as memberNo,
+				  MEMBER_USERID as memberUserid, 
+				  MEMBER_NAME   as memberName, 
+				  MEMBER_NICK_NAME  as memberNickName
+				  FROM TBL_MEMBER
+				  WHERE MEMBER_NO IN (
+				    SELECT 
+				      DISTINCT(M.MEMBER_NO)
+				    FROM TBL_MEMBER_PLAY P JOIN TBL_MEMBER M 
+				    ON M.MEMBER_NO = P.MEMBER_NO
+				)
+			
+				<if test="search == 'id'">
+        			AND MEMBER_USERID like CONCAT('%',#{searchWord},'%')
+        		</if> 				
+				<if test="search == 'nick'">
+        			AND MEMBER_NICK_NAME like CONCAT('%',#{searchWord},'%')
+        		</if> 				
+	
+	</select>	
+	
+	
+</mapper>
