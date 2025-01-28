@@ -50,7 +50,7 @@ public class SoundPlotImage
 {
  
         private static final int SAMPLE_WINDOW_SIZE = 1024;
-        
+        ddddddddddd
         public SoundPlotImage()
         {
         }
